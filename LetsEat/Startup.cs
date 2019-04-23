@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.DAL;
+using LetsEat.DAL.SQL;
 using LetsEat.Providers.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,11 @@ namespace LetsEat
             //Dependency injections
             string connectionString = Configuration.GetConnectionString("Mac");
             services.AddTransient<IUsersDAL>(m => new UserSqlDAL(connectionString));
+            services.AddScoped<IImageDAL, ImageSqlDAL>(c => new ImageSqlDAL(connectionString));
+            services.AddScoped<IIngredientDAL, IngredientSqlDAL>(c => new IngredientSqlDAL(connectionString));
+            services.AddScoped<IRecipeDAL, RecipeSqlDAL>(c => new RecipeSqlDAL(connectionString));
+            services.AddScoped<IStepDAL, StepSqlDAL>(c => new StepSqlDAL(connectionString));
+            services.AddScoped<IWebsiteRequestDAL, WebsiteRequestSqlDAL>(c => new WebsiteRequestSqlDAL(connectionString));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.Models;
 
-namespace LetsEat.DAL
+namespace LetsEat.DAL.SQL
 {
     public class UserSqlDAL : IUsersDAL
     {

@@ -32,3 +32,9 @@
 /Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/LetsEat.dll
 /Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/LetsEat.pdb
 /Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/LetsEat.csproj.CopyComplete
+/Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/LetsEat.csprojAssemblyReference.cache
+/Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/Razor/:Users:Josiah:Documents:Projects:Lets-Eat:LetsEat:Views:RecipeBook:Index.g.cshtml.cs
+/Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/Razor/Views/RecipeBook/AddRecipe.g.cshtml.cs
+/Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/Razor/Views/RecipeBook/FailedToAddRecipe.g.cshtml.cs
+/Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/Razor/Views/RecipeBook/ParseURL.g.cshtml.cs
+/Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/Razor/Views/RecipeBook/Search.g.cshtml.cs
