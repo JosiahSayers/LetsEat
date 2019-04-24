@@ -81,9 +81,16 @@ namespace LetsEat.Controllers
                     Ingredients = form.ParseIngredients()
                 };
 
-                r.ID = recipeDAL.AddRecipe(r);
+                if(recipeDAL.AddRecipe(r) != -1)
+                {
+                    return View("Recipe", r);
 
-                return View("Recipe", r.ID);
+                } 
+                else
+                {
+                    return View("Error");
+                }
+
             } else
             {
                 return RedirectToAction("Login", "Account");

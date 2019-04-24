@@ -365,7 +365,7 @@ namespace LetsEat.Models.Forms
                 dal.AddNewWebsiteRequest(wr);
             }
 
-            output.UserWhoAdded = $"Automatically Parsed URL from: {website}";
+            output.UserWhoAdded.Id = 1;
             output.DateAdded = DateTime.Now;
             output.Source = URL;
 

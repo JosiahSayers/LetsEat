@@ -38,3 +38,4 @@
 /Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/Razor/Views/RecipeBook/FailedToAddRecipe.g.cshtml.cs
 /Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/Razor/Views/RecipeBook/ParseURL.g.cshtml.cs
 /Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/Razor/Views/RecipeBook/Search.g.cshtml.cs
+/Users/Josiah/Documents/Projects/Lets-Eat/LetsEat/obj/Debug/netcoreapp2.2/Razor/Views/RecipeBook/Recipe.g.cshtml.cs

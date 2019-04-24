@@ -1,0 +1,21 @@
+﻿
+@model Recipe
+@{
+}
+
+<table>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Description</td>
+            <td>User</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Name</td>
+            <td>@Model.Description</td>
+            <td>@Model.UserWhoAdded.DisplayName</td>
+        </tr>
+    </tbody>
+</table>

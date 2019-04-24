@@ -10,23 +10,21 @@ namespace LetsEat.DAL.SQL
     {
         private string connectionString;
 
-        private string SQL_GetAllRecipes = "SELECT * FROM recipe";
-        private string SQL_GetRecipeByID = "SELECT * FROM recipe WHERE id = @id";
+        private string SQL_GetAllRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_who_added = users.id";
+        private string SQL_GetRecipeByID = "SELECT * FROM recipe JOIN users on recipe.user_who_added = users.id WHERE id = @id";
         private string SQL_SearchForRecipe = "SELECT DISTINCT recipe.ID FROM recipe JOIN ingredient ON recipe.id = ingredient.recipe_id WHERE recipe.name LIKE (@searchQuery) OR recipe.description LIKE (@searchQuery) OR ingredient.ingredient LIKE (@searchQuery);";
         private string SQL_CreateRecipe = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_who_added) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded); SELECT CAST(SCOPE_IDENTITY() as int);";
 
         private readonly IIngredientDAL ingredientDAL;
         private readonly IImageDAL imgDAL;
         private readonly IStepDAL stepDAL;
-        private readonly IAuthProvider authProvider;
 
-        public RecipeSqlDAL(string connectionString, IAuthProvider authProvider)
+        public RecipeSqlDAL(string connectionString)
         {
             this.connectionString = connectionString;
             ingredientDAL = new IngredientSqlDAL(connectionString);
             imgDAL = new ImageSqlDAL(connectionString);
             stepDAL = new StepSqlDAL(connectionString);
-            this.authProvider = authProvider;
         }
 
         public Recipe GetRecipeByID(int id)
@@ -52,7 +50,10 @@ namespace LetsEat.DAL.SQL
                         output.Description = Convert.ToString(reader["description"]);
                         output.Source = Convert.ToString(reader["source"]);
                         output.DateAdded = Convert.ToDateTime(reader["date_added"]);
-                        output.UserWhoAdded.Id = Convert.ToInt32(reader["user_who_added"]);
+
+                        output.UserWhoAdded = new User(){
+                            DisplayName = Convert.ToString(reader["display_name"])
+                        };
                     }
                 }
 
@@ -93,7 +94,11 @@ namespace LetsEat.DAL.SQL
                         r.Description = Convert.ToString(reader["description"]);
                         r.Source = Convert.ToString(reader["source"]);
                         r.DateAdded = Convert.ToDateTime(reader["date_added"]);
-                        r.UserWhoAdded = Convert.ToString(reader["user_who_added"]);
+
+                        r.UserWhoAdded = new User() {
+                            DisplayName = Convert.ToString(reader["display_name"])
+                        };
+
                         r.Ingredients = ingredientDAL.GetIngredientsForRecipe(recipeID);
                         r.ImageLocations = imgDAL.GetImageLocationsForRecipe(recipeID);
                         r.Steps = stepDAL.GetStepsForRecipe(recipeID);
