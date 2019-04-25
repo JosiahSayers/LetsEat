@@ -45,6 +45,31 @@ namespace LetsEat.DAL.SQL
             return output;
         }
 
+        public List<string> GetImageLocationsForRecipe(int recipeID, SqlConnection conn)
+        {
+            List<string> output = new List<string>();
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(SQL_GetImageLocationsForRecipe, conn);
+                cmd.Parameters.AddWithValue("@recipeID", recipeID);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    output.Add(Convert.ToString(reader["filename"]));
+                }
+                reader.Close();
+            }
+            catch
+            {
+                output.Clear();
+                output.Add("error");
+            }
+
+            return output;
+        }
+
         public bool AssignImageLocationToRecipe(string imgLoc, Recipe recipe)
         {
             bool output;
@@ -69,5 +94,6 @@ namespace LetsEat.DAL.SQL
             }
             return output;
         }
+
     }
 }

@@ -26,27 +26,18 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="nav navbar-nav navbar-right">
-                        @if (Model == null)
-                        {
-                            <li><a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a></li>
-                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
-                        }
-                        else
-                        {
-                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
-                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logoff">Logout</a></li>
-                        }
-                    </ul>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="RecipeBook" asp-action="Index">My Recipes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="RecipeBook" asp-action="ParseURL">Add Recipe</a>
                             </li>
+                        </ul>
+                        <ul class="navbar-nav navbar-right">
+                            @await Component.InvokeAsync("NavBar") @* Render the NavBar component. *@
                         </ul>
                     </div>
                 </div>

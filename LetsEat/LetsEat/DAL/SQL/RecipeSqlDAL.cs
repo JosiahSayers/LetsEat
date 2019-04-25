@@ -11,9 +11,10 @@ namespace LetsEat.DAL.SQL
         private string connectionString;
 
         private string SQL_GetAllRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id";
-        private string SQL_GetRecipeByID = "SELECT * FROM recipe JOIN users on recipe.user_id = users.id WHERE id = @id";
+        private string SQL_GetRecipeByID = "SELECT * FROM recipe JOIN users on recipe.user_id = users.id WHERE recipe.id = @id";
         private string SQL_SearchForRecipe = "SELECT DISTINCT recipe.ID FROM recipe JOIN ingredient ON recipe.id = ingredient.recipe_id WHERE recipe.name LIKE (@searchQuery) OR recipe.description LIKE (@searchQuery) OR ingredient.ingredient LIKE (@searchQuery);";
         private string SQL_CreateRecipe = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded); SELECT CAST(SCOPE_IDENTITY() as int);";
+        private string SQL_GetRecipeSteps = "SELECT step_number, step_text FROM steps WHERE recipe_id = @recipeID ORDER BY step_number, step_text;";
 
         private readonly IIngredientDAL ingredientDAL;
         private readonly IImageDAL imgDAL;
@@ -53,14 +54,17 @@ namespace LetsEat.DAL.SQL
 
                         output.UserWhoAdded = new User()
                         {
-                            DisplayName = Convert.ToString(reader["display_name"])
+                            Id = Convert.ToInt32(reader["id"]),
+                            DisplayName = Convert.ToString(reader["display_name"]),
+                            Email = Convert.ToString(reader["email"])
                         };
                     }
+                    reader.Close();
+                    output.Steps = stepDAL.GetStepsForRecipe(id, conn);
+                    output.Ingredients = ingredientDAL.GetIngredientsForRecipe(id, conn);
+                    output.ImageLocations = imgDAL.GetImageLocationsForRecipe(id, conn);
                 }
 
-                output.Ingredients = ingredientDAL.GetIngredientsForRecipe(id);
-                output.ImageLocations = imgDAL.GetImageLocationsForRecipe(id);
-                output.Steps = stepDAL.GetStepsForRecipe(id);
             }
             catch
             {

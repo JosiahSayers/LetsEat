@@ -44,6 +44,30 @@ namespace LetsEat.DAL.SQL
             return output;
         }
 
+        public List<string> GetStepsForRecipe(int recipeID, SqlConnection conn)
+        {
+            List<string> output = new List<string>();
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(SQL_GetStepsForRecipe, conn);
+                cmd.Parameters.AddWithValue("@recipeID", recipeID);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    output.Add(Convert.ToString(reader["step_text"]));
+                }
+                reader.Close();
+            }
+            catch
+            {
+                output[0] = "error";
+            }
+
+            return output;
+        }
+
         public bool AddStepsForRecipe(int stepNumber, string stepText, Recipe recipe)
         {
             bool output;

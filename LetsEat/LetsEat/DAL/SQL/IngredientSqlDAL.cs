@@ -46,6 +46,31 @@ namespace LetsEat.DAL.SQL
             return output;
         }
 
+        public List<string> GetIngredientsForRecipe(Recipe recipe, SqlConnection conn)
+        {
+            List<string> output = new List<string>();
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(SQL_GetIngredientsForRecipe, conn);
+                cmd.Parameters.AddWithValue("@recipeID", recipe.ID);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string i = Convert.ToString(reader["ingredient"]);
+                    output.Add(i);
+                }
+
+            }
+            catch
+            {
+                output.Clear();
+            }
+
+            return output;
+        }
+
         public List<string> GetIngredientsForRecipe(int recipeID)
         {
             List<string> output = new List<string>();
@@ -65,6 +90,31 @@ namespace LetsEat.DAL.SQL
                         output.Add(i);
                     }
                 }
+            }
+            catch
+            {
+                output.Clear();
+            }
+
+            return output;
+        }
+
+        public List<string> GetIngredientsForRecipe(int recipeID, SqlConnection conn)
+        {
+            List<string> output = new List<string>();
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(SQL_GetIngredientsForRecipe, conn);
+                cmd.Parameters.AddWithValue("@recipeID", recipeID);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string i = Convert.ToString(reader["ingredient"]);
+                    output.Add(i);
+                }
+                reader.Close();
             }
             catch
             {

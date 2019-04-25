@@ -1,0 +1,17 @@
+﻿@model User
+@{
+    ViewData["Title"] = "_Navbar";
+}
+
+
+
+@if (Model == null)
+{
+    <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+    <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+}
+else
+{
+    <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+    <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Logoff">Logout</a></li>
+}
