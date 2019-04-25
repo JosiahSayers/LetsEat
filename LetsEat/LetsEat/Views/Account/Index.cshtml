@@ -1,0 +1,16 @@
+﻿@model User
+@{
+    if (Model.IsAdmin)
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+
+    ViewData["Title"] = "Index";
+}
+
+
+<h2>My Account</h2>
+
+<p>Welcome @Model.DisplayName</p>
+
+<a asp-controller="account" asp-action="changepassword" method="get">Change Password</a>

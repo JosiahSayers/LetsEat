@@ -1,0 +1,16 @@
+﻿@using LetsEat.Models.Forms
+
+@model ParseURLForm
+@{
+    ViewData["Title"] = "ParseURL";
+}
+
+<h2>Parse URL</h2>
+
+@using (Html.BeginForm("ParseForm", "AddRecipe", FormMethod.Post))
+{
+    @Html.Label("URL")
+    @Html.TextBoxFor(Model => Model.URL)
+    <br />
+    <input type="submit" value="Submit" />
+}
