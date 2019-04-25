@@ -52,6 +52,7 @@ namespace LetsEat.Controllers
 
         public IActionResult Search(string id)
         {
+            // Todo: Implement search restrictions to only recipes in your family book
             List<Recipe> model = recipeDAL.SearchForRecipe(id);
             return View(model);
         }
@@ -59,7 +60,14 @@ namespace LetsEat.Controllers
         [HttpGet]
         public IActionResult AddRecipe()
         {
-            return View();
+            if (authProvider.IsLoggedIn)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         [HttpPost]
@@ -103,32 +111,46 @@ namespace LetsEat.Controllers
         [HttpGet]
         public IActionResult ParseURL()
         {
-            return View("ParseURL");
+            if (authProvider.IsLoggedIn)
+            {
+                return View("ParseURL");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         [HttpPost]
         public IActionResult ParseUrl(ParseURLForm form)
         {
-            if (form.IsSupportedWebsite())
+            if (authProvider.IsLoggedIn)
             {
-                Recipe newRecipe = form.Parse();
-                newRecipe.UserWhoAdded = authProvider.GetCurrentUser();
-                newRecipe = recipeDAL.AddRecipe(newRecipe);
-
-                if (newRecipe != null)
+                if (form.IsSupportedWebsite())
                 {
-                    return View("Recipe", newRecipe);
+                    Recipe newRecipe = form.Parse();
+                    newRecipe.UserWhoAdded = authProvider.GetCurrentUser();
+                    newRecipe = recipeDAL.AddRecipe(newRecipe);
+
+                    if (newRecipe != null)
+                    {
+                        return View("Recipe", newRecipe);
+                    }
+                    else
+                    {
+                        return View("Error");
+                    }
                 }
                 else
                 {
-                    return View("Error");
+                    WebsiteRequest wr = form.GenerateWebsiteRequest();
+                    websiteRequestDAL.AddNewWebsiteRequest(wr);
+                    return View("WebsiteRequestAdded", wr);
                 }
             }
             else
             {
-                WebsiteRequest wr = form.GenerateWebsiteRequest();
-                websiteRequestDAL.AddNewWebsiteRequest(wr);
-                return View("WebsiteRequestAdded", wr);
+                return RedirectToAction("Login", "Account");
             }
         }
     }

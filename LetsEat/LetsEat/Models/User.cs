@@ -20,7 +20,13 @@ namespace LetsEat.Models
         public string Salt { get; set; }
 
         [Required]
-        public bool IsAdmin { get; set; }
+        public bool IsAdmin
+        {
+            get
+            {
+                return Role == "Admin";
+            }
+        }
 
         /// <summary>
         /// The user's role.
