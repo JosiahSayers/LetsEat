@@ -39,3 +39,4 @@ C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\LetsEat.csprojAssemblyReference.cache
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\WebsiteRequestAdded.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Components\NavBar\_NavBar.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\Index.g.cshtml.cs

@@ -53,13 +53,13 @@ namespace LetsEat.DAL.SQL
             {
                 SqlCommand cmd = new SqlCommand(SQL_GetImageLocationsForRecipe, conn);
                 cmd.Parameters.AddWithValue("@recipeID", recipeID);
-                SqlDataReader reader = cmd.ExecuteReader();
+                SqlDataReader imgReader = cmd.ExecuteReader();
 
-                while (reader.Read())
+                while (imgReader.Read())
                 {
-                    output.Add(Convert.ToString(reader["filename"]));
+                    output.Add(Convert.ToString(imgReader["filename"]));
                 }
-                reader.Close();
+                imgReader.Close();
             }
             catch
             {

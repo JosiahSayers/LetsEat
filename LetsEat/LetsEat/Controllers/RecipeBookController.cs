@@ -25,28 +25,29 @@ namespace LetsEat.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (authProvider.IsLoggedIn)
+            {
+                List<Recipe> output = recipeDAL.GetMyRecipes(authProvider.GetCurrentUser().Id);
+                return View(output);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
-        public IActionResult List()
+        public IActionResult Recipe(int id)
         {
-            List<Recipe> recipes = recipeDAL.GetAllRecipes();
+            if (id > 0 && authProvider.IsLoggedIn)
+            {
+                Recipe recipe = recipeDAL.GetRecipeByID(id);
 
-            return View(recipes);
-        }
-
-        public IActionResult Test()
-        {
-            List<Recipe> recipes = recipeDAL.GetAllRecipes();
-
-            return Json(recipes);
-        }
-
-        public IActionResult Recipe(int id = 1)
-        {
-            Recipe recipe = recipeDAL.GetRecipeByID(id);
-
-            return View(recipe);
+                if (authProvider.GetCurrentUser().Id == recipe.UserWhoAdded.Id)
+                {
+                    return View(recipe);
+                }
+            }
+            return NotFound();
         }
 
         public IActionResult Search(string id)

@@ -7,7 +7,7 @@ namespace LetsEat.DAL
     public interface IRecipeDAL
     {
         Recipe GetRecipeByID(int id);
-        List<Recipe> GetAllRecipes();
+        List<Recipe> GetMyRecipes(int userId);
         Recipe AddRecipe(Recipe recipe);
         List<Recipe> SearchForRecipe(string searchQuery);
     }

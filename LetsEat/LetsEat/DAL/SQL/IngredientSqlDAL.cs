@@ -54,14 +54,14 @@ namespace LetsEat.DAL.SQL
             {
                 SqlCommand cmd = new SqlCommand(SQL_GetIngredientsForRecipe, conn);
                 cmd.Parameters.AddWithValue("@recipeID", recipe.ID);
-                SqlDataReader reader = cmd.ExecuteReader();
+                SqlDataReader ingReader = cmd.ExecuteReader();
 
-                while (reader.Read())
+                while (ingReader.Read())
                 {
-                    string i = Convert.ToString(reader["ingredient"]);
+                    string i = Convert.ToString(ingReader["ingredient"]);
                     output.Add(i);
                 }
-
+                ingReader.Close();
             }
             catch
             {
@@ -107,14 +107,14 @@ namespace LetsEat.DAL.SQL
             {
                 SqlCommand cmd = new SqlCommand(SQL_GetIngredientsForRecipe, conn);
                 cmd.Parameters.AddWithValue("@recipeID", recipeID);
-                SqlDataReader reader = cmd.ExecuteReader();
+                SqlDataReader ingReader = cmd.ExecuteReader();
 
-                while (reader.Read())
+                while (ingReader.Read())
                 {
-                    string i = Convert.ToString(reader["ingredient"]);
+                    string i = Convert.ToString(ingReader["ingredient"]);
                     output.Add(i);
                 }
-                reader.Close();
+                ingReader.Close();
             }
             catch
             {

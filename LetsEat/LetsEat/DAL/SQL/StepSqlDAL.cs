@@ -52,13 +52,13 @@ namespace LetsEat.DAL.SQL
             {
                 SqlCommand cmd = new SqlCommand(SQL_GetStepsForRecipe, conn);
                 cmd.Parameters.AddWithValue("@recipeID", recipeID);
-                SqlDataReader reader = cmd.ExecuteReader();
+                SqlDataReader stepReader = cmd.ExecuteReader();
 
-                while (reader.Read())
+                while (stepReader.Read())
                 {
-                    output.Add(Convert.ToString(reader["step_text"]));
+                    output.Add(Convert.ToString(stepReader["step_text"]));
                 }
-                reader.Close();
+                stepReader.Close();
             }
             catch
             {

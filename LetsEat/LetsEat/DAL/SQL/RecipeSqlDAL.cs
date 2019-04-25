@@ -10,11 +10,10 @@ namespace LetsEat.DAL.SQL
     {
         private string connectionString;
 
-        private string SQL_GetAllRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id";
+        private string SQL_GetMyRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id WHERE recipe.user_id = @user_id";
         private string SQL_GetRecipeByID = "SELECT * FROM recipe JOIN users on recipe.user_id = users.id WHERE recipe.id = @id";
         private string SQL_SearchForRecipe = "SELECT DISTINCT recipe.ID FROM recipe JOIN ingredient ON recipe.id = ingredient.recipe_id WHERE recipe.name LIKE (@searchQuery) OR recipe.description LIKE (@searchQuery) OR ingredient.ingredient LIKE (@searchQuery);";
         private string SQL_CreateRecipe = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded); SELECT CAST(SCOPE_IDENTITY() as int);";
-        private string SQL_GetRecipeSteps = "SELECT step_number, step_text FROM steps WHERE recipe_id = @recipeID ORDER BY step_number, step_text;";
 
         private readonly IIngredientDAL ingredientDAL;
         private readonly IImageDAL imgDAL;
@@ -58,8 +57,8 @@ namespace LetsEat.DAL.SQL
                             DisplayName = Convert.ToString(reader["display_name"]),
                             Email = Convert.ToString(reader["email"])
                         };
+
                     }
-                    reader.Close();
                     output.Steps = stepDAL.GetStepsForRecipe(id, conn);
                     output.Ingredients = ingredientDAL.GetIngredientsForRecipe(id, conn);
                     output.ImageLocations = imgDAL.GetImageLocationsForRecipe(id, conn);
@@ -74,7 +73,7 @@ namespace LetsEat.DAL.SQL
             return output;
         }
 
-        public List<Recipe> GetAllRecipes()
+        public List<Recipe> GetMyRecipes(int userId)
         {
             List<Recipe> output = new List<Recipe>();
 
@@ -83,7 +82,8 @@ namespace LetsEat.DAL.SQL
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand(SQL_GetAllRecipes, conn);
+                    SqlCommand cmd = new SqlCommand(SQL_GetMyRecipes, conn);
+                    cmd.Parameters.AddWithValue("@user_id", userId);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -105,11 +105,25 @@ namespace LetsEat.DAL.SQL
                             DisplayName = Convert.ToString(reader["display_name"])
                         };
 
-                        r.Ingredients = ingredientDAL.GetIngredientsForRecipe(recipeID);
-                        r.ImageLocations = imgDAL.GetImageLocationsForRecipe(recipeID);
-                        r.Steps = stepDAL.GetStepsForRecipe(recipeID);
 
                         output.Add(r);
+                    }
+
+                    reader.Close();
+
+                    foreach (Recipe r in output)
+                    {
+                        r.Steps = stepDAL.GetStepsForRecipe(r.ID, conn);
+                    }
+
+                    foreach (Recipe r in output)
+                    {
+                        r.Ingredients = ingredientDAL.GetIngredientsForRecipe(r.ID, conn);
+                    }
+
+                    foreach (Recipe r in output)
+                    {
+                        r.ImageLocations = imgDAL.GetImageLocationsForRecipe(r.ID, conn);
                     }
                 }
             }
