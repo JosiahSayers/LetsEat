@@ -29,7 +29,7 @@ using LetsEat.Models.Forms;
 #line default
 #line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"7e0b2703cf950fd7f6cf490f1b0b4e202ab5a4e8", @"/Views/RecipeBook/AddRecipe.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"6584e4f8aea6744065c2fd1214fe898fcc763b53", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"542d869c03f2067f752c24fe4c4d660418393418", @"/Views/_ViewImports.cshtml")]
     public class Views_RecipeBook_AddRecipe : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<AddRecipeForm>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("type", "text", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);

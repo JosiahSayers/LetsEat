@@ -42,3 +42,5 @@ C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\Index.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\Family.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\Index.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\NotAllowed.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\AddMember.g.cshtml.cs
