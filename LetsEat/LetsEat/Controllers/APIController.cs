@@ -22,7 +22,7 @@ namespace LetsEat.Controllers
             this.authProvider = authProvider;
             this.userDAL = userDAL;
         }
-        //todo: check if user is logged in and has correct persomissions in each action method
+        //todo: check if user is logged in and has correct permissions in each action method
         public List<User> SearchForMemberToAdd(string email)
         {
             return userDAL.SearchForUsersNotInFamily(email);

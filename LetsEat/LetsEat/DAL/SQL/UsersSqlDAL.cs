@@ -12,7 +12,7 @@ namespace LetsEat.DAL.SQL
         private readonly string connectionString;
         private const string sql_CreateUser = "INSERT INTO users (display_name, email, password, salt, role) VALUES (@displayName, @email, @password, @salt, @role);";
         private const string sql_DeleteUser = "DELETE FROM users WHERE id = @id;";
-        private const string sql_GetUser = "SELECT * FROM USERS WHERE email = @email;";
+        private const string sql_GetUser = "SELECT * FROM users JOIN invite ON users.id = invite.user_id WHERE email = @email;";
         private const string SQL_GetUserById = "SELECT * FROM users WHERE id = @id";
         private const string SQL_AddUserToFamily = "UPDATE users SET family_id = @family_id. family_role = @family_role WHERE id = @user_id";
         private const string SQL_UpdateUserRecipesToNewFamily = "UPDATE recipe SET family_id = @family_id WHERE user_id = @user_id";
@@ -283,5 +283,9 @@ namespace LetsEat.DAL.SQL
             return u;
         }
 
+        public bool DoesEmailAlreadyExist(string email)
+        {
+            return GetUser(email) != null ? true : false;
+        }
     }
 }

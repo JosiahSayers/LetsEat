@@ -111,6 +111,12 @@ namespace LetsEat.Providers.Auth
         /// <returns></returns>
         public bool Register(string displayName, string email, string password, string role)
         {
+
+            if (userDAL.DoesEmailAlreadyExist(email))
+            {
+                return false;
+            }
+
             bool result = false;
             var hashProvider = new HashProvider();
             var passwordHash = hashProvider.HashPassword(password);

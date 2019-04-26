@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.Models.Account;
+using LetsEat.DAL;
 using LetsEat.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,11 @@ namespace LetsEat.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthProvider authProvider;
-        public AccountController(IAuthProvider authProvider)
+        private readonly IUsersDAL userDAL;
+        public AccountController(IAuthProvider authProvider, IUsersDAL userDAL)
         {
             this.authProvider = authProvider;
+            this.userDAL = userDAL;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in -- or filtered to only those that have a certain role [array of roles]
@@ -79,7 +82,7 @@ namespace LetsEat.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterViewModel rvm)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !userDAL.DoesEmailAlreadyExist(rvm.Email))
             {
                 // Register them as a new user (and set default role in db schema)
                 // When a user registeres they need to be given a role. If you don't need anything special
