@@ -12,14 +12,22 @@
 }
 else
 {
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+    if (Model.InviteRequest)
+    {
+        <li class="nav-item"><a class="nav-link text-primary font-weight-bolder" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+
+    }
+    else
+    {
+        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+    }
 
     if (Model.IsAdmin)
     {
         <li class="nav-item"><a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Section</a></li>
     }
 
-    if(Model.FamilyRole == "Leader")
+    if (Model.FamilyRole == "Leader")
     {
         <li class="nav-item"><a class="nav-link text-dark" asp-controller="Family" asp-action="Index">Manage Family</a></li>
     }

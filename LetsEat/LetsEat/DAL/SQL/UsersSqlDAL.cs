@@ -12,12 +12,12 @@ namespace LetsEat.DAL.SQL
         private readonly string connectionString;
         private const string sql_CreateUser = "INSERT INTO users (display_name, email, password, salt, role) VALUES (@displayName, @email, @password, @salt, @role);";
         private const string sql_DeleteUser = "DELETE FROM users WHERE id = @id;";
-        private const string sql_GetUser = "SELECT * FROM users JOIN invite ON users.id = invite.user_id WHERE email = @email;";
+        private const string sql_GetUser = "SELECT * FROM users LEFT JOIN invite ON users.id = invite.invite_user_id WHERE email = @email;";
         private const string SQL_GetUserById = "SELECT * FROM users WHERE id = @id";
         private const string SQL_AddUserToFamily = "UPDATE users SET family_id = @family_id. family_role = @family_role WHERE id = @user_id";
         private const string SQL_UpdateUserRecipesToNewFamily = "UPDATE recipe SET family_id = @family_id WHERE user_id = @user_id";
-        private const string SQL_SearchForUsersNotInFamily = "SELECT * FROM users WHERE family_id IS NULL AND email LIKE '%' + @email + '%';";
-        private const string SQL_InviteUserToFamily = "INSERT INTO invite (family_id, user_id) VALUES (@family_id, @user_id);";
+        private const string SQL_SearchForUsersNotInFamily = "SELECT * FROM users LEFT JOIN invite ON users.id = invite.invite_user_id WHERE family_id IS NULL AND email LIKE '%' + @email + '%';";
+        private const string SQL_InviteUserToFamily = "INSERT INTO invite (invite_family_id, invite_user_id) VALUES (@family_id, @user_id);";
 
         public UserSqlDAL(string connectionString)
         {
@@ -233,7 +233,7 @@ namespace LetsEat.DAL.SQL
 
             try
             {
-                using(SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
@@ -241,7 +241,7 @@ namespace LetsEat.DAL.SQL
                     cmd.Parameters.AddWithValue("@family_id", familyId);
                     cmd.Parameters.AddWithValue("@user_id", userId);
 
-                    if(cmd.ExecuteNonQuery() != 1)
+                    if (cmd.ExecuteNonQuery() != 1)
                     {
                         output = false;
                     }
@@ -278,6 +278,10 @@ namespace LetsEat.DAL.SQL
             if (!reader.IsDBNull(reader.GetOrdinal("family_role")))
             {
                 u.FamilyRole = Convert.ToString(reader["family_role"]);
+            }
+            if (!reader.IsDBNull(reader.GetOrdinal("invite_family_id")))
+            {
+                u.InviteRequestFamilyId = Convert.ToInt32(reader["invite_family_id"]);
             }
 
             return u;

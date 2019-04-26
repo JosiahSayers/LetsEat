@@ -39,5 +39,15 @@ namespace LetsEat.Models
         public int FamilyId { get; set; }
 
         public string FamilyRole { get; set; }
+
+        public int InviteRequestFamilyId { get; set; }
+
+        public bool InviteRequest
+        {
+            get
+            {
+                return InviteRequestFamilyId != 0;
+            }
+        }
     }
 }

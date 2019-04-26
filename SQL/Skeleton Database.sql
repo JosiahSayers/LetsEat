@@ -36,12 +36,13 @@ CREATE TABLE users(
 );
 
 CREATE TABLE invite(
-	family_id INT NOT NULL,
-	user_id INT NOT NULL,
+	id INT IDENTITY(1,1),
+	invite_family_id INT NOT NULL,
+	invite_user_id INT NOT NULL,
 
-	CONSTRAINT PK_invite PRIMARY KEY (family_id, user_id),
-	CONSTRAINT FK_invite_family FOREIGN KEY (family_id) REFERENCES family(id),
-	CONSTRAINT FK_invite_user FOREIGN KEY (user_id) REFERENCES users(id)
+	CONSTRAINT PK_invite PRIMARY KEY (id),
+	CONSTRAINT FK_invite_family FOREIGN KEY (invite_family_id) REFERENCES family(id),
+	CONSTRAINT FK_invite_user FOREIGN KEY (invite_user_id) REFERENCES users(id)
 );
 
 CREATE TABLE website_requests(
