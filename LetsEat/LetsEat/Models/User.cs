@@ -32,5 +32,9 @@ namespace LetsEat.Models
         /// The user's role.
         /// </summary>
         public string Role { get; set; }
+
+        public int FamilyId { get; set; }
+
+        public string FamilyRole { get; set; }
     }
 }

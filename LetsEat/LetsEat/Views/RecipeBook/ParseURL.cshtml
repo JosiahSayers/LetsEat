@@ -5,12 +5,14 @@
     ViewData["Title"] = "ParseURL";
 }
 
-<h2>Parse URL</h2>
+<h2>Import a recipe from another site</h2>
 
-@using (Html.BeginForm("ParseForm", "AddRecipe", FormMethod.Post))
-{
-    @Html.Label("URL")
-    @Html.TextBoxFor(Model => Model.URL)
-    <br />
-    <input type="submit" value="Submit" />
-}
+<form asp-action="ParseURL" class="col-lg-4">
+    <div class="form-group">
+        <label asp-for="URL"></label>
+        <input class="form-control" asp-for="URL" placeholder="Paste a link" />
+    </div>
+    <div class="form-group">
+        <input class="btn btn-primary" type="submit" value="Submit" />
+    </div>
+</form>

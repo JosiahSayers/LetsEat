@@ -29,6 +29,7 @@ CREATE TABLE users(
 	salt NVARCHAR(MAX) NOT NULL,
 	role NVARCHAR(MAX) NOT NULL,
 	family_id INT,
+	family_role NVARCHAR(15),
 
 	CONSTRAINT PK_user_id PRIMARY KEY (id),
 	CONSTRAINT FK_user_family FOREIGN KEY (family_id) REFERENCES family(id)
@@ -36,10 +37,12 @@ CREATE TABLE users(
 
 CREATE TABLE website_requests(
 	id INT IDENTITY(1,1),
-	base_url VARCHAR(MAX),
-	full_url VARCHAR(MAX),
+	base_url VARCHAR(MAX) NOT NULL,
+	full_url VARCHAR(MAX) NOT NULL,
+	user_id int NOT NULL,
 
-	CONSTRAINT PK_request_id PRIMARY KEY (id)
+	CONSTRAINT PK_request_id PRIMARY KEY (id),
+	CONSTRAINT FK_wr_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE recipe(
@@ -52,6 +55,7 @@ CREATE TABLE recipe(
 	date_added DATE NOT NULL,
 	user_id INT NOT NULL,
 	family_id INT,
+	public_key NVARCHAR(6),
 
 	CONSTRAINT PK_recipe_id PRIMARY KEY (id),
 	CONSTRAINT FK_recipe_user FOREIGN KEY (user_id) REFERENCES users(id),

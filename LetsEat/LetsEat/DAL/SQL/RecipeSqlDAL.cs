@@ -53,12 +53,15 @@ namespace LetsEat.DAL.SQL
 
                         output.UserWhoAdded = new User()
                         {
-                            Id = Convert.ToInt32(reader["id"]),
+                            Id = Convert.ToInt32(reader["user_id"]),
                             DisplayName = Convert.ToString(reader["display_name"]),
                             Email = Convert.ToString(reader["email"])
                         };
 
                     }
+
+                    reader.Close();
+
                     output.Steps = stepDAL.GetStepsForRecipe(id, conn);
                     output.Ingredients = ingredientDAL.GetIngredientsForRecipe(id, conn);
                     output.ImageLocations = imgDAL.GetImageLocationsForRecipe(id, conn);

@@ -42,6 +42,8 @@ namespace LetsEat.Controllers
             {
                 Recipe recipe = recipeDAL.GetRecipeByID(id);
 
+                User current = authProvider.GetCurrentUser();
+
                 if (authProvider.GetCurrentUser().Id == recipe.UserWhoAdded.Id)
                 {
                     return View(recipe);
@@ -71,6 +73,7 @@ namespace LetsEat.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddRecipe(AddRecipeForm form)
         {
             if (authProvider.IsLoggedIn)
@@ -122,6 +125,7 @@ namespace LetsEat.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ParseUrl(ParseURLForm form)
         {
             if (authProvider.IsLoggedIn)
@@ -134,7 +138,7 @@ namespace LetsEat.Controllers
 
                     if (newRecipe != null)
                     {
-                        return View("Recipe", newRecipe);
+                        return RedirectToAction("Recipe", new { id = newRecipe.ID});
                     }
                     else
                     {
@@ -144,6 +148,7 @@ namespace LetsEat.Controllers
                 else
                 {
                     WebsiteRequest wr = form.GenerateWebsiteRequest();
+                    wr.user = authProvider.GetCurrentUser();
                     websiteRequestDAL.AddNewWebsiteRequest(wr);
                     return View("WebsiteRequestAdded", wr);
                 }

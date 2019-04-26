@@ -8,5 +8,7 @@ namespace LetsEat.Models
         public string BaseURL { get; set; }
 
         public string FullURL { get; set; }
+
+        public User user { get; set; }
     }
 }

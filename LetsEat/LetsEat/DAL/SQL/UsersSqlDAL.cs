@@ -10,9 +10,12 @@ namespace LetsEat.DAL.SQL
     public class UserSqlDAL : IUsersDAL
     {
         private readonly string connectionString;
-        private const string sql_CreateUser = "INSERT INTO users (display_name, email, password, salt, role) VALUES (@displayName, @email, @password, @salt, @role);";
+        private const string sql_CreateUser = "INSERT INTO users (display_name, email, password, salt, role, family_id) VALUES (@displayName, @email, @password, @salt, @role, 0);";
         private const string sql_DeleteUser = "DELETE FROM users WHERE id = @id;";
         private const string sql_GetUser = "SELECT * FROM USERS WHERE email = @email;";
+        private const string SQL_GetUserById = "SELECT * FROM users WHERE id = @id";
+        private const string SQL_AddUserToFamily = "UPDATE users SET family_id = @family_id. family_role = @family_role WHERE id = @user_id";
+        private const string SQL_UpdateUserRecipesToNewFamily = "UPDATE recipe SET family_id = @family_id WHERE user_id = @user_id";
 
         public UserSqlDAL(string connectionString)
         {
@@ -108,6 +111,30 @@ namespace LetsEat.DAL.SQL
             return user;
         }
 
+        public User GetUser(int id, SqlConnection conn)
+        {
+            User user = null;
+            try
+            {
+                SqlCommand cmd = new SqlCommand(SQL_GetUserById, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    user = MapRowToUser(reader);
+                }
+                reader.Close();
+            }
+            catch
+            {
+                user = null;
+            }
+
+            return user;
+        }
+
         /// <summary>
         /// Updates the user in the database.
         /// </summary>
@@ -137,17 +164,59 @@ namespace LetsEat.DAL.SQL
             }
         }
 
+        public bool ChangeFamily(User user)
+        {
+            bool output;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_AddUserToFamily, conn);
+                    cmd.Parameters.AddWithValue("@family_id", user.FamilyId);
+                    cmd.Parameters.AddWithValue("@family_role", user.FamilyRole);
+                    cmd.Parameters.AddWithValue("@user_id", user.Id);
+
+                    cmd.ExecuteNonQuery();
+
+                    cmd = new SqlCommand(SQL_UpdateUserRecipesToNewFamily, conn);
+                    cmd.Parameters.AddWithValue("@family_id", user.FamilyId);
+                    cmd.Parameters.AddWithValue("@user_id", user.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                output = true;
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
+        }
+
         private User MapRowToUser(SqlDataReader reader)
         {
-            return new User()
+            User u = new User();
+
+            u.Id = Convert.ToInt32(reader["id"]);
+            u.DisplayName = Convert.ToString(reader["display_name"]);
+            u.Email = Convert.ToString(reader["email"]);
+            u.Password = Convert.ToString(reader["password"]);
+            u.Salt = Convert.ToString(reader["salt"]);
+            u.Role = Convert.ToString(reader["role"]);
+            if (!reader.IsDBNull(reader.GetOrdinal("family_id")))
             {
-                Id = Convert.ToInt32(reader["id"]),
-                DisplayName = Convert.ToString(reader["display_name"]),
-                Email = Convert.ToString(reader["email"]),
-                Password = Convert.ToString(reader["password"]),
-                Salt = Convert.ToString(reader["salt"]),
-                Role = Convert.ToString(reader["role"])
-            };
+                u.FamilyId = Convert.ToInt32(reader["family_id"]);
+            }
+            if (!reader.IsDBNull(reader.GetOrdinal("family_role")))
+            {
+                u.FamilyRole = Convert.ToString(reader["family_role"]);
+            }
+
+            return u;
         }
     }
 }

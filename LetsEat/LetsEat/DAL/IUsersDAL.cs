@@ -1,4 +1,5 @@
 ﻿using LetsEat.Models;
+using System.Data.SqlClient;
 
 namespace LetsEat.DAL
 {
@@ -10,6 +11,7 @@ namespace LetsEat.DAL
         /// <param name="email"></param>
         /// <returns></returns>
         User GetUser(string email);
+        User GetUser(int id, SqlConnection conn);
 
         /// <summary>
         /// Creates a new user.

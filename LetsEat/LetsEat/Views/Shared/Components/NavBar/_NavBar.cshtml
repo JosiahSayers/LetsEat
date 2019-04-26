@@ -13,5 +13,11 @@
 else
 {
     <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+
+    if (Model.IsAdmin)
+    {
+        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Section</a></li>
+    }
+
     <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logoff">Logout</a></li>
 }
