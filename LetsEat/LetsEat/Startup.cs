@@ -46,6 +46,7 @@ namespace LetsEat
             //Dependency injections
             string connectionString = Configuration.GetConnectionString("Default");
             services.AddTransient<IUsersDAL>(m => new UserSqlDAL(connectionString));
+            services.AddTransient<IFamilyDAL, FamilySqlDAL>(c => new FamilySqlDAL(connectionString));
             services.AddTransient<IImageDAL, ImageSqlDAL>(c => new ImageSqlDAL(connectionString));
             services.AddTransient<IIngredientDAL, IngredientSqlDAL>(c => new IngredientSqlDAL(connectionString));
             services.AddTransient<IRecipeDAL, RecipeSqlDAL>(c => new RecipeSqlDAL(connectionString));

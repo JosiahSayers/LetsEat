@@ -14,6 +14,7 @@ namespace LetsEat.DAL.SQL
         private string SQL_GetRecipeByID = "SELECT * FROM recipe JOIN users on recipe.user_id = users.id WHERE recipe.id = @id";
         private string SQL_SearchForRecipe = "SELECT DISTINCT recipe.ID FROM recipe JOIN ingredient ON recipe.id = ingredient.recipe_id WHERE recipe.name LIKE (@searchQuery) OR recipe.description LIKE (@searchQuery) OR ingredient.ingredient LIKE (@searchQuery);";
         private string SQL_CreateRecipe = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded); SELECT CAST(SCOPE_IDENTITY() as int);";
+        private string SQL_GetFamilyRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id WHERE recipe.family_id = @family_id;";
 
         private readonly IIngredientDAL ingredientDAL;
         private readonly IImageDAL imgDAL;
@@ -42,8 +43,7 @@ namespace LetsEat.DAL.SQL
 
                     while (reader.Read())
                     {
-                        int recipeID = Convert.ToInt32(reader["id"]);
-                        output.ID = Convert.ToInt32(recipeID);
+                        output.ID = Convert.ToInt32(reader["id"]);
                         output.Name = Convert.ToString(reader["name"]);
                         output.PrepMinutes = Convert.ToInt32(reader["prep_minutes"]);
                         output.CookMinutes = Convert.ToInt32(reader["cook_minutes"]);
@@ -85,54 +85,55 @@ namespace LetsEat.DAL.SQL
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
+
                     SqlCommand cmd = new SqlCommand(SQL_GetMyRecipes, conn);
                     cmd.Parameters.AddWithValue("@user_id", userId);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
-
                     while (reader.Read())
                     {
-                        int recipeID = Convert.ToInt32(reader["id"]);
-                        Recipe r = new Recipe();
-                        r.ID = Convert.ToInt32(recipeID);
-                        r.Name = Convert.ToString(reader["name"]);
-                        r.PrepMinutes = Convert.ToInt32(reader["prep_minutes"]);
-                        r.CookMinutes = Convert.ToInt32(reader["cook_minutes"]);
-                        r.Description = Convert.ToString(reader["description"]);
-                        r.Source = Convert.ToString(reader["source"]);
-                        r.DateAdded = Convert.ToDateTime(reader["date_added"]);
-
-                        r.UserWhoAdded = new User()
-                        {
-                            DisplayName = Convert.ToString(reader["display_name"])
-                        };
-
-
-                        output.Add(r);
+                        output.Add(MapRowToRecipe(reader));
                     }
-
                     reader.Close();
 
-                    foreach (Recipe r in output)
-                    {
-                        r.Steps = stepDAL.GetStepsForRecipe(r.ID, conn);
-                    }
-
-                    foreach (Recipe r in output)
-                    {
-                        r.Ingredients = ingredientDAL.GetIngredientsForRecipe(r.ID, conn);
-                    }
-
-                    foreach (Recipe r in output)
-                    {
-                        r.ImageLocations = imgDAL.GetImageLocationsForRecipe(r.ID, conn);
-                    }
+                    output = MapSupplementals(output, conn);
                 }
             }
             catch
             {
                 output.Clear();
+            }
+
+            return output;
+        }
+
+        public List<Recipe> GetFamilyRecipes(int familyId)
+        {
+            List<Recipe> output = new List<Recipe>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GetFamilyRecipes, conn);
+                    cmd.Parameters.AddWithValue("@family_id", familyId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        output.Add(MapRowToRecipe(reader));
+                    }
+
+                    reader.Close();
+
+                    output = MapSupplementals(output, conn);
+                }
+            }
+            catch
+            {
+                output = null;
             }
 
             return output;
@@ -209,6 +210,53 @@ namespace LetsEat.DAL.SQL
                 }
             }
             return output;
+        }
+
+        private Recipe MapRowToRecipe(SqlDataReader reader, bool includeEmail = false)
+        {
+            Recipe r = new Recipe();
+            r.ID = Convert.ToInt32(reader["id"]);
+            r.Name = Convert.ToString(reader["name"]);
+            r.PrepMinutes = Convert.ToInt32(reader["prep_minutes"]);
+            r.CookMinutes = Convert.ToInt32(reader["cook_minutes"]);
+            r.Description = Convert.ToString(reader["description"]);
+            r.Source = Convert.ToString(reader["source"]);
+            r.DateAdded = Convert.ToDateTime(reader["date_added"]);
+            r.FamilyID = Convert.ToInt32(reader["family_id"]);
+
+            r.UserWhoAdded = new User()
+            {
+                Id = Convert.ToInt32(reader["user_id"]),
+                DisplayName = Convert.ToString(reader["display_name"]),
+            };
+
+            if (includeEmail)
+            {
+                r.UserWhoAdded.Email = Convert.ToString(reader["email"]);
+
+            }
+
+            return r;
+        }
+
+        private List<Recipe> MapSupplementals(List<Recipe> recipes, SqlConnection conn)
+        {
+            foreach (Recipe r in recipes)
+            {
+                r.Steps = stepDAL.GetStepsForRecipe(r.ID, conn);
+            }
+
+            foreach (Recipe r in recipes)
+            {
+                r.Ingredients = ingredientDAL.GetIngredientsForRecipe(r.ID, conn);
+            }
+
+            foreach (Recipe r in recipes)
+            {
+                r.ImageLocations = imgDAL.GetImageLocationsForRecipe(r.ID, conn);
+            }
+
+            return recipes;
         }
     }
 }

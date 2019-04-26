@@ -10,5 +10,6 @@ namespace LetsEat.DAL
         List<Recipe> GetMyRecipes(int userId);
         Recipe AddRecipe(Recipe recipe);
         List<Recipe> SearchForRecipe(string searchQuery);
+        List<Recipe> GetFamilyRecipes(int familyId);
     }
 }

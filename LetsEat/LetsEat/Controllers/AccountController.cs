@@ -52,7 +52,7 @@ namespace LetsEat.Controllers
                 if (validLogin)
                 {
                     // Redirect the user where you want them to go after successful login
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "RecipeBook");
                 }
             }
 

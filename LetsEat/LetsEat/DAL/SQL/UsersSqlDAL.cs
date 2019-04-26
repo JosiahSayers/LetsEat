@@ -10,7 +10,7 @@ namespace LetsEat.DAL.SQL
     public class UserSqlDAL : IUsersDAL
     {
         private readonly string connectionString;
-        private const string sql_CreateUser = "INSERT INTO users (display_name, email, password, salt, role, family_id) VALUES (@displayName, @email, @password, @salt, @role, 0);";
+        private const string sql_CreateUser = "INSERT INTO users (display_name, email, password, salt, role) VALUES (@displayName, @email, @password, @salt, @role);";
         private const string sql_DeleteUser = "DELETE FROM users WHERE id = @id;";
         private const string sql_GetUser = "SELECT * FROM USERS WHERE email = @email;";
         private const string SQL_GetUserById = "SELECT * FROM users WHERE id = @id";

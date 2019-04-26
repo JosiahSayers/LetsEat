@@ -6,6 +6,13 @@
     <UserSecretsId>3bf02b28-5aaa-41f6-a1f0-edc16b2c832e</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Views\NewFolder\**" />
+    <Content Remove="Views\NewFolder\**" />
+    <EmbeddedResource Remove="Views\NewFolder\**" />
+    <None Remove="Views\NewFolder\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.3" />

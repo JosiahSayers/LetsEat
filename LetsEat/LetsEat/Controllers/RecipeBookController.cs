@@ -36,6 +36,22 @@ namespace LetsEat.Controllers
             }
         }
 
+        public IActionResult Family()
+        {
+            if (authProvider.IsLoggedIn)
+            {
+                User user = authProvider.GetCurrentUser();
+
+                List<Recipe> recipes = recipeDAL.GetFamilyRecipes(user.FamilyId);
+
+                return View(recipes);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
         public IActionResult Recipe(int id)
         {
             if (id > 0 && authProvider.IsLoggedIn)
