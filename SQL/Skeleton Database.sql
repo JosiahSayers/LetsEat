@@ -35,6 +35,15 @@ CREATE TABLE users(
 	CONSTRAINT FK_user_family FOREIGN KEY (family_id) REFERENCES family(id)
 );
 
+CREATE TABLE invite(
+	family_id INT NOT NULL,
+	user_id INT NOT NULL,
+
+	CONSTRAINT PK_invite PRIMARY KEY (family_id, user_id),
+	CONSTRAINT FK_invite_family FOREIGN KEY (family_id) REFERENCES family(id),
+	CONSTRAINT FK_invite_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 CREATE TABLE website_requests(
 	id INT IDENTITY(1,1),
 	base_url VARCHAR(MAX) NOT NULL,

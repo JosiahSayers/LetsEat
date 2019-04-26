@@ -16,6 +16,8 @@ namespace LetsEat.DAL.SQL
         private const string SQL_GetUserById = "SELECT * FROM users WHERE id = @id";
         private const string SQL_AddUserToFamily = "UPDATE users SET family_id = @family_id. family_role = @family_role WHERE id = @user_id";
         private const string SQL_UpdateUserRecipesToNewFamily = "UPDATE recipe SET family_id = @family_id WHERE user_id = @user_id";
+        private const string SQL_SearchForUsersNotInFamily = "SELECT * FROM users WHERE family_id IS NULL AND email LIKE '%' + @email + '%';";
+        private const string SQL_InviteUserToFamily = "INSERT INTO invite (family_id, user_id) VALUES (@family_id, @user_id);";
 
         public UserSqlDAL(string connectionString)
         {
@@ -197,20 +199,82 @@ namespace LetsEat.DAL.SQL
             return output;
         }
 
-        private User MapRowToUser(SqlDataReader reader)
+        public List<User> SearchForUsersNotInFamily(string email)
+        {
+            List<User> output = new List<User>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_SearchForUsersNotInFamily, conn);
+                    cmd.Parameters.AddWithValue("@email", email);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        output.Add(MapRowToUser(reader, true));
+                    }
+                }
+            }
+            catch
+            {
+                output = null;
+            }
+
+            return output;
+        }
+
+        public bool InviteUserToFamily(int userId, int familyId)
+        {
+            bool output = true;
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_InviteUserToFamily, conn);
+                    cmd.Parameters.AddWithValue("@family_id", familyId);
+                    cmd.Parameters.AddWithValue("@user_id", userId);
+
+                    if(cmd.ExecuteNonQuery() != 1)
+                    {
+                        output = false;
+                    }
+                }
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
+        }
+
+        private User MapRowToUser(SqlDataReader reader, bool clean = false)
         {
             User u = new User();
 
             u.Id = Convert.ToInt32(reader["id"]);
             u.DisplayName = Convert.ToString(reader["display_name"]);
             u.Email = Convert.ToString(reader["email"]);
-            u.Password = Convert.ToString(reader["password"]);
-            u.Salt = Convert.ToString(reader["salt"]);
-            u.Role = Convert.ToString(reader["role"]);
+
+            if (!clean)
+            {
+                u.Password = Convert.ToString(reader["password"]);
+                u.Salt = Convert.ToString(reader["salt"]);
+                u.Role = Convert.ToString(reader["role"]);
+            }
+
             if (!reader.IsDBNull(reader.GetOrdinal("family_id")))
             {
                 u.FamilyId = Convert.ToInt32(reader["family_id"]);
             }
+
             if (!reader.IsDBNull(reader.GetOrdinal("family_role")))
             {
                 u.FamilyRole = Convert.ToString(reader["family_role"]);
@@ -218,5 +282,6 @@ namespace LetsEat.DAL.SQL
 
             return u;
         }
+
     }
 }

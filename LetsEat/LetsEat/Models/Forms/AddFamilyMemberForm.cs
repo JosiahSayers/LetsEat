@@ -12,7 +12,6 @@ namespace LetsEat.Models.Forms
         public User NewMember { get; set; }
 
         [Display(Name= "Search for a current user by their email and invite them to join your family")]
-        [EmailAddress]
         public string SearchEmail { get; set; }
     }
 }

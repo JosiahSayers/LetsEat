@@ -1,4 +1,5 @@
 ﻿using LetsEat.Models;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace LetsEat.DAL
@@ -31,5 +32,9 @@ namespace LetsEat.DAL
         /// </summary>
         /// <param name="user"></param>
         void DeleteUser(User user);
+
+        List<User> SearchForUsersNotInFamily(string email);
+
+        bool InviteUserToFamily(int userId, int familyId);
     }
 }
