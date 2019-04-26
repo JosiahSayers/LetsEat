@@ -22,7 +22,7 @@ namespace LetsEat.Controllers
             this.authProvider = authProvider;
             this.userDAL = userDAL;
         }
-
+        //todo: check if user is logged in and has correct persomissions in each action method
         public List<User> SearchForMemberToAdd(string email)
         {
             return userDAL.SearchForUsersNotInFamily(email);
@@ -30,6 +30,7 @@ namespace LetsEat.Controllers
 
         public IActionResult InviteUserToFamily(int userId, int familyId)
         {
+            //todo: check if user is currently in a family before adding an invite
             if(userDAL.InviteUserToFamily(userId, familyId))
             {
                 return Ok();
