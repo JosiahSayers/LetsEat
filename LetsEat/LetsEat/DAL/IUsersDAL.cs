@@ -33,6 +33,10 @@ namespace LetsEat.DAL
         /// <param name="user"></param>
         void DeleteUser(User user);
 
+        bool DeleteInvite(User user);
+
+        bool ChangeFamily(User user);
+
         List<User> SearchForUsersNotInFamily(string email);
 
         bool InviteUserToFamily(Invite invite);

@@ -14,10 +14,11 @@ namespace LetsEat.DAL.SQL
         private const string sql_DeleteUser = "DELETE FROM users WHERE id = @id;";
         private const string sql_GetUser = "SELECT * FROM users LEFT JOIN invite ON users.id = invite.invite_user_id WHERE email = @email;";
         private const string SQL_GetUserById = "SELECT * FROM users WHERE id = @id";
-        private const string SQL_AddUserToFamily = "UPDATE users SET family_id = @family_id. family_role = @family_role WHERE id = @user_id";
+        private const string SQL_AddUserToFamily = "UPDATE users SET family_id = @family_id, family_role = @family_role WHERE id = @user_id";
         private const string SQL_UpdateUserRecipesToNewFamily = "UPDATE recipe SET family_id = @family_id WHERE user_id = @user_id";
         private const string SQL_SearchForUsersNotInFamily = "SELECT * FROM users LEFT JOIN invite ON users.id = invite.invite_user_id WHERE family_id IS NULL AND email LIKE '%' + @email + '%';";
         private const string SQL_InviteUserToFamily = "INSERT INTO invite (invite_family_id, invite_user_id, invited_by_user_id) VALUES (@family_id, @user_id, @invited_by_id);";
+        private const string SQL_DeleteInvitation = "DELETE FROM invite WHERE invite_family_id = @family_id AND invite_user_id = @user_id";
 
         public UserSqlDAL(string connectionString)
         {
@@ -106,7 +107,7 @@ namespace LetsEat.DAL.SQL
 
                     if (user.Invite != null)
                     {
-                        cmd = new SqlCommand("SELECT name FROM family WHERE id = @id", conn);
+                        cmd = new SqlCommand("SELECT * FROM family WHERE id = @id", conn);
                         cmd.Parameters.AddWithValue("@id", user.Invite.FamilyId);
 
                         reader = cmd.ExecuteReader();
@@ -115,6 +116,7 @@ namespace LetsEat.DAL.SQL
                         {
                             user.Invite.FamilyName = Convert.ToString(reader["name"]);
                         }
+
 
                         reader.Close();
 
@@ -185,6 +187,31 @@ namespace LetsEat.DAL.SQL
             }
         }
 
+        public bool DeleteInvite(User user)
+        {
+            bool output = true;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_DeleteInvitation, conn);
+                    cmd.Parameters.AddWithValue("@family_id", user.Invite.FamilyId);
+                    cmd.Parameters.AddWithValue("@user_id", user.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
+        }
+
         public bool ChangeFamily(User user)
         {
             bool output;
@@ -203,6 +230,12 @@ namespace LetsEat.DAL.SQL
 
                     cmd = new SqlCommand(SQL_UpdateUserRecipesToNewFamily, conn);
                     cmd.Parameters.AddWithValue("@family_id", user.FamilyId);
+                    cmd.Parameters.AddWithValue("@user_id", user.Id);
+
+                    cmd.ExecuteNonQuery();
+
+                    cmd = new SqlCommand(SQL_DeleteInvitation, conn);
+                    cmd.Parameters.AddWithValue("@family_id", user.Invite.FamilyId);
                     cmd.Parameters.AddWithValue("@user_id", user.Id);
 
                     cmd.ExecuteNonQuery();

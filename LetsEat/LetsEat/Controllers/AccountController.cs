@@ -6,6 +6,7 @@ using LetsEat.Models.Account;
 using LetsEat.DAL;
 using LetsEat.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
+using LetsEat.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -119,6 +120,31 @@ namespace LetsEat.Controllers
                 return RedirectToAction("Index", "Account");
             }
             return View(cpvm);
+        }
+
+        [HttpPost]
+        public IActionResult ChangeFamily(User user)
+        {
+            user = userDAL.GetUser(user.Email);
+
+            if (String.IsNullOrEmpty(user.FamilyRole))
+            {
+                user.FamilyRole = "Member";
+            }
+
+            user.FamilyId = user.Invite.FamilyId;
+
+            userDAL.ChangeFamily(user);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteInvite(User user)
+        {
+            user = userDAL.GetUser(user.Email);
+            userDAL.DeleteInvite(user);
+            return RedirectToAction("Index");
         }
     }
 }
