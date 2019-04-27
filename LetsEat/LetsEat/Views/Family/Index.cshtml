@@ -4,34 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
 <div>
-    <h4>Family</h4>
+    <h3>Family Members</h3>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    <ul>
         @foreach (User user in Model.Members)
         {
-            <dt class="col-sm-2">Member</dt>
-            <dd class="col-sm-10">@user.DisplayName</dd>
-            <dt class="col-sm-2">Family Role</dt>
-            <dd class="col-sm-2">@user.FamilyRole</dd>
+            <li>@user.DisplayName - @user.FamilyRole</li>
         }
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    </ul>
 </div>
