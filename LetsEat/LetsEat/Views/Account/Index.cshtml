@@ -9,4 +9,15 @@
 
 <p>Welcome @Model.DisplayName</p>
 
+@if (Model.InviteRequest)
+{
+    <div class="invite-request">
+        @Model.Invite.InvitedBy.DisplayName has invited you to join the @Model.Invite.FamilyName family!
+        <div class="buttons">
+            <button class="btn btn-primary">Accept</button>
+            <button class="btn btn-danger">Deny</button>
+        </div>
+    </div>
+}
+
 <a asp-controller="account" asp-action="changepassword" method="get">Change Password</a>

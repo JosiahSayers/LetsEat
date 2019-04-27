@@ -39,10 +39,12 @@ CREATE TABLE invite(
 	id INT IDENTITY(1,1),
 	invite_family_id INT NOT NULL,
 	invite_user_id INT NOT NULL,
+	invited_by_user_id INT NOT NULL,
 
 	CONSTRAINT PK_invite PRIMARY KEY (id),
 	CONSTRAINT FK_invite_family FOREIGN KEY (invite_family_id) REFERENCES family(id),
-	CONSTRAINT FK_invite_user FOREIGN KEY (invite_user_id) REFERENCES users(id)
+	CONSTRAINT FK_invite_user FOREIGN KEY (invite_user_id) REFERENCES users(id),
+	CONSTRAINT FK_invite_user FOREIGN KEY (invited_by_user_id) REFERENCES users(id)
 );
 
 CREATE TABLE website_requests(

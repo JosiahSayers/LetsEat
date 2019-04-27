@@ -28,10 +28,20 @@ namespace LetsEat.Controllers
             return userDAL.SearchForUsersNotInFamily(email);
         }
 
-        public IActionResult InviteUserToFamily(int userId, int familyId)
+        public IActionResult InviteUserToFamily(int userId, int familyId, int invited_by)
         {
             //todo: check if user is currently in a family before adding an invite
-            if(userDAL.InviteUserToFamily(userId, familyId))
+            Invite invite = new Invite()
+            {
+                FamilyId = familyId,
+                Invitee = userId,
+                InvitedBy = new User()
+                {
+                    Id = invited_by
+                }
+            };
+
+            if(userDAL.InviteUserToFamily(invite))
             {
                 return Ok();
             }

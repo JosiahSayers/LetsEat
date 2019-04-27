@@ -17,7 +17,7 @@ namespace LetsEat.DAL.SQL
         private const string SQL_AddUserToFamily = "UPDATE users SET family_id = @family_id. family_role = @family_role WHERE id = @user_id";
         private const string SQL_UpdateUserRecipesToNewFamily = "UPDATE recipe SET family_id = @family_id WHERE user_id = @user_id";
         private const string SQL_SearchForUsersNotInFamily = "SELECT * FROM users LEFT JOIN invite ON users.id = invite.invite_user_id WHERE family_id IS NULL AND email LIKE '%' + @email + '%';";
-        private const string SQL_InviteUserToFamily = "INSERT INTO invite (invite_family_id, invite_user_id) VALUES (@family_id, @user_id);";
+        private const string SQL_InviteUserToFamily = "INSERT INTO invite (invite_family_id, invite_user_id, invited_by_user_id) VALUES (@family_id, @user_id, @invited_by_id);";
 
         public UserSqlDAL(string connectionString)
         {
@@ -99,7 +99,26 @@ namespace LetsEat.DAL.SQL
 
                     if (reader.Read())
                     {
-                        user = MapRowToUser(reader);
+                        user = MapRowToUser(reader, false, true);
+                    }
+
+                    reader.Close();
+
+                    if (user.Invite != null)
+                    {
+                        cmd = new SqlCommand("SELECT name FROM family WHERE id = @id", conn);
+                        cmd.Parameters.AddWithValue("@id", user.Invite.FamilyId);
+
+                        reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            user.Invite.FamilyName = Convert.ToString(reader["name"]);
+                        }
+
+                        reader.Close();
+
+                        user.Invite.InvitedBy = GetUser(user.Invite.InvitedBy.Id, conn);
                     }
                 }
 
@@ -227,7 +246,7 @@ namespace LetsEat.DAL.SQL
             return output;
         }
 
-        public bool InviteUserToFamily(int userId, int familyId)
+        public bool InviteUserToFamily(Invite invite)
         {
             bool output = true;
 
@@ -238,8 +257,9 @@ namespace LetsEat.DAL.SQL
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand(SQL_InviteUserToFamily, conn);
-                    cmd.Parameters.AddWithValue("@family_id", familyId);
-                    cmd.Parameters.AddWithValue("@user_id", userId);
+                    cmd.Parameters.AddWithValue("@family_id", invite.FamilyId);
+                    cmd.Parameters.AddWithValue("@user_id", invite.Invitee);
+                    cmd.Parameters.AddWithValue("@invited_by_id", invite.InvitedBy.Id);
 
                     if (cmd.ExecuteNonQuery() != 1)
                     {
@@ -255,7 +275,7 @@ namespace LetsEat.DAL.SQL
             return output;
         }
 
-        private User MapRowToUser(SqlDataReader reader, bool clean = false)
+        private User MapRowToUser(SqlDataReader reader, bool clean = false, bool checkInvite = false)
         {
             User u = new User();
 
@@ -279,9 +299,20 @@ namespace LetsEat.DAL.SQL
             {
                 u.FamilyRole = Convert.ToString(reader["family_role"]);
             }
-            if (!reader.IsDBNull(reader.GetOrdinal("invite_family_id")))
+            if (checkInvite)
             {
-                u.InviteRequestFamilyId = Convert.ToInt32(reader["invite_family_id"]);
+                if (!reader.IsDBNull(reader.GetOrdinal("invite_family_id")))
+                {
+                    u.Invite = new Invite()
+                    {
+                        FamilyId = Convert.ToInt32(reader["invite_family_id"]),
+                    };
+
+                    u.Invite.InvitedBy = new User()
+                    {
+                        Id = Convert.ToInt32(reader["invited_by_user_id"])
+                    };
+                }
             }
 
             return u;

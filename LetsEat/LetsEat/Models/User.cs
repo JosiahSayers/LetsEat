@@ -40,13 +40,13 @@ namespace LetsEat.Models
 
         public string FamilyRole { get; set; }
 
-        public int InviteRequestFamilyId { get; set; }
+        public Invite Invite { get; set; }
 
         public bool InviteRequest
         {
             get
             {
-                return InviteRequestFamilyId != 0;
+                return Invite != null;
             }
         }
     }

@@ -35,7 +35,7 @@ namespace LetsEat.DAL
 
         List<User> SearchForUsersNotInFamily(string email);
 
-        bool InviteUserToFamily(int userId, int familyId);
+        bool InviteUserToFamily(Invite invite);
 
         bool DoesEmailAlreadyExist(string email);
     }

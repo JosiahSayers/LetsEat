@@ -2,6 +2,7 @@
 const searchInput = document.querySelector('input[type=text]');
 const searchResultsDiv = document.querySelector('div.search-results')
 const familyId = document.querySelector('#family-id').value;
+const invitedById = document.querySelector('#invited-by-id').value;
 const apiUrl = `${window.location.origin}/api/`;
 
 searchForm.addEventListener('submit', e => {
@@ -20,11 +21,13 @@ function getResults(searchTerm) {
 }
 
 function inviteToFamily(userId, btn) {
-    const url = `${apiUrl}InviteUserToFamily?userId=${userId}&familyId=${familyId}`;
+    const url = `${apiUrl}InviteUserToFamily?userId=${userId}&familyId=${familyId}&invited_by=${invitedById}`;
 
-    fetch(url).then(response => {
+    fetch(url)
+    .then(response => {
         if (response.ok) {
             btn.innerText = 'Invite Sent!';
+            btn.classList.disable = true;
         } else {
             alert('Something went wrong, please try that again');
         }
