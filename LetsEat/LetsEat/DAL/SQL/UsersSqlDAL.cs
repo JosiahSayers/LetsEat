@@ -134,6 +134,55 @@ namespace LetsEat.DAL.SQL
             return user;
         }
 
+        public User GetUser(int id)
+        {
+            User user = null;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GetUserById, conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        user = MapRowToUser(reader, true, false);
+                    }
+
+                    reader.Close();
+
+                    if (user.Invite != null)
+                    {
+                        cmd = new SqlCommand("SELECT * FROM family WHERE id = @id", conn);
+                        cmd.Parameters.AddWithValue("@id", user.Invite.FamilyId);
+
+                        reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            user.Invite.FamilyName = Convert.ToString(reader["name"]);
+                        }
+
+
+                        reader.Close();
+
+                        user.Invite.InvitedBy = GetUser(user.Invite.InvitedBy.Id, conn);
+                    }
+                }
+
+
+            }
+            catch
+            {
+                user = null;
+            }
+
+            return user;
+        }
+
         public User GetUser(int id, SqlConnection conn)
         {
             User user = null;

@@ -1,0 +1,11 @@
+﻿@model ChangeMemberRoleViewModel
+@{
+    ViewData["Title"] = "ChangeMemberRole";
+}
+
+<h1>Change @Model.userToChange.DisplayName's Role</h1>
+
+<form asp-action="ChangeUserRole">
+    <select asp-for="@Model.userToChange.FamilyRole" asp-items="@Model.Roles"></select>
+    <input type="submit" class="btn btn-primary" />
+</form>

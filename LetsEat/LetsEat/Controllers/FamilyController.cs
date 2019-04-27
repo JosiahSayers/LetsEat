@@ -12,13 +12,15 @@ namespace LetsEat.Controllers
 {
     public class FamilyController : Controller
     {
-        IFamilyDAL familyDAL;
-        IAuthProvider authProvider;
+        private readonly IFamilyDAL familyDAL;
+        private readonly IAuthProvider authProvider;
+        private readonly IUsersDAL usersDAL;
 
-        public FamilyController(IFamilyDAL familyDAL, IAuthProvider authProvider)
+        public FamilyController(IFamilyDAL familyDAL, IAuthProvider authProvider, IUsersDAL usersDAL)
         {
             this.familyDAL = familyDAL;
             this.authProvider = authProvider;
+            this.usersDAL = usersDAL;
         }
 
         public IActionResult Index()
@@ -42,7 +44,7 @@ namespace LetsEat.Controllers
             if (authProvider.IsLoggedIn)
             {
                 User currentUser = authProvider.GetCurrentUser();
-                if(currentUser.FamilyRole == "Leader")
+                if (currentUser.FamilyRole == "Leader")
                 {
                     User newMember = new User()
                     {
@@ -56,6 +58,30 @@ namespace LetsEat.Controllers
                         NewMember = newMember
                     };
                     return View(form);
+                }
+                else
+                {
+                    return View("NotAllowed");
+                }
+            }
+            else
+            {
+                return View("Login", "Account");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ChangeMemberRole(int userIdToChange)
+        {
+            if (authProvider.IsLoggedIn)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+                if (currentUser.FamilyRole == "Leader")
+                {
+                    ChangeMemberRoleViewModel viewModel = new ChangeMemberRoleViewModel();
+                    viewModel.userToChange = usersDAL.GetUser(userIdToChange);
+
+                    return View(viewModel);
                 }
                 else
                 {

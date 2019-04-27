@@ -12,6 +12,7 @@ namespace LetsEat.DAL
         /// <param name="email"></param>
         /// <returns></returns>
         User GetUser(string email);
+        User GetUser(int id);
         User GetUser(int id, SqlConnection conn);
 
         /// <summary>

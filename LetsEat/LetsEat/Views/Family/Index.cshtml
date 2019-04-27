@@ -12,9 +12,9 @@
         {
             <li>
                 @user.DisplayName - @user.FamilyRole
-                @if(user.Id != Model.CurrentUser.Id)
+                @if(user.Id != Model.CurrentUser.Id && Model.CurrentUser.FamilyRole == "Leader")
                 {
-                    <span> - </span><a href="#">Change Family Role</a>
+                    <span> - </span><a asp-action="ChangeMemberRole" asp-route-userIdToChange="@user.Id">Change Family Role</a>
                 }
             </li>
         }
