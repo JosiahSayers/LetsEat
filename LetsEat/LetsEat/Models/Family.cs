@@ -7,8 +7,8 @@ namespace LetsEat.Models
 {
     public class Family
     {
-        public List<User> Members { get; set; }
         public int Id { get; set; }
+        public List<User> Members { get; set; }
         public string Name { get; set; }
     }
 }

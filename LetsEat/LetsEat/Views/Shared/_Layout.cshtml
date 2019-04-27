@@ -28,17 +28,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="RecipeBook" asp-action="Index">My Recipes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="RecipeBook" asp-action="ParseURL">Add Recipe</a>
-                            </li>
-                        </ul>
-                        <ul class="navbar-nav navbar-right">
-                            @await Component.InvokeAsync("NavBar") @* Render the NavBar component. *@
-                        </ul>
+                        @await Component.InvokeAsync("NavBar") @* Render the NavBar component. *@
                     </div>
                 </div>
         </nav>

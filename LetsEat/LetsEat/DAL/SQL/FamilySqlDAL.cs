@@ -10,7 +10,7 @@ namespace LetsEat.DAL.SQL
     public class FamilySqlDAL : IFamilyDAL
     {
         string connectionString;
-        private string SQL_GetFamily = "SELECT * FROM family JOIN users ON family.id = users.family_id WHERE family_id = @family_id";
+        private string SQL_GetFamily = "SELECT *, users.id AS user_id FROM family JOIN users ON family.id = users.family_id WHERE family_id = @family_id";
 
         public FamilySqlDAL(string connectionString)
         {
@@ -53,7 +53,7 @@ namespace LetsEat.DAL.SQL
         {
             User u = new User();
 
-            u.Id = Convert.ToInt32(reader["id"]);
+            u.Id = Convert.ToInt32(reader["user_id"]);
             u.DisplayName = Convert.ToString(reader["display_name"]);
             u.Email = Convert.ToString(reader["email"]);
             u.Password = Convert.ToString(reader["password"]);

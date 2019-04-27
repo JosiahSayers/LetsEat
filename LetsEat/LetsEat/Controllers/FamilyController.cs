@@ -25,8 +25,11 @@ namespace LetsEat.Controllers
         {
             if (authProvider.IsLoggedIn)
             {
-                Family currentFamily = familyDAL.GetFamily(authProvider.GetCurrentUser().FamilyId);
-                return View(currentFamily);
+                FamilyViewModel fvm = new FamilyViewModel();
+                fvm.CurrentUser = authProvider.GetCurrentUser();
+                fvm.Family = familyDAL.GetFamily(fvm.CurrentUser.FamilyId);
+
+                return View(fvm);
             }
             else
             {

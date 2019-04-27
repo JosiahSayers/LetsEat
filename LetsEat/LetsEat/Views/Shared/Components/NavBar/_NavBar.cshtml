@@ -4,32 +4,54 @@
 }
 
 
-
-@if (Model == null)
-{
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-}
-else
-{
-    if (Model.InviteRequest)
+<ul class="navbar-nav flex-grow-1">
+    @if (Model != null)
     {
-        <li class="nav-item"><a class="nav-link text-primary font-weight-bolder" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="RecipeBook" asp-action="Index">My Recipes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="RecipeBook" asp-action="Family">Family Recipes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="RecipeBook" asp-action="ParseURL">Add Recipe</a>
+        </li>
+    }
+</ul>
+<ul class="nav navbar-right">
+    @if (Model == null)
+    {
+        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
     }
     else
     {
-        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
-    }
+        if (Model.InviteRequest)
+        {
+            <li class="nav-item"><a class="nav-link text-primary font-weight-bolder" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+        }
+        else
+        {
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+        }
 
-    if (Model.IsAdmin)
-    {
-        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Section</a></li>
-    }
+        if (Model.IsAdmin)
+        {
+            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Section</a></li>
+        }
 
-    if (Model.FamilyRole == "Leader")
-    {
-        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Family" asp-action="Index">Manage Family</a></li>
-    }
+        if (Model.FamilyRole != null)
+        {
+            if (Model.FamilyRole == "Leader")
+            {
+                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Family" asp-action="Index">Manage Family</a></li>
+            }
+            else
+            {
+                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Family" asp-action="Index">View Family</a></li>
+            }
+        }
 
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logoff">Logout</a></li>
-}
+        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logoff">Logout</a></li>
+    }
+</ul>
