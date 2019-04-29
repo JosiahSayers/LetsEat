@@ -164,7 +164,7 @@ namespace LetsEat.Controllers
                 else
                 {
                     WebsiteRequest wr = form.GenerateWebsiteRequest();
-                    wr.user = authProvider.GetCurrentUser();
+                    wr.User = authProvider.GetCurrentUser();
                     websiteRequestDAL.AddNewWebsiteRequest(wr);
                     return View("WebsiteRequestAdded", wr);
                 }

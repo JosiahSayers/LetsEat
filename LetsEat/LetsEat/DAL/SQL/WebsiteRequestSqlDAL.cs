@@ -43,7 +43,7 @@ namespace LetsEat.DAL.SQL
                 
                 foreach(WebsiteRequest wr in output)
                 {
-                    userDAL.GetUser(wr.Id, conn);
+                    wr.User = userDAL.GetUser(wr.Id, conn);
                 }
             }
 
@@ -58,7 +58,7 @@ namespace LetsEat.DAL.SQL
                 SqlCommand cmd = new SqlCommand(SQL_Add_New_Website_Request, conn);
                 cmd.Parameters.AddWithValue("@base_url", newRequest.BaseURL);
                 cmd.Parameters.AddWithValue("@full_url", newRequest.FullURL);
-                cmd.Parameters.AddWithValue("@user_id", newRequest.user.Id);
+                cmd.Parameters.AddWithValue("@user_id", newRequest.User.Id);
 
                 cmd.ExecuteNonQuery();
             }

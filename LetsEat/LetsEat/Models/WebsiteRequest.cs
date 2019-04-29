@@ -9,6 +9,6 @@ namespace LetsEat.Models
 
         public string FullURL { get; set; }
 
-        public User user { get; set; }
+        public User User { get; set; }
     }
 }
