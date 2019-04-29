@@ -36,6 +36,10 @@ namespace LetsEat.DAL.SQL
                     wr.Id = Convert.ToInt32(reader["id"]);
                     wr.BaseURL = Convert.ToString(reader["base_url"]);
                     wr.FullURL = Convert.ToString(reader["full_url"]);
+                    wr.User = new User()
+                    {
+                        Id = Convert.ToInt32(reader["user_id"])
+                    };
 
                     output.Add(wr);
                 }
@@ -43,7 +47,7 @@ namespace LetsEat.DAL.SQL
                 
                 foreach(WebsiteRequest wr in output)
                 {
-                    wr.User = userDAL.GetUser(wr.Id, conn);
+                    wr.User = userDAL.GetUser(wr.User.Id, conn);
                 }
             }
 
@@ -62,6 +66,38 @@ namespace LetsEat.DAL.SQL
 
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public bool? WebsiteRequestExists()
+        {
+            bool? output;
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_Get_New_Websites, conn);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        output = true;
+                    }
+                    else
+                    {
+                        output = false;
+                    }
+                }
+            }
+            catch
+            {
+                output = null;
+            }
+
+            return output;
         }
     }
 }

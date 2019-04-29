@@ -1,11 +1,11 @@
-﻿@model User
+﻿@model NavbarViewModel
 @{
     ViewData["Title"] = "_Navbar";
 }
 
 
 <ul class="navbar-nav flex-grow-1">
-    @if (Model != null)
+    @if (Model.User != null)
     {
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="RecipeBook" asp-action="Index">My Recipes</a>
@@ -19,30 +19,37 @@
     }
 </ul>
 <ul class="nav navbar-right">
-    @if (Model == null)
+    @if (Model.User == null)
     {
         <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
         <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
     }
     else
     {
-        if (Model.InviteRequest)
+        if (Model.User.InviteRequest)
         {
-            <li class="nav-item"><a class="nav-link text-primary font-weight-bolder" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+            <li class="nav-item"><a class="nav-link text-primary font-weight-bolder" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.User.DisplayName</a></li>
         }
         else
         {
-            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.DisplayName</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.User.DisplayName</a></li>
         }
 
-        if (Model.IsAdmin)
+        if (Model.User.IsAdmin)
         {
-            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Section</a></li>
+            if (Model.WebsiteRequest)
+            {
+                <li class="nav-item"><a class="nav-link text-primary font-weight-bolder" asp-controller="Admin" asp-action="Index">Admin Section</a></li>
+            }
+            else
+            {
+                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Section</a></li>
+            }
         }
 
-        if (Model.FamilyRole != null)
+        if (Model.User.FamilyRole != null)
         {
-            if (Model.FamilyRole == "Leader")
+            if (Model.User.FamilyRole == "Leader")
             {
                 <li class="nav-item"><a class="nav-link text-dark" asp-controller="Family" asp-action="Index">Manage Family</a></li>
             }

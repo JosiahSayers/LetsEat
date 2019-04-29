@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.Providers.Auth;
+using LetsEat.Models;
 
 namespace WebApplication.Web.ViewComponents
 {
@@ -26,8 +27,10 @@ namespace WebApplication.Web.ViewComponents
         /// <returns></returns>
         public IViewComponentResult Invoke()
         {
-            var user = authProvider.GetCurrentUser();
-            return View("_NavBar", user);
+            NavbarViewModel nvbm = new NavbarViewModel();
+            nvbm.User = authProvider.GetCurrentUser();
+            nvbm.WebsiteRequest = authProvider.WebsiteRequestExists();
+            return View("_NavBar", nvbm);
         }
     }
 }

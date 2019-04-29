@@ -15,12 +15,14 @@ namespace LetsEat.Providers.Auth
     {
         private readonly IHttpContextAccessor contextAccessor;
         private readonly IUsersDAL userDAL;
+        private readonly IWebsiteRequestDAL websiteRequestDAL;
         public static string SessionKey = "Auth_User";
 
-        public SessionAuthProvider(IHttpContextAccessor contextAccessor, IUsersDAL userDAL)
+        public SessionAuthProvider(IHttpContextAccessor contextAccessor, IUsersDAL userDAL, IWebsiteRequestDAL websiteRequestDAL)
         {
             this.contextAccessor = contextAccessor;
             this.userDAL = userDAL;
+            this.websiteRequestDAL = websiteRequestDAL;
         }
 
         /// <summary>
@@ -150,6 +152,16 @@ namespace LetsEat.Providers.Auth
         public bool IsAdmin()
         {
             return GetCurrentUser().IsAdmin;
+        }
+
+        public bool WebsiteRequestExists()
+        {
+            if (IsLoggedIn && IsAdmin())
+            {
+                return websiteRequestDAL.WebsiteRequestExists() == true;
+            }
+
+            return false;
         }
     }
 }

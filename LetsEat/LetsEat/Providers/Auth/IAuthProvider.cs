@@ -53,5 +53,7 @@ namespace LetsEat.Providers.Auth
         bool UserHasRole(string[] roles);
 
         bool IsAdmin();
+
+        bool WebsiteRequestExists();
     }
 }
