@@ -21,7 +21,7 @@
             <th>
                 User
             </th>
-            <th></th>
+            <th>Change Status</th>
         </tr>
     </thead>
     <tbody>
@@ -39,9 +39,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.User.DisplayName)
             </td>
+            <td>
+                <a asp-action="CompleteWebsiteRequest" asp-route-wrid="@item.Id" class="btn btn-sm btn-outline-success">Mark Completed</a>
+                <a asp-action="DenyWebsiteRequest" asp-route-wrid="@item.Id" class="btn btn-sm btn-outline-danger">Deny Request</a>
+            </td>
         </tr>
 }
     </tbody>
 </table>
-
-<a asp-action="TestEmail">Send a test email</a>

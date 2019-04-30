@@ -12,6 +12,8 @@ namespace LetsEat.DAL.SQL
 
         private readonly string SQL_Get_New_Websites = "SELECT * FROM website_requests;";
         private readonly string SQL_Add_New_Website_Request = "INSERT INTO website_requests (base_url, full_url, user_id) VALUES (@base_url, @full_url, @user_id);";
+        private readonly string SQL_Get_Request_By_ID = "SELECT * FROM website_requests WHERE id = @id;";
+        private readonly string SQL_Delete_Request = "DELETE FROM website_requests WHERE id = @id;";
 
         public WebsiteRequestSqlDAL(string connectionString)
         {
@@ -95,6 +97,64 @@ namespace LetsEat.DAL.SQL
             catch
             {
                 output = null;
+            }
+
+            return output;
+        }
+
+        public WebsiteRequest Get(int id)
+        {
+            WebsiteRequest output = new WebsiteRequest();
+
+            using(SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(SQL_Get_Request_By_ID, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    output.Id = Convert.ToInt32(reader["id"]);
+                    output.BaseURL = Convert.ToString(reader["base_url"]);
+                    output.FullURL = Convert.ToString(reader["full_url"]);
+                    output.User = new User()
+                    {
+                        Id = Convert.ToInt32(reader["user_id"])
+                    };
+                }
+
+                reader.Close();
+
+                output.User = userDAL.GetUser(output.User.Id, conn);
+            }
+
+            return output;
+        }
+
+        public bool Delete(int id)
+        {
+            bool output;
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_Delete_Request, conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                output = true;
+            }
+            catch
+            {
+                output = false;
             }
 
             return output;

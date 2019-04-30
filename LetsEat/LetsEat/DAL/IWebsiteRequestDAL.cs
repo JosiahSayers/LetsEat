@@ -9,5 +9,8 @@ namespace LetsEat.DAL
         List<WebsiteRequest> GetNewWebsiteRequests();
         void AddNewWebsiteRequest(WebsiteRequest newRequest);
         bool? WebsiteRequestExists();
+
+        WebsiteRequest Get(int id);
+        bool Delete(int id);
     }
 }

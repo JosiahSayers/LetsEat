@@ -26,16 +26,15 @@ namespace LetsEat.Controllers
             return View(wr);
         }
 
-        public IActionResult TestEmail()
+        public IActionResult CompleteWebsiteRequest(int wrid)
         {
-            if (emailProvider.Test())
-            {
-                return View(true);
-            }
-            else
-            {
-                return View(false);
-            }
+            WebsiteRequest wr = websiteRequestDAL.Get(wrid);
+
+            websiteRequestDAL.Delete(wr.Id);
+
+            emailProvider.WebsiteRequestComplete(wr);
+
+            return View(wr);
         }
 
         //todo: Add Controller for marking a request as complete

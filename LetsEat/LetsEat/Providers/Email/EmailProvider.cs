@@ -28,25 +28,27 @@ namespace LetsEat.Providers.Email
             this.userDAL = new UserSqlDAL(connectionString);
         }
 
-        public bool Test()
+        public bool WebsiteRequestComplete(WebsiteRequest wr)
         {
-            bool output;
+            bool output = false;
 
-            to = new MailboxAddress("Josiah", "josiah.sayers15@gmail.com");
-            message.To.Add(to);
-            message.Subject = "This is a test email subject.";
-
-            body.TextBody = "This is a test email body.";
-            message.Body = body.ToMessageBody();
-
-            if(Connect() && Send())
+            try
             {
-                output = true;
+                to = new MailboxAddress(wr.User.DisplayName, wr.User.Email);
+                message.To.Add(to);
+
+                message.Subject = $"Your request to add {wr.BaseURL} to our recipe import is complete!";
+
+                body.HtmlBody = $"<h1>Hi {wr.User.DisplayName}</h1><p>Thank you for your patience while we added the capability to import recipes from {wr.BaseURL}. I am glad to inform you that this website has now been added to Let's Eat! You can now try and import this recipe again, as a reminder the recipe you were trying to add was <a href='{wr.FullURL}'>located here.</a></p> <p>Thanks again for your patience!</p><p>- Let's Eat Admin Team</p>";
+                message.Body = body.ToMessageBody();
+
+                output = Connect() && Send() ? true : false;
             }
-            else
+            catch
             {
                 output = false;
             }
+
             return output;
         }
 

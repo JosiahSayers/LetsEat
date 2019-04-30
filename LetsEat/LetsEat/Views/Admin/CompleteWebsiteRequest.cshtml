@@ -1,0 +1,10 @@
+﻿@model WebsiteRequest
+@{
+    ViewData["Title"] = "CompleteWebsiteRequest";
+}
+
+<h1>Request Marked as complete!</h1>
+
+<p>Thank you for adding @Model.BaseURL to our import section! The user @Model.User.DisplayName has been emailed.</p>
+
+<a asp-action="Index">Back to Website Requests</a>
