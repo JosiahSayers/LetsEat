@@ -43,5 +43,7 @@ namespace LetsEat.DAL
         bool InviteUserToFamily(Invite invite);
 
         bool DoesEmailAlreadyExist(string email);
+
+        List<User> GetAdmins();
     }
 }

@@ -19,6 +19,7 @@ namespace LetsEat.DAL.SQL
         private const string SQL_SearchForUsersNotInFamily = "SELECT * FROM users LEFT JOIN invite ON users.id = invite.invite_user_id WHERE family_id IS NULL AND email LIKE '%' + @email + '%';";
         private const string SQL_InviteUserToFamily = "INSERT INTO invite (invite_family_id, invite_user_id, invited_by_user_id) VALUES (@family_id, @user_id, @invited_by_id);";
         private const string SQL_DeleteInvitation = "DELETE FROM invite WHERE invite_family_id = @family_id AND invite_user_id = @user_id";
+        private const string SQL_GetAllAdmins = "SELECT * FROM users WHERE role = 'Admin'";
 
         public UserSqlDAL(string connectionString)
         {
@@ -355,6 +356,34 @@ namespace LetsEat.DAL.SQL
             catch
             {
                 output = false;
+            }
+
+            return output;
+        }
+
+        public List<User> GetAdmins()
+        {
+            List<User> output = new List<User>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_GetAllAdmins, conn);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        output.Add(MapRowToUser(reader));
+                    }
+                }
+            }
+            catch
+            {
+                output = null;
             }
 
             return output;

@@ -59,7 +59,7 @@ namespace LetsEat
 
             services.AddScoped<IAuthProvider, SessionAuthProvider>();
 
-            services.AddTransient<EmailProvider>(c => new EmailProvider(emailProviderPassword));
+            services.AddTransient<EmailProvider>(c => new EmailProvider(emailProviderPassword, connectionString));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

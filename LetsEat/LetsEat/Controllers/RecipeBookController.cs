@@ -6,6 +6,7 @@ using LetsEat.DAL;
 using LetsEat.Models;
 using LetsEat.Models.Forms;
 using LetsEat.Providers.Auth;
+using LetsEat.Providers.Email;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LetsEat.Controllers
@@ -15,12 +16,14 @@ namespace LetsEat.Controllers
         private readonly IRecipeDAL recipeDAL;
         private readonly IAuthProvider authProvider;
         private readonly IWebsiteRequestDAL websiteRequestDAL;
+        private readonly EmailProvider emailProvider;
 
-        public RecipeBookController(IRecipeDAL recipeDAL, IAuthProvider authProvider, IWebsiteRequestDAL websiteRequestDAL)
+        public RecipeBookController(IRecipeDAL recipeDAL, IAuthProvider authProvider, IWebsiteRequestDAL websiteRequestDAL, EmailProvider emailProvider)
         {
             this.recipeDAL = recipeDAL;
             this.authProvider = authProvider;
             this.websiteRequestDAL = websiteRequestDAL;
+            this.emailProvider = emailProvider;
         }
 
         public IActionResult Index()
@@ -112,7 +115,6 @@ namespace LetsEat.Controllers
                 if (recipeDAL.AddRecipe(r) != null)
                 {
                     return View("Recipe", r);
-
                 }
                 else
                 {
@@ -146,10 +148,12 @@ namespace LetsEat.Controllers
         {
             if (authProvider.IsLoggedIn)
             {
+                User currentUser = authProvider.GetCurrentUser();
+
                 if (form.IsSupportedWebsite())
                 {
                     Recipe newRecipe = form.Parse();
-                    newRecipe.UserWhoAdded = authProvider.GetCurrentUser();
+                    newRecipe.UserWhoAdded = currentUser;
                     newRecipe = recipeDAL.AddRecipe(newRecipe);
 
                     if (newRecipe != null)
@@ -164,8 +168,12 @@ namespace LetsEat.Controllers
                 else
                 {
                     WebsiteRequest wr = form.GenerateWebsiteRequest();
-                    wr.User = authProvider.GetCurrentUser();
+                    wr.User = currentUser;
                     websiteRequestDAL.AddNewWebsiteRequest(wr);
+
+                    emailProvider.NewWebsiteRequest(wr);
+
+
                     return View("WebsiteRequestAdded", wr);
                 }
             }
