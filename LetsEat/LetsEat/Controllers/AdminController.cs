@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.DAL;
 using LetsEat.Models;
+using LetsEat.Models.Forms;
+using LetsEat.Providers.Auth;
 using LetsEat.Providers.Email;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +15,12 @@ namespace LetsEat.Controllers
     {
         private readonly IWebsiteRequestDAL websiteRequestDAL;
         private readonly EmailProvider emailProvider;
-        public AdminController(IWebsiteRequestDAL websiteRequestDAL, EmailProvider emailProvider)
+        private readonly IAuthProvider authProvider;
+        public AdminController(IWebsiteRequestDAL websiteRequestDAL, EmailProvider emailProvider, IAuthProvider authProvider)
         {
             this.websiteRequestDAL = websiteRequestDAL;
             this.emailProvider = emailProvider;
+            this.authProvider = authProvider;
         }
 
         public IActionResult Index()
@@ -37,15 +41,67 @@ namespace LetsEat.Controllers
             return View(wr);
         }
 
-        //todo: Add Controller for marking a request as complete
+        public IActionResult DenyWebsiteRequest(int wrid)
+        {
+            if (authProvider.IsLoggedIn)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+
+                if (currentUser.IsAdmin)
+                {
+                    DenyWebsiteRequest model = new DenyWebsiteRequest()
+                    {
+                        WebsiteRequest = websiteRequestDAL.Get(wrid),
+                        Admin = currentUser
+                    };
+
+                    return View(model);
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            else
+            {
+                return View("Login", "Account");
+            }
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DenyWebsiteRequest(DenyWebsiteRequest model)
+        {
+            if (authProvider.IsLoggedIn)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+
+                if (currentUser.IsAdmin)
+                {
+                    websiteRequestDAL.Delete(model.WebsiteRequest.Id);
+
+                    emailProvider.WebsiteRequestDenied(model);
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            else
+            {
+                return View("Login", "Account");
+            }
+        }
+
 
         //todo: Add controller for denying request
 
-        //todo: Add ability for program to email a user when their request is either completed or denied, along with a custom message from the admin
+        //todo: Add ability for program to email a user when their request is denied, along with a custom message from the admin
 
-        //todo: Add indicator to admin navbar when website requests exist
 
-        //todo: Add ability for program to email admins when a new website request is added
 
     }
 }

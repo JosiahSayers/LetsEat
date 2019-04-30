@@ -1,0 +1,26 @@
+﻿@model DenyWebsiteRequest
+@{
+    ViewData["Title"] = "DenyWebsiteRequest";
+}
+
+<h1>Deny Website Request</h1>
+
+<p>Please provide a message to the requesting user (@Model.WebsiteRequest.User.DisplayName) stating why this request is being denied.</p>
+
+<form asp-action="DenyWebsiteRequest" method="post">
+    <input type="hidden" asp-for="@Model.WebsiteRequest.Id" />
+    <input type="hidden" asp-for="@Model.WebsiteRequest.BaseURL" />
+    <input type="hidden" asp-for="@Model.WebsiteRequest.FullURL" />
+    <input type="hidden" asp-for="@Model.WebsiteRequest.User.Id" />
+    <input type="hidden" asp-for="@Model.WebsiteRequest.User.DisplayName" />
+    <input type="hidden" asp-for="@Model.WebsiteRequest.User.Email" />
+
+    <textarea asp-for="@Model.Message" placeholder="Message..."></textarea>
+    <span asp-validation-for="Message"></span>
+
+    <input type="submit" class="btn btn-primary" />
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

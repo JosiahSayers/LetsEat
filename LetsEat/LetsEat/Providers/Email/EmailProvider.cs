@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LetsEat.DAL;
 using LetsEat.DAL.SQL;
 using LetsEat.Models;
+using LetsEat.Models.Forms;
 using MailKit.Net.Smtp;
 using MimeKit;
 
@@ -26,6 +27,30 @@ namespace LetsEat.Providers.Email
             message.From.Add(from);
             EmailProviderPassword = pass;
             this.userDAL = new UserSqlDAL(connectionString);
+        }
+
+        public bool WebsiteRequestDenied(DenyWebsiteRequest model)
+        {
+            bool output = false;
+
+            try
+            {
+                to = new MailboxAddress(model.WebsiteRequest.User.DisplayName, model.WebsiteRequest.User.Email);
+                message.To.Add(to);
+
+                message.Subject = $"Your request to add {model.WebsiteRequest.BaseURL} has been denied by an admin";
+
+                body.HtmlBody = $"<h1>Hi {model.WebsiteRequest.User.DisplayName}</h1><p>Your request to add {model.WebsiteRequest.BaseURL} has been denied by an admin, here's why: </p><br><p>{model.Message}</p><br><p>Sorry that we were not able to complete this for you :'(</p><p>- Let's Eat Admin Team</p>";
+                message.Body = body.ToMessageBody();
+
+                output = Connect() && Send() ? true : false;
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
         }
 
         public bool WebsiteRequestComplete(WebsiteRequest wr)
