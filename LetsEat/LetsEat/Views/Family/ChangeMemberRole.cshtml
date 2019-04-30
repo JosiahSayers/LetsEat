@@ -5,7 +5,9 @@
 
 <h1>Change @Model.userToChange.DisplayName's Role</h1>
 
-<form asp-action="ChangeUserRole">
+<form asp-action="ChangeMemberRole" method="post">
+    <input type="hidden" asp-for="userToChange.Id" />
+
     <select asp-for="@Model.userToChange.FamilyRole" asp-items="@Model.Roles"></select>
     <input type="submit" class="btn btn-primary" />
 </form>

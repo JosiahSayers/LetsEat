@@ -93,5 +93,30 @@ namespace LetsEat.Controllers
                 return View("Login", "Account");
             }
         }
+
+        [HttpPost]
+        public IActionResult ChangeMemberRole(ChangeMemberRoleViewModel vm)
+        {
+            if (authProvider.IsLoggedIn)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+                if(currentUser.FamilyRole == "Leader")
+                {
+                    User userToUpdate = usersDAL.GetUser(vm.userToChange.Id);
+                    userToUpdate.FamilyRole = vm.userToChange.FamilyRole;
+                    usersDAL.UpdateUser(userToUpdate);
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("NotAllowed");
+                }
+            }
+            else
+            {
+                return View("Login", "Account");
+            }
+        }
     }
 }

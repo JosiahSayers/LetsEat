@@ -149,7 +149,7 @@ namespace LetsEat.DAL.SQL
 
                     if (reader.Read())
                     {
-                        user = MapRowToUser(reader, true, false);
+                        user = MapRowToUser(reader, false, false);
                     }
 
                     reader.Close();
@@ -218,11 +218,14 @@ namespace LetsEat.DAL.SQL
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("UPDATE users SET display_name = @displayName, password = @password, salt = @salt, role = @role WHERE id = @id;", conn);
+                    SqlCommand cmd = new SqlCommand("UPDATE users SET family_role = @family_role, family_id = @family_id, email = @email, display_name = @displayName, password = @password, salt = @salt, role = @role WHERE id = @id;", conn);
                     cmd.Parameters.AddWithValue("@password", user.Password);
                     cmd.Parameters.AddWithValue("@salt", user.Salt);
                     cmd.Parameters.AddWithValue("@role", user.Role);
                     cmd.Parameters.AddWithValue("@id", user.Id);
+                    cmd.Parameters.AddWithValue("@email", user.Email);
+                    cmd.Parameters.AddWithValue("@family_id", user.FamilyId);
+                    cmd.Parameters.AddWithValue("@family_role", user.FamilyRole);
                     cmd.Parameters.AddWithValue("@displayName", user.DisplayName);
 
                     cmd.ExecuteNonQuery();
