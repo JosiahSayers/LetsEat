@@ -29,6 +29,12 @@ namespace LetsEat.Providers.Email
             this.userDAL = new UserSqlDAL(connectionString);
         }
 
+        public bool Welcome(User user)
+        {
+            throw new NotImplementedException();
+            //todo: Implement sending welcome message to new users
+        }
+
         public bool WebsiteRequestDenied(DenyWebsiteRequest model)
         {
             bool output = false;
