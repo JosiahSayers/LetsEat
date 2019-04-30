@@ -6,91 +6,19 @@
 
 <h1>My Recipes</h1>
 
-<table class="table table-responsive">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrepMinutes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CookMinutes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Source)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateAdded)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FamilyID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrepTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CookTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalTimeMinutes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalTime)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrepMinutes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CookMinutes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Source)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateAdded)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FamilyID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrepTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CookTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalTimeMinutes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalTime)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Recipe", new { id = item.ID }) |
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<hr />
+
+<div class="card-columns">
+    @foreach (Recipe r in Model)
+    {
+        <div class="card">
+            <a asp-action="Recipe" asp-route-id="@r.ID">
+                <img class="card-img-top" src="@r.ImageLocations[0]" alt="@r.Name">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title"><a asp-action="Recipe" asp-route-id="@r.ID" class="card-link">@r.Name</a></h5>
+                <p class="card-text">@r.Description</p>
+            </div>
+        </div>
+    }
+</div>

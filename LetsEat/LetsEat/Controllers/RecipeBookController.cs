@@ -60,7 +60,7 @@ namespace LetsEat.Controllers
 
                 User current = authProvider.GetCurrentUser();
 
-                if (authProvider.GetCurrentUser().Id == recipe.UserWhoAdded.Id)
+                if (current.Id == recipe.UserWhoAdded.Id || current.FamilyId == recipe.FamilyID)
                 {
                     return View(recipe);
                 }

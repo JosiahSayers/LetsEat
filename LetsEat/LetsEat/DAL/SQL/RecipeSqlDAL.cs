@@ -50,6 +50,7 @@ namespace LetsEat.DAL.SQL
                         output.Description = Convert.ToString(reader["description"]);
                         output.Source = Convert.ToString(reader["source"]);
                         output.DateAdded = Convert.ToDateTime(reader["date_added"]);
+                        output.FamilyID = Convert.ToInt32(reader["family_id"]);
 
                         output.UserWhoAdded = new User()
                         {
