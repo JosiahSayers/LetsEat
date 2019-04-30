@@ -49,3 +49,5 @@ C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Test.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Admin\CompleteWebsiteRequest.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Admin\DenyWebsiteRequest.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\NotInFamily.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\Create.g.cshtml.cs

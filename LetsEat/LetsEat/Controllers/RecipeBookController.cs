@@ -45,9 +45,16 @@ namespace LetsEat.Controllers
             {
                 User user = authProvider.GetCurrentUser();
 
-                List<Recipe> recipes = recipeDAL.GetFamilyRecipes(user.FamilyId);
+                if (user.FamilyId == 0)
+                {
+                    return View("NotInFamily");
+                }
+                else
+                {
+                    List<Recipe> recipes = recipeDAL.GetFamilyRecipes(user.FamilyId);
+                    return View(recipes);
+                }
 
-                return View(recipes);
             }
             else
             {
@@ -158,7 +165,7 @@ namespace LetsEat.Controllers
 
                     if (newRecipe != null)
                     {
-                        return RedirectToAction("Recipe", new { id = newRecipe.ID});
+                        return RedirectToAction("Recipe", new { id = newRecipe.ID });
                     }
                     else
                     {

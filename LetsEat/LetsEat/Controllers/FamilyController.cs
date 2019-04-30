@@ -100,7 +100,7 @@ namespace LetsEat.Controllers
             if (authProvider.IsLoggedIn)
             {
                 User currentUser = authProvider.GetCurrentUser();
-                if(currentUser.FamilyRole == "Leader")
+                if (currentUser.FamilyRole == "Leader")
                 {
                     User userToUpdate = usersDAL.GetUser(vm.userToChange.Id);
                     userToUpdate.FamilyRole = vm.userToChange.FamilyRole;
@@ -116,6 +116,62 @@ namespace LetsEat.Controllers
             else
             {
                 return View("Login", "Account");
+            }
+        }
+
+        public IActionResult Create()
+        {
+            if (authProvider.IsLoggedIn)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+
+                if (currentUser.FamilyId == 0)
+                {
+                    Family newFamily = new Family();
+                    newFamily.Members = new List<User>();
+                    newFamily.Members.Add(authProvider.GetCurrentUser());
+
+                    return View(newFamily);
+                }
+                else
+                {
+                    return View("ConfirmChangeFamily");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Family newFamily)
+        {
+            if (authProvider.IsLoggedIn)
+            {
+                newFamily.Id = familyDAL.Create(newFamily);
+
+                if(newFamily.Id > 0)
+                {
+                    User currentUser = authProvider.GetCurrentUser();
+
+                    currentUser.FamilyId = newFamily.Id;
+                    currentUser.FamilyRole = "Leader";
+
+                    usersDAL.UpdateUser(currentUser);
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    // todo: an error occured. You should do something about it.
+                    return View("Create", newFamily);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
             }
         }
     }

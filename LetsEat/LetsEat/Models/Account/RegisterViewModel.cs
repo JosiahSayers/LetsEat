@@ -9,7 +9,7 @@ namespace LetsEat.Models.Account
     public class RegisterViewModel
     {
         [MaxLength(50)]
-        [Display(Name = "Display Name")]
+        [Display(Name = "Name")]
         public string DisplayName { get; set; }
 
         [Required]

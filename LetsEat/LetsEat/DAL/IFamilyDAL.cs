@@ -9,5 +9,6 @@ namespace LetsEat.DAL
     public interface IFamilyDAL
     {
         Family GetFamily(int familyId);
+        int Create(Family newFamily);
     }
 }

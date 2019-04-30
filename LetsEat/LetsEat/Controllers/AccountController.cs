@@ -7,6 +7,7 @@ using LetsEat.DAL;
 using LetsEat.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
 using LetsEat.Models;
+using LetsEat.Providers.Email;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,10 +17,12 @@ namespace LetsEat.Controllers
     {
         private readonly IAuthProvider authProvider;
         private readonly IUsersDAL userDAL;
-        public AccountController(IAuthProvider authProvider, IUsersDAL userDAL)
+        private readonly EmailProvider emailProvider;
+        public AccountController(IAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider)
         {
             this.authProvider = authProvider;
             this.userDAL = userDAL;
+            this.emailProvider = emailProvider;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in -- or filtered to only those that have a certain role [array of roles]
@@ -92,6 +95,8 @@ namespace LetsEat.Controllers
                 {
                     return RedirectToAction("Error", "Home");
                 }
+
+                emailProvider.Welcome(userDAL.GetUser(rvm.Email));
 
                 // Redirect the user where you want them to go after registering
                 return RedirectToAction("Index", "Home");

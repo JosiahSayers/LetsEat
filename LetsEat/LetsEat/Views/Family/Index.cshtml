@@ -7,21 +7,35 @@
 <div>
     <h3>@Model.Family.Name Family</h3>
     <hr />
-    <ul>
+    <ul class="list-group">
         @foreach (User user in Model.Family.Members)
         {
-            <li>
-                @user.DisplayName - @user.FamilyRole
-                @if(user.Id != Model.CurrentUser.Id && Model.CurrentUser.FamilyRole == "Leader")
+            string className = user.Id == Model.CurrentUser.Id ? "list-group-item-primary" : user.FamilyRole == "Leader" ? "list-group-item-success" : "";
+            <li class="list-group-item @className">
+
+                <strong>@user.DisplayName</strong> - @user.FamilyRole
+                @if (user.Id != Model.CurrentUser.Id && Model.CurrentUser.FamilyRole == "Leader")
                 {
-                    <span> - </span><a asp-action="ChangeMemberRole" asp-route-userIdToChange="@user.Id">Change Family Role</a>
+                    <a class="float-right btn btn-success btn-sm" asp-action="ChangeMemberRole" asp-route-userIdToChange="@user.Id">Change Family Role</a>
                 }
             </li>
         }
     </ul>
 
+    <br />
+
     @if (Model.CurrentUser.FamilyRole == "Leader")
     {
-        <a asp-action="AddMember">Add a member to your family</a>
+        <a asp-action="AddMember" class="btn btn-primary">Add a member to your family</a>
     }
 </div>
+
+<style>
+    ul {
+        width: fit-content;
+    }
+
+    a.btn-sm {
+        margin-left: 20px;
+    }
+</style>

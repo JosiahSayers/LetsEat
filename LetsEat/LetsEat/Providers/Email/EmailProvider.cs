@@ -31,8 +31,26 @@ namespace LetsEat.Providers.Email
 
         public bool Welcome(User user)
         {
-            throw new NotImplementedException();
-            //todo: Implement sending welcome message to new users
+            bool output = false;
+
+            try
+            {
+                to = new MailboxAddress(user.DisplayName, user.Email);
+                message.To.Add(to);
+
+                message.Subject = $"Welcome to Let's Eat!";
+
+                body.HtmlBody = $"<h1>Hi {user.DisplayName}!</h1><p>We're so glad to have you as a new user on Let's Eat. To get the most out of your account, make sure to either join an existing family or create your family and invite your family members!</p><p>- Let's Eat Admin Team</p>";
+                message.Body = body.ToMessageBody();
+
+                output = Connect() && Send() ? true : false;
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
         }
 
         public bool WebsiteRequestDenied(DenyWebsiteRequest model)

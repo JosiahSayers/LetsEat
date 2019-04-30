@@ -11,6 +11,7 @@ namespace LetsEat.DAL.SQL
     {
         string connectionString;
         private string SQL_GetFamily = "SELECT *, users.id AS user_id FROM family JOIN users ON family.id = users.family_id WHERE family_id = @family_id";
+        private string SQL_CreateFamily = "INSERT INTO family (name) VALUES (@name); SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
         public FamilySqlDAL(string connectionString)
         {
@@ -44,6 +45,30 @@ namespace LetsEat.DAL.SQL
             catch
             {
                 output = null;
+            }
+
+            return output;
+        }
+
+        public int Create(Family newFamily)
+        {
+            int output;
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_CreateFamily, conn);
+                    cmd.Parameters.AddWithValue("@name", newFamily.Name);
+
+                    output = (int)cmd.ExecuteScalar();
+                }
+            }
+            catch
+            {
+                output = 0;
             }
 
             return output;
