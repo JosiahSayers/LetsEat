@@ -1,5 +1,6 @@
 ﻿@model Recipe
 @{
+    ViewData["Title"] = Model.Name + " by " + Model.UserWhoAdded.DisplayName;
 }
 
 <div class="car-container">
