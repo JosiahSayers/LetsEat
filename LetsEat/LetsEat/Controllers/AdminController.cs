@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.DAL;
 using LetsEat.Models;
+using LetsEat.Providers.Email;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LetsEat.Controllers
@@ -11,10 +12,11 @@ namespace LetsEat.Controllers
     public class AdminController : Controller
     {
         private readonly IWebsiteRequestDAL websiteRequestDAL;
-
-        public AdminController(IWebsiteRequestDAL websiteRequestDAL)
+        private readonly EmailProvider emailProvider;
+        public AdminController(IWebsiteRequestDAL websiteRequestDAL, EmailProvider emailProvider)
         {
             this.websiteRequestDAL = websiteRequestDAL;
+            this.emailProvider = emailProvider;
         }
 
         public IActionResult Index()
@@ -22,6 +24,18 @@ namespace LetsEat.Controllers
             List<WebsiteRequest> wr = websiteRequestDAL.GetNewWebsiteRequests();
 
             return View(wr);
+        }
+
+        public IActionResult TestEmail()
+        {
+            if (emailProvider.Test())
+            {
+                return View(true);
+            }
+            else
+            {
+                return View(false);
+            }
         }
 
         //todo: Add Controller for marking a request as complete

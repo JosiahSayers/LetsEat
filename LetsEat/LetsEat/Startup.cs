@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LetsEat.DAL;
 using LetsEat.DAL.SQL;
 using LetsEat.Providers.Auth;
+using LetsEat.Providers.Email;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -45,6 +46,7 @@ namespace LetsEat
 
             //Dependency injections
             string connectionString = Configuration.GetConnectionString("Default");
+            string emailProviderPassword = Configuration.GetSection("Email")["Pass"];
             services.AddTransient<IUsersDAL>(m => new UserSqlDAL(connectionString));
             services.AddTransient<IFamilyDAL, FamilySqlDAL>(c => new FamilySqlDAL(connectionString));
             services.AddTransient<IImageDAL, ImageSqlDAL>(c => new ImageSqlDAL(connectionString));
@@ -56,6 +58,8 @@ namespace LetsEat
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<IAuthProvider, SessionAuthProvider>();
+
+            services.AddTransient<EmailProvider>(c => new EmailProvider(emailProviderPassword));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
