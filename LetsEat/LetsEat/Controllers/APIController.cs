@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LetsEat.DAL;
 using LetsEat.Models;
 using LetsEat.Providers.Auth;
+using LetsEat.Providers.Email;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,21 +17,31 @@ namespace LetsEat.Controllers
     {
         private readonly IAuthProvider authProvider;
         private readonly IUsersDAL userDAL;
+        private readonly EmailProvider emailProvider;
+        private readonly IFamilyDAL familyDAL;
 
-        public APIController(IAuthProvider authProvider, IUsersDAL userDAL)
+        public APIController(IAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider, IFamilyDAL familyDAL)
         {
             this.authProvider = authProvider;
             this.userDAL = userDAL;
+            this.emailProvider = emailProvider;
+            this.familyDAL = familyDAL;
         }
         //todo: check if user is logged in and has correct permissions in each action method
         public List<User> SearchForMemberToAdd(string email)
         {
-            return userDAL.SearchForUsersNotInFamily(email);
+            if (authProvider.IsLoggedIn && authProvider.GetCurrentUser().FamilyRole == "Leader")
+            {
+                return userDAL.SearchForUsersNotInFamily(email);
+            }
+            else
+            {
+                return new List<User>();
+            }
         }
 
         public IActionResult InviteUserToFamily(int userId, int familyId, int invited_by)
         {
-            //todo: check if user is currently in a family before adding an invite
             Invite invite = new Invite()
             {
                 FamilyId = familyId,
@@ -41,14 +52,25 @@ namespace LetsEat.Controllers
                 }
             };
 
-            if(userDAL.InviteUserToFamily(invite))
+            if (userDAL.GetUser(userId).FamilyId == 0)
             {
-                return Ok();
+
+                if (userDAL.InviteUserToFamily(invite))
+                {
+                    //todo: Email user when they receive an invite
+                    emailProvider.Invite(userDAL.GetUser(userId), userDAL.GetUser(invited_by), familyDAL.GetFamily(familyId));
+                    return Ok();
+                }
+                else
+                {
+                    return StatusCode(500);
+                }
             }
             else
             {
                 return StatusCode(500);
             }
         }
+
     }
 }

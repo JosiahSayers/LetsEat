@@ -29,6 +29,30 @@ namespace LetsEat.Providers.Email
             this.userDAL = new UserSqlDAL(connectionString);
         }
 
+        public bool Invite(User invitee, User familyLeader, Family family)
+        {
+            bool output = false;
+
+            try
+            {
+                to = new MailboxAddress(invitee.DisplayName, invitee.Email);
+                message.To.Add(to);
+
+                message.Subject = $"{familyLeader.DisplayName} has invited you to join the {family.Name} family.";
+
+                body.HtmlBody = $"<h1>Hi {invitee.DisplayName}!</h1><p>{familyLeader.DisplayName} sent you an invite to join the {family.Name} family. Log in to your account now and click on <strong>'Welcome {invitee.DisplayName}'</strong> at the top right to respond to this invite.</p>";
+                message.Body = body.ToMessageBody();
+
+                output = Connect() && Send() ? true : false;
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
+        }
+
         public bool Welcome(User user)
         {
             bool output = false;
