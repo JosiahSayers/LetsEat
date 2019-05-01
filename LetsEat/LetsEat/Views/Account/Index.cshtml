@@ -14,10 +14,14 @@
     <div class="invite-request">
         @Model.Invite.InvitedBy.DisplayName has invited you to join the @Model.Invite.FamilyName family!
         <form class="change-family" asp-action="ChangeFamily">
+            <input type="hidden" asp-for="@Model.Invite.InvitedBy.Id" />
+            <input type="hidden" asp-for="@Model.Invite.FamilyId" />
             <input type="hidden" asp-for="@Model.Email" />
             <input type="submit" class="btn btn-primary" value="Accept" />
         </form>
         <form class="delete-request" asp-action="DeleteInvite">
+            <input type="hidden" asp-for="@Model.Invite.InvitedBy.Id" />
+            <input type="hidden" asp-for="@Model.Invite.FamilyId" />
             <input type="hidden" asp-for="@Model.Email" />
             <input type="submit" class="btn btn-danger" value="delete" />
         </form>

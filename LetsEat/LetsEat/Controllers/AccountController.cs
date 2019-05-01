@@ -8,6 +8,7 @@ using LetsEat.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
 using LetsEat.Models;
 using LetsEat.Providers.Email;
+using LetsEat.Models.Email;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,11 +19,14 @@ namespace LetsEat.Controllers
         private readonly IAuthProvider authProvider;
         private readonly IUsersDAL userDAL;
         private readonly EmailProvider emailProvider;
-        public AccountController(IAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider)
+        private readonly IFamilyDAL familyDAL;
+
+        public AccountController(IAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider, IFamilyDAL familyDAL)
         {
             this.authProvider = authProvider;
             this.userDAL = userDAL;
             this.emailProvider = emailProvider;
+            this.familyDAL = familyDAL;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in -- or filtered to only those that have a certain role [array of roles]
@@ -141,6 +145,15 @@ namespace LetsEat.Controllers
 
             userDAL.ChangeFamily(user);
 
+            InviteResponse ir = new InviteResponse()
+            {
+                Invitee = user,
+                Inviter = user.Invite.InvitedBy,
+                Family = familyDAL.GetFamily(user.FamilyId)
+            };
+
+            emailProvider.AcceptInvite(ir);
+
             return RedirectToAction("Index");
         }
 
@@ -148,7 +161,18 @@ namespace LetsEat.Controllers
         public IActionResult DeleteInvite(User user)
         {
             user = userDAL.GetUser(user.Email);
+
             userDAL.DeleteInvite(user);
+
+            InviteResponse ir = new InviteResponse()
+            {
+                Invitee = user,
+                Inviter = user.Invite.InvitedBy,
+                Family = familyDAL.GetFamily(user.Invite.FamilyId)
+            };
+
+            emailProvider.DeclineInvite(ir);
+
             return RedirectToAction("Index");
         }
     }

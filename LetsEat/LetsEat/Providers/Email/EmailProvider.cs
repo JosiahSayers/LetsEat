@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LetsEat.DAL;
 using LetsEat.DAL.SQL;
 using LetsEat.Models;
+using LetsEat.Models.Email;
 using LetsEat.Models.Forms;
 using MailKit.Net.Smtp;
 using MimeKit;
@@ -27,6 +28,54 @@ namespace LetsEat.Providers.Email
             message.From.Add(from);
             EmailProviderPassword = pass;
             this.userDAL = new UserSqlDAL(connectionString);
+        }
+
+        public bool DeclineInvite(InviteResponse ir)
+        {
+            bool output = false;
+
+            try
+            {
+                to = new MailboxAddress(ir.Inviter.DisplayName, ir.Inviter.Email);
+                message.To.Add(to);
+
+                message.Subject = $"{ir.Invitee.DisplayName} has chosen not to join the {ir.Family.Name} family.";
+
+                body.HtmlBody = $"<h1>Hi {ir.Inviter.DisplayName}!</h1><p>We just wanted to let you know that {ir.Invitee.DisplayName} has declined your request to join the {ir.Family.Name} family.</p><br><p>- The Let's Eat Team</p>";
+                message.Body = body.ToMessageBody();
+
+                output = Connect() && Send() ? true : false;
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
+        }
+
+        public bool AcceptInvite(InviteResponse ir)
+        {
+            bool output = false;
+
+            try
+            {
+                to = new MailboxAddress(ir.Inviter.DisplayName, ir.Inviter.Email);
+                message.To.Add(to);
+
+                message.Subject = $"{ir.Invitee.DisplayName} has joined the {ir.Family.Name} family.";
+
+                body.HtmlBody = $"<h1>Hi {ir.Inviter.DisplayName}!</h1><p>We just wanted to let you know that {ir.Invitee.DisplayName} has accepted your request to join the {ir.Family.Name} family!<br><p>- The Let's Eat Team</p></p>";
+                message.Body = body.ToMessageBody();
+
+                output = Connect() && Send() ? true : false;
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
         }
 
         public bool Invite(User invitee, User familyLeader, Family family)
