@@ -28,8 +28,13 @@ using LetsEat.Models.Forms;
 
 #line default
 #line hidden
+#line 4 "C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\Views\_ViewImports.cshtml"
+using LetsEat.Models.FamilyController;
+
+#line default
+#line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"c3c90ec1f75990434497444bdb79a0555e3144b0", @"/Views/Shared/Components/NavBar/_NavBar.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"542d869c03f2067f752c24fe4c4d660418393418", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"f4509b75b3263b9d11b65382f13c6cd984b8d5d0", @"/Views/_ViewImports.cshtml")]
     public class Views_Shared_Components_NavBar__NavBar : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<NavbarViewModel>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("class", new global::Microsoft.AspNetCore.Html.HtmlString("nav-link text-dark"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -86,7 +91,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("        <li class=\"nav-item\">\r\n            ");
             EndContext();
             BeginContext(188, 103, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b08107", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b08271", async() => {
                 BeginContext(277, 10, true);
                 WriteLiteral("My Recipes");
                 EndContext();
@@ -113,7 +118,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("\r\n        </li>\r\n        <li class=\"nav-item\">\r\n            ");
             EndContext();
             BeginContext(351, 96, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b010035", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b010199", async() => {
                 BeginContext(429, 14, true);
                 WriteLiteral("Family Recipes");
                 EndContext();
@@ -138,7 +143,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("\r\n        </li>\r\n        <li class=\"nav-item\">\r\n            ");
             EndContext();
             BeginContext(507, 106, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b011769", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b011933", async() => {
                 BeginContext(599, 10, true);
                 WriteLiteral("Add Recipe");
                 EndContext();
@@ -182,7 +187,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("        <li class=\"nav-item\">");
             EndContext();
             BeginContext(741, 95, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b014260", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b014424", async() => {
                 BeginContext(827, 5, true);
                 WriteLiteral("Login");
                 EndContext();
@@ -209,7 +214,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("</li>\r\n        <li class=\"nav-item\">");
             EndContext();
             BeginContext(872, 101, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b016156", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b016320", async() => {
                 BeginContext(961, 8, true);
                 WriteLiteral("Register");
                 EndContext();
@@ -248,7 +253,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("            <li class=\"nav-item\">");
             EndContext();
             BeginContext(1087, 143, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b018379", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b018543", async() => {
                 BeginContext(1195, 8, true);
                 WriteLiteral("Welcome ");
                 EndContext();
@@ -292,7 +297,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("            <li class=\"nav-item\">");
             EndContext();
             BeginContext(1306, 121, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b020966", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b021130", async() => {
                 BeginContext(1392, 8, true);
                 WriteLiteral("Welcome ");
                 EndContext();
@@ -339,7 +344,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("                <li class=\"nav-item\">");
             EndContext();
             BeginContext(1582, 111, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b023610", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b023774", async() => {
                 BeginContext(1676, 13, true);
                 WriteLiteral("Admin Section");
                 EndContext();
@@ -374,7 +379,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("                <li class=\"nav-item\">");
             EndContext();
             BeginContext(1785, 89, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b025620", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b025784", async() => {
                 BeginContext(1857, 13, true);
                 WriteLiteral("Admin Section");
                 EndContext();
@@ -413,7 +418,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("                <li class=\"nav-item\">");
             EndContext();
             BeginContext(2068, 90, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b027732", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b027896", async() => {
                 BeginContext(2141, 13, true);
                 WriteLiteral("Manage Family");
                 EndContext();
@@ -448,7 +453,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("                <li class=\"nav-item\">");
             EndContext();
             BeginContext(2250, 88, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b029742", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b029906", async() => {
                 BeginContext(2323, 11, true);
                 WriteLiteral("View Family");
                 EndContext();
@@ -483,7 +488,7 @@ using LetsEat.Models.Forms;
             WriteLiteral("        <li class=\"nav-item\">");
             EndContext();
             BeginContext(2402, 97, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b031722", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3c90ec1f75990434497444bdb79a0555e3144b031886", async() => {
                 BeginContext(2489, 6, true);
                 WriteLiteral("Logout");
                 EndContext();

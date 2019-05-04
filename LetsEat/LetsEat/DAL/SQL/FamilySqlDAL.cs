@@ -12,10 +12,41 @@ namespace LetsEat.DAL.SQL
         string connectionString;
         private string SQL_GetFamily = "SELECT *, users.id AS user_id FROM family JOIN users ON family.id = users.family_id WHERE family_id = @family_id";
         private string SQL_CreateFamily = "INSERT INTO family (name) VALUES (@name); SELECT CAST(SCOPE_IDENTITY() AS INT);";
+        private string SQL_GetLeaders = "SELECT *, users.id AS user_id FROM users WHERE family_id = @family_id AND family_role = 'Leader';";
+        private string SQL_RemoveFamily = "DELETE FROM family WHERE id = @family_id";
 
         public FamilySqlDAL(string connectionString)
         {
             this.connectionString = connectionString;
+        }
+
+        public List<User> GetLeaders(int familyId)
+        {
+            List<User> output = new List<User>();
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_GetLeaders, conn);
+                    cmd.Parameters.AddWithValue("@family_id", familyId);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        output.Add(MapRowToUser(reader));
+                    }
+                }
+            }
+            catch
+            {
+                output = null;
+            }
+
+            return output;
         }
 
         public Family GetFamily(int familyId)
@@ -69,6 +100,32 @@ namespace LetsEat.DAL.SQL
             catch
             {
                 output = 0;
+            }
+
+            return output;
+        }
+
+        public bool Remove(int familyId)
+        {
+            bool output;
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_RemoveFamily, conn);
+                    cmd.Parameters.AddWithValue("@family_id", familyId);
+
+                    cmd.ExecuteNonQuery();
+
+                    output = true;
+                }
+            }
+            catch
+            {
+                output = false;
             }
 
             return output;

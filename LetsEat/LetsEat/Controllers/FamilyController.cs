@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LetsEat.DAL;
 using LetsEat.Models;
 using LetsEat.Models.Email;
+using LetsEat.Models.FamilyController;
 using LetsEat.Models.Forms;
 using LetsEat.Providers.Auth;
 using LetsEat.Providers.Email;
@@ -201,7 +202,7 @@ namespace LetsEat.Controllers
             if (authProvider.IsLoggedIn)
             {
                 User currentUser = authProvider.GetCurrentUser();
-                if(currentUser.FamilyRole == "Leader" && currentUser.FamilyId == userToRemove.FamilyId)
+                if (currentUser.FamilyRole == "Leader" && currentUser.FamilyId == userToRemove.FamilyId)
                 {
                     return View(userToRemove);
                 }
@@ -226,7 +227,7 @@ namespace LetsEat.Controllers
             {
                 User currentUser = authProvider.GetCurrentUser();
 
-                if(currentUser.FamilyRole == "Leader" && currentUser.FamilyId == userToRemove.FamilyId)
+                if (currentUser.FamilyRole == "Leader" && currentUser.FamilyId == userToRemove.FamilyId)
                 {
                     RemoveFromFamilyEmail email = new RemoveFromFamilyEmail()
                     {
@@ -240,8 +241,66 @@ namespace LetsEat.Controllers
                         emailProvider.RemoveFromFamily(email);
                     }
                 }
+
+                return RedirectToAction("Index", "Family");
             }
-            return RedirectToAction("Index", "Family");
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Leave()
+        {
+            if (authProvider.IsLoggedIn)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+                Family family = familyDAL.GetFamily(currentUser.Id);
+                List<User> familyLeaders = familyDAL.GetLeaders(currentUser.FamilyId);
+
+                if(currentUser.FamilyRole == "Leader")
+                {
+                    if (familyLeaders.Count == 1 && family.Members.Count > 1 )
+                    {
+                        return View("FamilyNeedsALeader");
+                    }
+                    else
+                    {
+                        return View(currentUser);
+                    }
+                }
+                return View(currentUser);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Leave(User user)
+        {
+            if (authProvider.IsLoggedIn && authProvider.GetCurrentUser().Id == user.Id)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+
+                usersDAL.RemoveFromFamily(user);
+                
+                Family family = familyDAL.GetFamily(currentUser.FamilyId);
+
+                if(family.Members.Count == 0)
+                {
+                    familyDAL.Remove(currentUser.FamilyId);
+                }
+
+                return RedirectToAction("Index", "RecipeBook");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
     }
 }

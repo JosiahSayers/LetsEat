@@ -10,5 +10,7 @@ namespace LetsEat.DAL
     {
         Family GetFamily(int familyId);
         int Create(Family newFamily);
+        List<User> GetLeaders(int familyId);
+        bool Remove(int familyId);
     }
 }

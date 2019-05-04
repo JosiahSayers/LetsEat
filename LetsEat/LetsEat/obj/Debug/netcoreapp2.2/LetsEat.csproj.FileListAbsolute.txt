@@ -52,3 +52,5 @@ C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\NotInFamily.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\Create.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\RemoveMember.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\Leave.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\FamilyNeedsALeader.g.cshtml.cs
