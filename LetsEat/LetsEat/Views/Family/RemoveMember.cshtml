@@ -1,0 +1,27 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "RemoveMember";
+}
+
+<h1>Are you sure you want to remove @Model.DisplayName from the family?</h1>
+
+<p>Doing so will remove all of their recipes from your 'Family Recipes' section. (The recipes they added will remain on their private account)</p>
+
+<form asp-action="RemoveMember" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" class="btn btn-danger" value="Remove @Model.DisplayName" />
+</form>
+
+<a asp-action="Index">Cancel</a>
+
+<style>
+
+    h1 {
+        padding-bottom: 5px;
+    }
+
+    form {
+        padding: 5px 0 35px 0;
+    }
+</style>

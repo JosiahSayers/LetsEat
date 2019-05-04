@@ -16,7 +16,8 @@
                 <strong>@user.DisplayName</strong> - @user.FamilyRole
                 @if (user.Id != Model.CurrentUser.Id && Model.CurrentUser.FamilyRole == "Leader")
                 {
-                    <a class="float-right btn btn-success btn-sm" asp-action="ChangeMemberRole" asp-route-userIdToChange="@user.Id">Change Family Role</a>
+                    <a class="float-right btn btn-danger btn-sm" asp-action="RemoveMember" asp-route-userIdToRemove="@user.Id">Remove From Family</a>
+                    <a class="float-right btn btn-success btn-sm" asp-action="ChangeMemberRole" asp-route-userIdToChange="@user.Id">Change Role</a>
                 }
             </li>
         }

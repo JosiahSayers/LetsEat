@@ -30,6 +30,30 @@ namespace LetsEat.Providers.Email
             this.userDAL = new UserSqlDAL(connectionString);
         }
 
+        public bool RemoveFromFamily(RemoveFromFamilyEmail model)
+        {
+            bool output = false;
+
+            try
+            {
+                to = new MailboxAddress(model.User.DisplayName, model.User.Email);
+                message.To.Add(to);
+
+                message.Subject = $"{model.Leader.DisplayName} has removed you from the {model.Family.Name} family.";
+
+                body.HtmlBody = $"<h1>Hi {model.User.DisplayName}!</h1><p>We just wanted to let you know that {model.Leader.DisplayName} has removed you from the {model.Family.Name} Family.</p><p>All of the recipes that you have added are still saved to your account but they have been removed from the {model.Family.Name} Family recipe book.</p><br><p>- The Let's Eat Team</p>";
+                message.Body = body.ToMessageBody();
+
+                output = Connect() && Send() ? true : false;
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
+        }
+
         public bool FamilyRoleChanged(FamilyRoleEmail model)
         {
             bool output = false;

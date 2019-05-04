@@ -14,6 +14,8 @@ namespace LetsEat.DAL.SQL
         private const string sql_DeleteUser = "DELETE FROM users WHERE id = @id;";
         private const string sql_GetUser = "SELECT * FROM users LEFT JOIN invite ON users.id = invite.invite_user_id WHERE email = @email;";
         private const string SQL_GetUserById = "SELECT * FROM users WHERE id = @id";
+        private const string SQL_RemoveUserFromFamily = "UPDATE users SET family_id = null, family_role = null WHERE id = @user_id";
+        private const string SQL_RemoveUserRecipesFromFamily = "UPDATE recipe SET family_id = null WHERE user_id = @user_id";
         private const string SQL_AddUserToFamily = "UPDATE users SET family_id = @family_id, family_role = @family_role WHERE id = @user_id";
         private const string SQL_UpdateUserRecipesToNewFamily = "UPDATE recipe SET family_id = @family_id WHERE user_id = @user_id";
         private const string SQL_SearchForUsersNotInFamily = "SELECT * FROM users LEFT JOIN invite ON users.id = invite.invite_user_id WHERE family_id IS NULL AND email LIKE '%' + @email + '%';";
@@ -259,6 +261,36 @@ namespace LetsEat.DAL.SQL
 
                     cmd.ExecuteNonQuery();
                 }
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
+        }
+
+        public bool RemoveFromFamily(User user)
+        {
+            bool output;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_RemoveUserFromFamily, conn);
+                    cmd.Parameters.AddWithValue("@user_id", user.Id);
+
+                    cmd.ExecuteNonQuery();
+
+                    cmd = new SqlCommand(SQL_RemoveUserRecipesFromFamily, conn);
+                    cmd.Parameters.AddWithValue("@user_id", user.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                output = true;
             }
             catch
             {

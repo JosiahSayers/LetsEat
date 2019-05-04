@@ -45,5 +45,7 @@ namespace LetsEat.DAL
         bool DoesEmailAlreadyExist(string email);
 
         List<User> GetAdmins();
+
+        bool RemoveFromFamily(User user);
     }
 }

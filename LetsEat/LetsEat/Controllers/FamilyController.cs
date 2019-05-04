@@ -192,5 +192,56 @@ namespace LetsEat.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
+        [HttpGet]
+        public IActionResult RemoveMember(int userIdToRemove)
+        {
+            User userToRemove = usersDAL.GetUser(userIdToRemove);
+
+            if (authProvider.IsLoggedIn)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+                if(currentUser.FamilyRole == "Leader" && currentUser.FamilyId == userToRemove.FamilyId)
+                {
+                    return View(userToRemove);
+                }
+                else
+                {
+                    return RedirectToAction("NotAllowed", "Family");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveMember(User userToRemove)
+        {
+            userToRemove = usersDAL.GetUser(userToRemove.Id);
+
+            if (authProvider.IsLoggedIn)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+
+                if(currentUser.FamilyRole == "Leader" && currentUser.FamilyId == userToRemove.FamilyId)
+                {
+                    RemoveFromFamilyEmail email = new RemoveFromFamilyEmail()
+                    {
+                        User = userToRemove,
+                        Leader = currentUser,
+                        Family = familyDAL.GetFamily(currentUser.FamilyId)
+                    };
+
+                    if (usersDAL.RemoveFromFamily(userToRemove))
+                    {
+                        emailProvider.RemoveFromFamily(email);
+                    }
+                }
+            }
+            return RedirectToAction("Index", "Family");
+        }
     }
 }
