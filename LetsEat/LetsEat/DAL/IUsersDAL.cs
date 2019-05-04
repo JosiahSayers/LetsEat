@@ -26,7 +26,7 @@ namespace LetsEat.DAL
         /// Updates a user.
         /// </summary>
         /// <param name="user"></param>
-        void UpdateUser(User user);
+        bool UpdateUser(User user);
 
         /// <summary>
         /// Deletes a user from the system.

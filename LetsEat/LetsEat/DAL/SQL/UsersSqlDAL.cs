@@ -212,8 +212,9 @@ namespace LetsEat.DAL.SQL
         /// Updates the user in the database.
         /// </summary>
         /// <param name="user"></param>
-        public void UpdateUser(User user)
+        public bool UpdateUser(User user)
         {
+            bool output;
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -231,13 +232,15 @@ namespace LetsEat.DAL.SQL
 
                     cmd.ExecuteNonQuery();
 
-                    return;
+                    output = true;
                 }
             }
             catch
             {
-                //todo: add some error handling
+                output = false;
             }
+
+            return output;
         }
 
         public bool DeleteInvite(User user)

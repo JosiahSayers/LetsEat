@@ -30,6 +30,30 @@ namespace LetsEat.Providers.Email
             this.userDAL = new UserSqlDAL(connectionString);
         }
 
+        public bool FamilyRoleChanged(FamilyRoleEmail model)
+        {
+            bool output = false;
+
+            try
+            {
+                to = new MailboxAddress(model.User.DisplayName, model.User.Email);
+                message.To.Add(to);
+
+                message.Subject = $"{model.UserWhoMadeChange.DisplayName} has changed your role in the {model.Family.Name} family.";
+
+                body.HtmlBody = $"<h1>Hi {model.User.DisplayName}!</h1><p>We just wanted to let you know that {model.UserWhoMadeChange.DisplayName} has changed your role in the {model.Family.Name} Family.</p><strong>Previous Role: </strong>{model.PreviousRole}<p><strong>New Role: </strong>{model.User.FamilyRole}</p><p></p><br><p>- The Let's Eat Team</p>";
+                message.Body = body.ToMessageBody();
+
+                output = Connect() && Send() ? true : false;
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
+        }
+
         public bool DeclineInvite(InviteResponse ir)
         {
             bool output = false;

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.DAL;
 using LetsEat.Models;
+using LetsEat.Models.Email;
 using LetsEat.Models.Forms;
 using LetsEat.Providers.Auth;
+using LetsEat.Providers.Email;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LetsEat.Controllers
@@ -15,12 +17,14 @@ namespace LetsEat.Controllers
         private readonly IFamilyDAL familyDAL;
         private readonly IAuthProvider authProvider;
         private readonly IUsersDAL usersDAL;
+        private readonly EmailProvider emailProvider;
 
-        public FamilyController(IFamilyDAL familyDAL, IAuthProvider authProvider, IUsersDAL usersDAL)
+        public FamilyController(IFamilyDAL familyDAL, IAuthProvider authProvider, IUsersDAL usersDAL, EmailProvider emailProvider)
         {
             this.familyDAL = familyDAL;
             this.authProvider = authProvider;
             this.usersDAL = usersDAL;
+            this.emailProvider = emailProvider;
         }
 
         public IActionResult Index()
@@ -103,8 +107,22 @@ namespace LetsEat.Controllers
                 if (currentUser.FamilyRole == "Leader")
                 {
                     User userToUpdate = usersDAL.GetUser(vm.userToChange.Id);
-                    userToUpdate.FamilyRole = vm.userToChange.FamilyRole;
-                    usersDAL.UpdateUser(userToUpdate);
+                    if (userToUpdate.FamilyRole != vm.userToChange.FamilyRole)
+                    {
+                        FamilyRoleEmail emailModel = new FamilyRoleEmail()
+                        {
+                            PreviousRole = userToUpdate.FamilyRole,
+                            UserWhoMadeChange = currentUser,
+                            Family = familyDAL.GetFamily(userToUpdate.FamilyId)
+                        };
+                        userToUpdate.FamilyRole = vm.userToChange.FamilyRole;
+                        emailModel.User = userToUpdate;
+
+                        if (usersDAL.UpdateUser(userToUpdate))
+                        {
+                            emailProvider.FamilyRoleChanged(emailModel);
+                        }
+                    }
 
                     return RedirectToAction("Index");
                 }
@@ -152,7 +170,7 @@ namespace LetsEat.Controllers
             {
                 newFamily.Id = familyDAL.Create(newFamily);
 
-                if(newFamily.Id > 0)
+                if (newFamily.Id > 0)
                 {
                     User currentUser = authProvider.GetCurrentUser();
 
