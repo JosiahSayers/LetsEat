@@ -1,47 +1,10 @@
-﻿@using LetsEat.Models.Forms
-
-@model AddRecipeForm
+﻿
 @{
     ViewData["Title"] = "Add A Recipe";
 }
 
-<h2>Add a new recipe</h2>
 
-@using (Html.BeginForm("AddRecipe", "RecipeBook", FormMethod.Post))
-{
-    <label asp-for="Name"></label>
-    <input type="text" asp-for="Name" />
-    <br />
-    <label asp-for="Description"></label>
-    <input type="text" asp-for="Description" />
-    <br />
+<h1>How would you like to add the recipe?</h1>
 
-    <label asp-for="Source"></label>
-    <input type="text" asp-for="Source" />
-    <br />
-
-    <label asp-for="UserWhoAdded"></label>
-    <input type="text" asp-for="UserWhoAdded" />
-    <br />
-
-    <label asp-for="PrepMinutes"></label>
-    <input type="text" asp-for="PrepMinutes" />
-    <br />
-
-    <label asp-for="CookMinutes"></label>
-    <input type="text" asp-for="CookMinutes" />
-    <br />
-
-    <label asp-for="Ingredients"></label>
-    <input type="text" asp-for="Ingredients" />
-    <br />
-
-    <label asp-for="ImageLocations"></label>
-    <input type="text" asp-for="ImageLocations" />
-    <br />
-
-    <label asp-for="Steps"></label>
-    <input type="text" asp-for="Steps" />
-
-    <input type="submit" value="Submit" />
-}
+<a asp-action="ParseURL" class="btn btn-lg btn-light">Automatically add from another website</a> 
+<a asp-action="ManuallyAddRecipe" class="btn btn-lg btn-light">Type in the recipe by hand</a>

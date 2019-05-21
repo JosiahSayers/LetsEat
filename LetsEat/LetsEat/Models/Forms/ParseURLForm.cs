@@ -354,6 +354,16 @@ namespace LetsEat.Models.Forms
 
             }
 
+            for(int i=0; i<output.Steps.Count; i++)
+            {
+                output.Steps[i] = output.Steps[i].Trim();
+            }
+
+            for (int i = 0; i < output.Ingredients.Count; i++)
+            {
+                output.Ingredients[i] = output.Ingredients[i].Trim();
+            }
+
             output.DateAdded = DateTime.Now;
             output.Source = URL;
 

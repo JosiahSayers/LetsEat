@@ -31,7 +31,6 @@ C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Index.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Register.g.cshtml.cs
-C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\AddRecipe.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\FailedToAddRecipe.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\ParseURL.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\Recipe.g.cshtml.cs
@@ -54,3 +53,6 @@ C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\RemoveMember.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\Leave.g.cshtml.cs
 C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\Family\FamilyNeedsALeader.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\Edit.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\ManuallyAddRecipe.g.cshtml.cs
+C:\Users\Josiah\Documents\Code\Lets-Eat\LetsEat\LetsEat\obj\Debug\netcoreapp2.2\Razor\Views\RecipeBook\AddRecipe.g.cshtml.cs

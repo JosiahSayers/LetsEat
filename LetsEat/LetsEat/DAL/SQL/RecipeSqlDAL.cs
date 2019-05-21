@@ -13,7 +13,7 @@ namespace LetsEat.DAL.SQL
         private string SQL_GetMyRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id WHERE recipe.user_id = @user_id";
         private string SQL_GetRecipeByID = "SELECT * FROM recipe JOIN users on recipe.user_id = users.id WHERE recipe.id = @id";
         private string SQL_SearchForRecipe = "SELECT DISTINCT recipe.ID FROM recipe JOIN ingredient ON recipe.id = ingredient.recipe_id WHERE recipe.name LIKE (@searchQuery) OR recipe.description LIKE (@searchQuery) OR ingredient.ingredient LIKE (@searchQuery);";
-        private string SQL_CreateRecipe = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded); SELECT CAST(SCOPE_IDENTITY() as int);";
+        private string SQL_CreateRecipe = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id, family_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded, @family_id); SELECT CAST(SCOPE_IDENTITY() as int);";
         private string SQL_GetFamilyRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id WHERE recipe.family_id = @family_id;";
 
         private readonly IIngredientDAL ingredientDAL;
@@ -154,6 +154,11 @@ namespace LetsEat.DAL.SQL
                     cmd.Parameters.AddWithValue("@source", recipe.Source);
                     cmd.Parameters.AddWithValue("@dateAdded", recipe.DateAdded);
                     cmd.Parameters.AddWithValue("@userWhoAdded", recipe.UserWhoAdded.Id);
+
+                    if(recipe.UserWhoAdded.FamilyId > 0)
+                    {
+                        cmd.Parameters.AddWithValue("@family_id", recipe.UserWhoAdded.FamilyId);
+                    }
 
 
                     conn.Open();

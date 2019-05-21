@@ -10,16 +10,17 @@ namespace LetsEat.Models.Forms
         public string Description { get; set; }
         public string Source { get; set; }
         public string UserWhoAdded { get; set; }
+        public int UserIdWhoAdded { get; set; }
         [DisplayName("Prep Time (in minutes)")]
         public int PrepMinutes { get; set; }
         [DisplayName("Cook Time (in minutes)")]
         public int CookMinutes { get; set; }
 
-        [DisplayName("Ingredients ('|' Seperated)")]
+        [DisplayName("Ingredients")]
         public string Ingredients { get; set; }
-        [DisplayName("Image URLs ('|' Seperated)")]
+        [DisplayName("Image URL")]
         public string ImageLocations { get; set; }
-        [DisplayName("Steps ('|' Seperated)")]
+        [DisplayName("Steps")]
         public string Steps { get; set; }
 
         public List<string> IngredientsList { get; set; }

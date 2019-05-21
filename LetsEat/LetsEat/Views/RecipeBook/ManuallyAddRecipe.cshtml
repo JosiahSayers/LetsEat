@@ -1,0 +1,53 @@
+﻿@using LetsEat.Models.Forms
+
+@model AddRecipeForm
+@{
+    ViewData["Title"] = "Add A Recipe";
+}
+
+<h2>Add a new recipe</h2>
+
+<form>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input type="text" class="form-control" id="Name" placeholder="Something delicious...">
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea class="form-control" rows="3" id="description" placeholder="It smells like heaven..."></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="Source"></label>
+        <input type="text" class="form-control" id="Source" placeholder="Where did you find this recipe?">
+    </div>
+    <div class="form-group">
+        <label asp-for="PrepMinutes"></label>
+        <input type="number" class="form-control" id="PrepMinutes" placeholder="ex. 15">
+    </div>
+    <div class="form-group">
+        <label asp-for="CookMinutes"></label>
+        <input type="number" class="form-control" id="CookMinutes" placeholder="ex. 45">
+    </div>
+    <label asp-for="Ingredients"></label>
+    <div id="ingredients">
+        <div class="form-group ingredient-step-group">
+            <input type="text" class="form-control ingredient" placeholder="1/2 cup of milk">
+        </div>
+    </div>
+    <button id="addIngredient" class="btn btn-light">Add Another Ingredient</button>
+    <br />
+    <label asp-for="Steps"></label>
+    <div id="steps">
+        <div class="form-group ingredient-step-group">
+            <input type="text" class="form-control step" placeholder="Preheat the oven to 350 degrees">
+        </div>
+    </div>
+    <button id="addStep" class="btn btn-light">Add Another Step</button>
+    <input type="hidden" id="UserWhoAdded" asp-for="UserIdWhoAdded" />
+    <br />
+    <input type="submit" class="btn btn-primary">
+</form>
+
+<script src="~/js/RecipeBook/ManuallyAddRecipe.js"></script>
+<link href="~/svg/open-iconic-bootstrap.min.css" rel="stylesheet" />
+<link href="~/css/ManuallyAddRecipe.css" rel="stylesheet" />

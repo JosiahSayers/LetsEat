@@ -98,9 +98,24 @@ namespace LetsEat.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult ManuallyAddRecipe()
+        {
+            if (authProvider.IsLoggedIn)
+            {
+                AddRecipeForm model = new AddRecipeForm();
+                model.UserIdWhoAdded = authProvider.GetCurrentUser().Id;
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddRecipe(AddRecipeForm form)
+        public IActionResult ManuallyAddRecipe(AddRecipeForm form)
         {
             if (authProvider.IsLoggedIn)
             {
@@ -189,5 +204,21 @@ namespace LetsEat.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Recipe model = recipeDAL.GetRecipeByID(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Recipe recipe)
+        {
+            //todo: create update method in recipeDAL
+            return RedirectToAction("Recipe", new { id = recipe.ID });
+        }
+
+        //todo: delete a recipe
     }
 }
