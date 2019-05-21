@@ -14,3 +14,11 @@ span.oi-circle-x {
 #addIngredient, addStep {
     margin-bottom: 20px;
 }
+
+div.btn {
+    cursor: pointer;
+}
+
+span.step-counter {
+    margin-right: 10px;
+}

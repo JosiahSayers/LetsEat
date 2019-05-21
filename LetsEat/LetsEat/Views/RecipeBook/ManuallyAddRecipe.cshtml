@@ -34,18 +34,19 @@
             <input type="text" class="form-control ingredient" placeholder="1/2 cup of milk">
         </div>
     </div>
-    <button id="addIngredient" class="btn btn-light">Add Another Ingredient</button>
+    <div id="addIngredient" class="btn btn-light">Add Another Ingredient</div>
     <br />
     <label asp-for="Steps"></label>
     <div id="steps">
         <div class="form-group ingredient-step-group">
+            <span class="step-counter">1. </span>
             <input type="text" class="form-control step" placeholder="Preheat the oven to 350 degrees">
         </div>
     </div>
-    <button id="addStep" class="btn btn-light">Add Another Step</button>
+    <div id="addStep" class="btn btn-light">Add Another Step</div>
     <input type="hidden" id="UserWhoAdded" asp-for="UserIdWhoAdded" />
     <br />
-    <input type="submit" class="btn btn-primary">
+    <button id="submit" class="btn btn-primary">Add Recipe!</button>
 </form>
 
 <script src="~/js/RecipeBook/ManuallyAddRecipe.js"></script>

@@ -19,13 +19,15 @@ namespace LetsEat.Controllers
         private readonly IUsersDAL userDAL;
         private readonly EmailProvider emailProvider;
         private readonly IFamilyDAL familyDAL;
+        private readonly IRecipeDAL recipeDAL;
 
-        public APIController(IAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider, IFamilyDAL familyDAL)
+        public APIController(IAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider, IFamilyDAL familyDAL, IRecipeDAL recipeDAL)
         {
             this.authProvider = authProvider;
             this.userDAL = userDAL;
             this.emailProvider = emailProvider;
             this.familyDAL = familyDAL;
+            this.recipeDAL = recipeDAL;
         }
         //todo: check if user is logged in and has correct permissions in each action method
         public List<User> SearchForMemberToAdd(string email)
@@ -69,6 +71,35 @@ namespace LetsEat.Controllers
             else
             {
                 return StatusCode(500);
+            }
+        }
+
+        public Recipe AddRecipe(Recipe newRecipe)
+        {
+            Recipe error = new Recipe();
+            error.ID = 0;
+
+            if (authProvider.IsLoggedIn)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+
+                newRecipe.UserWhoAdded = currentUser;
+                newRecipe.ImageLocations = new List<string>();
+
+                newRecipe = recipeDAL.AddRecipe(newRecipe);
+
+                if (newRecipe.ID > 0)
+                {
+                    return newRecipe;
+                }
+                else
+                {
+                    return error;
+                }
+            }
+            else
+            {
+                return error;
             }
         }
 

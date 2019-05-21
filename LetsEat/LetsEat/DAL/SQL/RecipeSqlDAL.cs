@@ -14,6 +14,7 @@ namespace LetsEat.DAL.SQL
         private string SQL_GetRecipeByID = "SELECT * FROM recipe JOIN users on recipe.user_id = users.id WHERE recipe.id = @id";
         private string SQL_SearchForRecipe = "SELECT DISTINCT recipe.ID FROM recipe JOIN ingredient ON recipe.id = ingredient.recipe_id WHERE recipe.name LIKE (@searchQuery) OR recipe.description LIKE (@searchQuery) OR ingredient.ingredient LIKE (@searchQuery);";
         private string SQL_CreateRecipe = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id, family_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded, @family_id); SELECT CAST(SCOPE_IDENTITY() as int);";
+        private string SQL_CreateRecipeNoFamily = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded); SELECT CAST(SCOPE_IDENTITY() as int);";
         private string SQL_GetFamilyRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id WHERE recipe.family_id = @family_id;";
 
         private readonly IIngredientDAL ingredientDAL;
@@ -41,24 +42,9 @@ namespace LetsEat.DAL.SQL
                     cmd.Parameters.AddWithValue("@id", id);
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    while (reader.Read())
+                    if (reader.Read())
                     {
-                        output.ID = Convert.ToInt32(reader["id"]);
-                        output.Name = Convert.ToString(reader["name"]);
-                        output.PrepMinutes = Convert.ToInt32(reader["prep_minutes"]);
-                        output.CookMinutes = Convert.ToInt32(reader["cook_minutes"]);
-                        output.Description = Convert.ToString(reader["description"]);
-                        output.Source = Convert.ToString(reader["source"]);
-                        output.DateAdded = Convert.ToDateTime(reader["date_added"]);
-                        output.FamilyID = Convert.ToInt32(reader["family_id"]);
-
-                        output.UserWhoAdded = new User()
-                        {
-                            Id = Convert.ToInt32(reader["user_id"]),
-                            DisplayName = Convert.ToString(reader["display_name"]),
-                            Email = Convert.ToString(reader["email"])
-                        };
-
+                        output = MapRowToRecipe(reader);
                     }
 
                     reader.Close();
@@ -146,7 +132,17 @@ namespace LetsEat.DAL.SQL
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    SqlCommand cmd = new SqlCommand(SQL_CreateRecipe, conn);
+                    SqlCommand cmd;
+                    if (recipe.UserWhoAdded.FamilyId > 0)
+                    {
+                        cmd = new SqlCommand(SQL_CreateRecipe, conn);
+                        cmd.Parameters.AddWithValue("@family_id", recipe.UserWhoAdded.FamilyId);
+                    }
+                    else
+                    {
+                        cmd = new SqlCommand(SQL_CreateRecipeNoFamily, conn);
+                    }
+
                     cmd.Parameters.AddWithValue("@name", recipe.Name);
                     cmd.Parameters.AddWithValue("@description", recipe.Description);
                     cmd.Parameters.AddWithValue("@prepMinutes", recipe.PrepMinutes);
@@ -154,12 +150,6 @@ namespace LetsEat.DAL.SQL
                     cmd.Parameters.AddWithValue("@source", recipe.Source);
                     cmd.Parameters.AddWithValue("@dateAdded", recipe.DateAdded);
                     cmd.Parameters.AddWithValue("@userWhoAdded", recipe.UserWhoAdded.Id);
-
-                    if(recipe.UserWhoAdded.FamilyId > 0)
-                    {
-                        cmd.Parameters.AddWithValue("@family_id", recipe.UserWhoAdded.FamilyId);
-                    }
-
 
                     conn.Open();
 
@@ -228,7 +218,10 @@ namespace LetsEat.DAL.SQL
             r.Description = Convert.ToString(reader["description"]);
             r.Source = Convert.ToString(reader["source"]);
             r.DateAdded = Convert.ToDateTime(reader["date_added"]);
-            r.FamilyID = Convert.ToInt32(reader["family_id"]);
+            if (!reader.IsDBNull(reader.GetOrdinal("family_id")))
+            {
+                r.FamilyID = Convert.ToInt32(reader["family_id"]);
+            }
 
             r.UserWhoAdded = new User()
             {

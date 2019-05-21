@@ -13,7 +13,7 @@
     {
         <div class="card">
             <a asp-action="Recipe" asp-route-id="@r.ID">
-                <img class="card-img-top" src="@r.ImageLocations[0]" alt="@r.Name">
+                <img class="card-img-top" src="@(r.ImageLocations.Count > 0 ? r.ImageLocations[0] : "")" alt="@r.Name">
             </a>
             <div class="card-body">
                 <h5 class="card-title"><a asp-action="Recipe" asp-route-id="@r.ID" class="card-link">@r.Name</a></h5>
