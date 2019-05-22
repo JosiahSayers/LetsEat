@@ -39,7 +39,7 @@ namespace LetsEat.Controllers.API
                 Directory.CreateDirectory(environment.WebRootPath + "\\uploads\\");
             }
 
-            using (FileStream fs = System.IO.File.Create(environment.WebRootPath + "\\uploads\\" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + rand.Next(256) + upload.File.FileName))
+            using (FileStream fs = System.IO.File.Create($"{environment.WebRootPath}\\uploads\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}-{rand.Next(256)}-{upload.File.FileName}"))
             {
                 upload.File.CopyTo(fs);
                 fs.Flush();
