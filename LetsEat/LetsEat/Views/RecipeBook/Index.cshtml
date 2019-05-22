@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LetsEat.Models.Recipe>
+﻿@model List<LetsEat.Models.Recipe>
 
 @{
     ViewData["Title"] = "My Recipes";
@@ -8,17 +8,26 @@
 
 <hr />
 
-<div class="card-columns">
-    @foreach (Recipe r in Model)
-    {
-        <div class="card">
-            <a asp-action="Recipe" asp-route-id="@r.ID">
-                <img class="card-img-top" src="@(r.ImageLocations.Count > 0 ? r.ImageLocations[0] : "")" alt="@r.Name">
-            </a>
-            <div class="card-body">
-                <h5 class="card-title"><a asp-action="Recipe" asp-route-id="@r.ID" class="card-link">@r.Name</a></h5>
-                <p class="card-text">@r.Description</p>
+@if (Model.Count < 1)
+{
+    <h2>Uh oh... You haven't added any recipes yet!</h2>
+    <br />
+    <h3>Click <a asp-action="AddRecipe">here</a> to get started.</h3>
+}
+else
+{
+    <div class="card-columns">
+        @foreach (Recipe r in Model)
+        {
+            <div class="card">
+                <a asp-action="Recipe" asp-route-id="@r.ID">
+                    <img class="card-img-top" src="@(r.ImageLocations.Count > 0 ? r.ImageLocations[0] : "")" alt="@r.Name">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title"><a asp-action="Recipe" asp-route-id="@r.ID" class="card-link">@r.Name</a></h5>
+                    <p class="card-text">@r.Description</p>
+                </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}

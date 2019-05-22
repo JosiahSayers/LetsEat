@@ -7,6 +7,10 @@
 
 <h2>Add a new recipe</h2>
 
+<div id="spinner">
+    <img src="~/img/spinner.gif" />
+</div>
+
 <form>
     <div class="form-group">
         <label asp-for="Name"></label>
@@ -22,13 +26,13 @@
     </div>
     <div class="form-group">
         <label asp-for="PrepMinutes"></label>
-        <input type="number" class="form-control" id="PrepMinutes" placeholder="ex. 15">
+        <input type="text" class="form-control" id="PrepMinutes" placeholder="ex. 15" min="1" max="999">
     </div>
     <div class="form-group">
         <label asp-for="CookMinutes"></label>
-        <input type="number" class="form-control" id="CookMinutes" placeholder="ex. 45">
+        <input type="text" class="form-control" id="CookMinutes" placeholder="ex. 45" min="1" max="999">
     </div>
-    <label asp-for="Ingredients"></label>
+    <label id="ing-id" asp-for="Ingredients"></label>
     <div id="ingredients">
         <div class="form-group ingredient-step-group">
             <input type="text" class="form-control ingredient" placeholder="1/2 cup of milk">
@@ -36,7 +40,7 @@
     </div>
     <div id="addIngredient" class="btn btn-light">Add Another Ingredient</div>
     <br />
-    <label asp-for="Steps"></label>
+    <label id="step-id" asp-for="Steps"></label>
     <div id="steps">
         <div class="form-group ingredient-step-group">
             <span class="step-counter">1. </span>

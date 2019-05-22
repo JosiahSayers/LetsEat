@@ -7,3 +7,5 @@ LetsEat/.vs/LetsEat/v16/.suo
 LetsEat/.vs/LetsEat/v16/Server/sqlite3/storage.ide
 LetsEat/.vs/LetsEat/v16/Server/sqlite3/storage.ide-shm
 LetsEat/.vs/LetsEat/v16/Server/sqlite3/storage.ide-wal
+LetsEat/bin
+LetsEat/obj
