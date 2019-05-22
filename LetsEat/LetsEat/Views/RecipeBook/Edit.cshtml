@@ -4,6 +4,27 @@
     ViewData["Title"] = "Edit";
 }
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete @Model.Name?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                <button type="button" id="delete" class="btn btn-danger">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <h1>Edit</h1>
 
 <h4>Recipe</h4>
@@ -50,17 +71,23 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label">Ingredients</label>
+                <label class="control-label">Images</label>
                 @foreach (string il in Model.ImageLocations)
                 {
                     <input asp-for="@il" class="form-control" />
                 }
             </div>
 
+            <input type="hidden" asp-for="ID" id="recipe-id" />
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+            Delete
+        </button>
     </div>
 </div>
 
@@ -68,3 +95,4 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script src="~/js/RecipeBook/Edit.js"></script>

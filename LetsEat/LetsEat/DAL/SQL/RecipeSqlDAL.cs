@@ -16,6 +16,7 @@ namespace LetsEat.DAL.SQL
         private string SQL_CreateRecipe = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id, family_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded, @family_id); SELECT CAST(SCOPE_IDENTITY() as int);";
         private string SQL_CreateRecipeNoFamily = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded); SELECT CAST(SCOPE_IDENTITY() as int);";
         private string SQL_GetFamilyRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id WHERE recipe.family_id = @family_id;";
+        private string SQL_DeleteRecipe = "DELETE FROM steps WHERE recipe_id = @id; DELETE FROM images WHERE recipe_id = @id; DELETE FROM ingredient WHERE recipe_id = @id; DELETE FROM recipe WHERE id = @id;";
 
         private readonly IIngredientDAL ingredientDAL;
         private readonly IImageDAL imgDAL;
@@ -205,6 +206,31 @@ namespace LetsEat.DAL.SQL
                     output.Add(r);
                 }
             }
+            return output;
+        }
+
+        public bool Delete(int id)
+        {
+            bool output;
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_DeleteRecipe, conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+
+                    output = true;
+                }
+            }
+            catch
+            {
+                output = false;
+            }
+
             return output;
         }
 
