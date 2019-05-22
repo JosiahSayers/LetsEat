@@ -31,28 +31,22 @@ namespace LetsEat.Controllers.API
         [HttpPost]
         public void Post(ImageUpload upload)
         {
-            try
+            string location = "";
+            Random rand = new Random();
+
+            if (!Directory.Exists(environment.WebRootPath + "\\uploads\\"))
             {
-                string location = "";
-
-                if (!Directory.Exists(environment.WebRootPath + "\\uploads\\"))
-                {
-                    Directory.CreateDirectory(environment.WebRootPath + "\\uploads\\");
-                }
-
-                using (FileStream fs = System.IO.File.Create(environment.WebRootPath + "\\uploads\\" + upload.File.FileName))
-                {
-                    upload.File.CopyTo(fs);
-                    fs.Flush();
-                    location = "/uploads/" + upload.File.FileName;
-                }
-
-                imageDAL.AssignImageLocationToRecipe(location, new Recipe() { ID = Convert.ToInt32(upload.RecipeId) });
+                Directory.CreateDirectory(environment.WebRootPath + "\\uploads\\");
             }
-            catch (Exception ex)
+
+            using (FileStream fs = System.IO.File.Create(environment.WebRootPath + "\\uploads\\" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + rand.Next(256) + upload.File.FileName))
             {
-                
+                upload.File.CopyTo(fs);
+                fs.Flush();
+                location = "/uploads/" + upload.File.FileName;
             }
+
+            imageDAL.AssignImageLocationToRecipe(location, new Recipe() { ID = Convert.ToInt32(upload.RecipeId) });
         }
     }
 }
