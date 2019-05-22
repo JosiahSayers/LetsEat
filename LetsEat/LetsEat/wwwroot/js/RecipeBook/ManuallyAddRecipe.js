@@ -1,10 +1,10 @@
-﻿const ingredientsDiv = document.getElementById('ingredients');
-const stepsDiv = document.getElementById('steps');
+﻿const ingredientsDiv = document.getElementById('ingredients').children[1];
+const stepsDiv = document.getElementById('steps').children[1];
 const submitButton = document.querySelector('#submit');
 const form = document.querySelector('form');
-let newestIngredientInput = document.querySelector('div#ingredients').children[0].children[0];
+let newestIngredientInput = ingredientsDiv.children[0].children[0];
 const addIngredientButton = document.querySelector('#addIngredient');
-let newestStepInput = document.querySelector('div#steps').children[0].children[1];
+let newestStepInput = stepsDiv.children[0].children[1];
 const addStepButton = document.querySelector('#addStep');
 const spinner = document.querySelector('#spinner');
 const imageInput = document.querySelector('#Image-Upload');
@@ -84,13 +84,16 @@ function pop(element) {
 
 function addIngredient() {
     const newFormElement = document.createElement('div');
-    newFormElement.className = 'form-group ingredient-step-group';
+    newFormElement.className = 'form-group ingredient-group';
     newFormElement.innerHTML = '<input type="text" class="form-control ingredient" placeholder="1/2 cup of milk"> <span class="oi oi-circle-x"></span>';
     ingredientsDiv.appendChild(newFormElement);
+
 
     newFormElement.querySelector('span').addEventListener('click', e => {
         ingredientsDiv.removeChild(e.path[1]);
         newestIngredientInput = ingredientsDiv.children[ingredientsDiv.children.length - 1].children[0];
+        console.log(ingredientsDiv)
+
     });
 
     newestIngredientInput = ingredientsDiv.children[ingredientsDiv.children.length - 1].children[0];
@@ -99,9 +102,16 @@ function addIngredient() {
 
 function addStep() {
     const newFormElement = document.createElement('div');
-    newFormElement.className = 'form-group ingredient-step-group';
-    newFormElement.innerHTML = `<span class="step-counter">${stepsDiv.querySelectorAll('input.step').length + 1}.</span><input type="text" class="form-control step" placeholder="Preheat the oven to 350 degrees"> <span class="oi oi-circle-x"></span>`;
+    newFormElement.className = 'input-group mb-2';
+    newFormElement.innerHTML = `<div class="input-group-prepend"><div class="input-group-text">${stepsDiv.querySelectorAll('input.step').length + 1}.</div></div><input type="text" class="form-control step" id="inlineFormInputGroup" placeholder="Preheat the oven to 350 degrees"> <span class="oi oi-circle-x"></span>`;
     stepsDiv.appendChild(newFormElement);
+
+    //<div class="input-group mb-2">
+    //    <div class="input-group-prepend">
+    //        <div class="input-group-text">1.</div>
+    //    </div>
+    //    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Preheat the oven to 350 degrees">
+    //</div>
 
     newFormElement.querySelector('span.oi').addEventListener('click', e => {
         stepsDiv.removeChild(e.path[1]);

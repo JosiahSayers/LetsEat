@@ -44,6 +44,29 @@
         </div>
     </div>
 
+    <div class="form-group row" id="ingredients">
+        <label id="ing-id" asp-for="Ingredients" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-7">
+            <div class="form-group ingredient-group">
+                <input type="text" class="form-control ingredient" placeholder="1 cup of milk">
+            </div>
+        </div>
+    </div>
+    <div id="addIngredient" class="btn btn-light btn-block col-sm-9">Add Another Ingredient</div>
+
+    <div class="form-group row" id="steps">
+        <label class="col-sm-2 col-form-label" id="step-id">Steps</label>
+        <div class="col-sm-7">
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">1.</div>
+                </div>
+                <input type="text" class="form-control step" id="inlineFormInputGroup" placeholder="Preheat the oven to 350 degrees">
+            </div>
+        </div>
+    </div>
+    <div id="addStep" class="btn btn-light btn-block col-sm-9">Add Another Step</div>
+
     <div class="form-group-row">
         <label class="col-sm-2 col-form-label">Upload an image</label>
         <div class="custom-file col-sm-7">
@@ -52,28 +75,9 @@
         </div>
     </div>
 
-    <div class="form-group-row" id="ingredients">
-        <label id="ing-id" asp-for="Ingredients" class="col-sm-2 col-form-label"></label>
-        <div class="form-group ingredient-step-group col-sm-7">
-            <input type="text" class="form-control ingredient" placeholder="1/2 cup of milk">
-        </div>
-    </div>
-    <div id="addIngredient" class="btn btn-light">Add Another Ingredient</div>
-    <br />
-
-    <label id="step-id" asp-for="Steps" class="col-sm-2 col-form-label"></label>
-    <div id="steps">
-        <div class="ingredient-step-group col-sm-7">
-            <span class="step-counter">1. </span>
-            <input type="text" class="form-control step" placeholder="Preheat the oven to 350 degrees">
-        </div>
-    </div>
-    <br />
-    <div id="addStep" class="btn btn-light">Add Another Step</div>
     <br />
 
     <input type="hidden" id="UserWhoAdded" asp-for="UserIdWhoAdded" />
-    <br />
     <button id="submit" class="btn btn-primary">Add Recipe!</button>
 </form>
 

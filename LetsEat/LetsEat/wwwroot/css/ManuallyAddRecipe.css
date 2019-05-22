@@ -1,6 +1,6 @@
-﻿.ingredient-step-group {
+﻿.ingredient-group {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
 }
 
@@ -9,10 +9,6 @@ span.oi-circle-x {
     color: #e74c3c;
     margin-left: 10px;
     cursor: pointer;
-}
-
-#addIngredient, addStep {
-    margin-bottom: 20px;
 }
 
 div.btn {
@@ -30,9 +26,14 @@ span.step-counter {
 }
 
 #spinner img {
-    max-width: 80vw;
+    width: 80vw;
+    max-width: 200px;
 }
 
 label.custom-file-label {
     cursor: pointer;
+}
+
+#addIngredient, #addStep {
+    margin-bottom: 30px;
 }
