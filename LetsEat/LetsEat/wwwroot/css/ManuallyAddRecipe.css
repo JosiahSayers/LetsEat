@@ -22,3 +22,13 @@ div.btn {
 span.step-counter {
     margin-right: 10px;
 }
+
+#spinner {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#spinner img {
+    max-width: 80vw;
+}

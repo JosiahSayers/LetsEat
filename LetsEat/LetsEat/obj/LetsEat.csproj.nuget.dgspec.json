@@ -1,24 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sayerj1\\Documents\\Side Projects\\LetsEat\\LetsEat\\LetsEat\\LetsEat.csproj": {}
+    "C:\\Users\\Josiah\\Documents\\Code\\Lets-Eat\\LetsEat\\LetsEat\\LetsEat.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sayerj1\\Documents\\Side Projects\\LetsEat\\LetsEat\\LetsEat\\LetsEat.csproj": {
+    "C:\\Users\\Josiah\\Documents\\Code\\Lets-Eat\\LetsEat\\LetsEat\\LetsEat.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sayerj1\\Documents\\Side Projects\\LetsEat\\LetsEat\\LetsEat\\LetsEat.csproj",
+        "projectUniqueName": "C:\\Users\\Josiah\\Documents\\Code\\Lets-Eat\\LetsEat\\LetsEat\\LetsEat.csproj",
         "projectName": "LetsEat",
-        "projectPath": "C:\\Users\\sayerj1\\Documents\\Side Projects\\LetsEat\\LetsEat\\LetsEat\\LetsEat.csproj",
-        "packagesPath": "C:\\Users\\sayerj1\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sayerj1\\Documents\\Side Projects\\LetsEat\\LetsEat\\LetsEat\\obj\\",
+        "projectPath": "C:\\Users\\Josiah\\Documents\\Code\\Lets-Eat\\LetsEat\\LetsEat\\LetsEat.csproj",
+        "packagesPath": "C:\\Users\\Josiah\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Josiah\\Documents\\Code\\Lets-Eat\\LetsEat\\LetsEat\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\ProgramData\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\sayerj1\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Josiah\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"
