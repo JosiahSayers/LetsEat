@@ -8,7 +8,6 @@ namespace LetsEat.DAL.SQL
     public class IngredientSqlDAL : IIngredientDAL
     {
         private string SQL_GetIngredientsForRecipe = "SELECT * FROM ingredient WHERE recipe_id = @recipeID;";
-        private string SQL_GetIngredientID = "SELECT * FROM ingredient WHERE name = @name;";
         private string SQL_AddNewIngredient = "INSERT INTO ingredient (ingredient, recipe_id) VALUES (@ingredient, @recipeID); SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
         private string connectionString;
