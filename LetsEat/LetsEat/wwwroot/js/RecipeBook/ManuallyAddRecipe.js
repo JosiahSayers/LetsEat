@@ -7,7 +7,7 @@ const addIngredientButton = document.querySelector('#addIngredient');
 let newestStepInput = document.querySelector('div#steps').children[0].children[1];
 const addStepButton = document.querySelector('#addStep');
 const spinner = document.querySelector('#spinner');
-const imageInput = document.querySelector('#ImageUpload');
+const imageInput = document.querySelector('#Image-Upload');
 
 const recipeApiUrl = `${window.location.protocol}//${window.location.host}/api/Recipe`;
 const imageApiUrl = `${window.location.protocol}//${window.location.host}/api/Image`;
@@ -53,6 +53,10 @@ document.querySelector('#CookMinutes').addEventListener('input', e => {
     const field = document.querySelector('#CookMinutes');
 
     verifyNumberInput(field, e);
+});
+
+imageInput.addEventListener('change', e => {
+    imageInput.nextElementSibling.innerText = imageInput.files[0].name;
 });
 
 function verifyNumberInput(field, e) {
