@@ -74,34 +74,5 @@ namespace LetsEat.Controllers
             }
         }
 
-        public Recipe AddRecipe(Recipe newRecipe)
-        {
-            Recipe error = new Recipe();
-            error.ID = 0;
-
-            if (authProvider.IsLoggedIn)
-            {
-                User currentUser = authProvider.GetCurrentUser();
-
-                newRecipe.UserWhoAdded = currentUser;
-                newRecipe.ImageLocations = new List<string>();
-
-                newRecipe = recipeDAL.AddRecipe(newRecipe);
-
-                if (newRecipe.ID > 0)
-                {
-                    return newRecipe;
-                }
-                else
-                {
-                    return error;
-                }
-            }
-            else
-            {
-                return error;
-            }
-        }
-
     }
 }

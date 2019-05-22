@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Http.Internal;
+using LetsEat.Models.Forms;
+using LetsEat.DAL;
+using LetsEat.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,60 +19,40 @@ namespace LetsEat.Controllers.API
     public class ImageController : Controller
     {
         private readonly IHostingEnvironment environment;
+        private readonly IImageDAL imageDAL;
 
-        public ImageController(IHostingEnvironment environment)
+        public ImageController(IHostingEnvironment environment, IImageDAL imageDAL)
         {
             this.environment = environment;
-        }
-
-        // GET: api/<controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            this.imageDAL = imageDAL;
         }
 
         // POST api/<controller>
         [HttpPost]
-        public string Post([FromBody]IFormFile image)
+        public void Post(ImageUpload upload)
         {
             try
             {
+                string location = "";
+
                 if (!Directory.Exists(environment.WebRootPath + "\\uploads\\"))
                 {
                     Directory.CreateDirectory(environment.WebRootPath + "\\uploads\\");
                 }
 
-                using (FileStream fs = System.IO.File.Create(environment.WebRootPath + "\\uploads\\" + image.FileName))
+                using (FileStream fs = System.IO.File.Create(environment.WebRootPath + "\\uploads\\" + upload.File.FileName))
                 {
-                    image.CopyTo(fs);
+                    upload.File.CopyTo(fs);
                     fs.Flush();
-                    return "\\uploads\\" + image.FileName;
+                    location = "/uploads/" + upload.File.FileName;
                 }
+
+                imageDAL.AssignImageLocationToRecipe(location, new Recipe() { ID = Convert.ToInt32(upload.RecipeId) });
             }
             catch (Exception ex)
             {
-                return ex.ToString();
+                
             }
-        }
-
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

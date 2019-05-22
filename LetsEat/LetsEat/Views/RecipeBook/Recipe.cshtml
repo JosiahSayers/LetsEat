@@ -20,7 +20,7 @@
                 @for (int i = 1; i < Model.ImageLocations.Count; i++)
                 {
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="@(Model.ImageLocations.Count > 0 ? Model.ImageLocations[0] : "")" alt="Slide @(i+1)">
+                        <img class="d-block w-100" src="@Model.ImageLocations[i]" alt="Slide @(i+1)">
                     </div>
                 }
             </div>
