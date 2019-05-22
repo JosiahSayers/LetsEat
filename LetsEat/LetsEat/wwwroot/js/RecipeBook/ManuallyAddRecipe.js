@@ -7,10 +7,12 @@ const addIngredientButton = document.querySelector('#addIngredient');
 let newestStepInput = document.querySelector('div#steps').children[0].children[1];
 const addStepButton = document.querySelector('#addStep');
 const spinner = document.querySelector('#spinner');
+const imageInput = document.querySelector('#ImageUpload');
 
-const apiUrl = `${window.location.protocol}//${window.location.host}/api/Recipe`;
+const recipeApiUrl = `${window.location.protocol}//${window.location.host}/api/Recipe`;
+const imageApiUrl = `${window.location.protocol}//${window.location.host}/api/Image`;
 
-console.log(apiUrl)
+console.log()
 
 submitButton.addEventListener('click', e => {
     e.preventDefault();
@@ -138,7 +140,7 @@ function sendRecipe(recipe) {
         form.style.display = 'none';
         spinner.style.display = 'flex';
 
-        fetch(apiUrl, {
+        fetch(recipeApiUrl, {
             method: 'POST',
             cache: 'no-cache',
             headers: {
@@ -148,13 +150,29 @@ function sendRecipe(recipe) {
         }).then(res => {
             res.json().then(data => {
                 if (data.id > 0) {
-                    window.location.href = `${window.location.protocol}//${window.location.host}/RecipeBook/Recipe?id=${data.id}`;
+                    console.log(data);
+
+                    let formData = new FormData();
+
+                    formData.append('File', imageInput.files[0]);
+                    formData.append('RecipeId', data.id);
+
+                    fetch(imageApiUrl, {
+                        method: 'POST',
+                        body: formData
+                    }).then(imageRes => {
+                        if (imageRes.ok) {
+                            window.location.href = `${window.location.protocol}//${window.location.host}/RecipeBook/Recipe?id=${data.id}`;
+                        } else {
+                            alert('Something went wrong when uploading your image, please verify that you are uploadin the correct item and try again.');
+                        }
+                    });
                 } else {
                     alert('Something went wrong on our end, please try again');
                     form.style.display = 'block';
                 }
-            })
-        })
+            });
+        });
     } else {
         displayFieldErrors(check)
     }
