@@ -26,15 +26,13 @@
 </div>
 
 <h1>Edit</h1>
-
-<h4>Recipe</h4>
 <hr />
 <form asp-action="Edit" class="col-sm-9">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group row">
         <label asp-for="Name" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-7">
-            <input asp-for="Name" class="form-control" />
+            <input asp-for="Name" class="form-control" id="Name" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
     </div>
@@ -42,65 +40,73 @@
     <div class="form-group row">
         <label asp-for="Description" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-7">
-            <input asp-for="Description" class="form-control" />
+            <input asp-for="Description" class="form-control" id="Description" />
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
         <label asp-for="PrepMinutes" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-7">
-            <input asp-for="PrepMinutes" class="form-control" />
+            <input asp-for="PrepMinutes" class="form-control" id="PrepMinutes" />
             <span asp-validation-for="PrepMinutes" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
         <label asp-for="CookMinutes" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-7">
-            <input asp-for="CookMinutes" class="form-control" />
+            <input asp-for="CookMinutes" class="form-control" id="CookMinutes" />
             <span asp-validation-for="CookMinutes" class="text-danger"></span>
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Ingredients</label>
-        @foreach (string i in Model.Ingredients)
-        {
-            <div class="col-sm-7">
-                <input asp-for="@i" class="form-control" />
-            </div>
-        }
+    <div class="form-group row" id="ingredients">
+        <label id="ing-id" asp-for="Ingredients" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-7">
+            @foreach (string ingredient in Model.Ingredients)
+            {
+                <div class="form-group ingredient-group">
+                    <input type="text" class="form-control ingredient" placeholder="1 cup of milk" asp-for="@ingredient">
+                </div>
+            }
+        </div>
     </div>
+    <div id="addIngredient" class="btn btn-light btn-block col-sm-9">Add Another Ingredient</div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Steps</label>
-        @foreach (string s in Model.Steps)
-        {
-            <div class="col-sm-7">
-                <input asp-for="@s" class="form-control" />
-            </div>
-        }
+
+    <div class="form-group row" id="steps">
+        <label class="col-sm-2 col-form-label" id="step-id">Steps</label>
+        <div class="col-sm-7">
+            @for (int i = 0; i < @Model.Steps.Count; i++)
+            {
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text step-counter">@(i + 1)</div>
+                    </div>
+                    <input type="text" class="form-control step" id="inlineFormInputGroup" placeholder="Preheat the oven to 350 degrees" asp-for="@Model.Steps[i]">
+                </div>
+            }
+        </div>
     </div>
+    <div id="addStep" class="btn btn-light btn-block col-sm-9">Add Another Step</div>
 
+
+    <label class="control-label">Images</label>
     <div class="image-container">
-        <label class="control-label">Images</label>
         @foreach (string il in Model.ImageLocations)
         {
             <div class="image">
-                <img src="@il" />
+                <img src="@il" class="image" />
             </div>
         }
     </div>
 
     <input type="hidden" asp-for="ID" id="recipe-id" />
-
-    <div class="form-group row">
-        <input type="submit" value="Save" class="btn btn-primary" />
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Delete</button>
-    </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<button class="btn btn-primary mt-4">Save</button>
+<a class="btn btn-light mt-4" asp-action="Index">Cancel</a>
+<button class="btn btn-danger mt-4" data-toggle="modal" data-target="#exampleModal">Delete</button>
 
 <script src="~/js/RecipeBook/Edit.js"></script>
+<link href="~/css/Edit.css" rel="stylesheet" />
+<link href="~/svg/open-iconic-bootstrap.min.css" rel="stylesheet" />

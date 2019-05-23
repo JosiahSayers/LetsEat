@@ -1,0 +1,15 @@
+﻿div.image-container {
+    display: flex;
+}
+
+div.image {
+    width: 250px;
+}
+
+div.image img {
+    width: 100%;
+}
+
+.btn {
+    cursor: pointer;
+}

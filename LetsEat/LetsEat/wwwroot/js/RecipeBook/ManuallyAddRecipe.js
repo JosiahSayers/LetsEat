@@ -79,7 +79,6 @@ function verifyNumberInput(field, e) {
 
 function pop(element) {
     element.value = element.value.substring(0, element.value.length - 1);
-
 }
 
 function addIngredient() {
@@ -92,8 +91,6 @@ function addIngredient() {
     newFormElement.querySelector('span').addEventListener('click', e => {
         ingredientsDiv.removeChild(e.path[1]);
         newestIngredientInput = ingredientsDiv.children[ingredientsDiv.children.length - 1].children[0];
-        console.log(ingredientsDiv)
-
     });
 
     newestIngredientInput = ingredientsDiv.children[ingredientsDiv.children.length - 1].children[0];
@@ -284,7 +281,7 @@ function displayFieldErrors(check) {
 }
 
 function recountSteps() {
-    const counters = stepsDiv.querySelectorAll('span.step-counter');
+    const counters = stepsDiv.querySelectorAll('.step-counter');
     let count = 1;
 
     counters.forEach(counter => {
