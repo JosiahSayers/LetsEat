@@ -15,5 +15,6 @@ namespace LetsEat.DAL.SQL
 
         int AddNewIngredient(string ingredient, Recipe recipe);
         int AddNewIngredient(string ingredient, int recipeID);
+        void UpdateIngredients(int recipeId, List<string> ingredients, SqlConnection conn);
     }
 }

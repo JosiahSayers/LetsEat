@@ -9,6 +9,7 @@ namespace LetsEat.DAL.SQL
     {
         private string SQL_GetIngredientsForRecipe = "SELECT * FROM ingredient WHERE recipe_id = @recipeID;";
         private string SQL_AddNewIngredient = "INSERT INTO ingredient (ingredient, recipe_id) VALUES (@ingredient, @recipeID); SELECT CAST(SCOPE_IDENTITY() AS INT);";
+        private string SQL_DeleteIngredientsForRecipe = "DELETE FROM ingredient WHERE recipe_id = @recipeID;";
 
         private string connectionString;
 
@@ -169,6 +170,23 @@ namespace LetsEat.DAL.SQL
             }
 
             return output;
+        }
+
+        public void UpdateIngredients(int recipeId, List<string> ingredients, SqlConnection conn)
+        {
+            SqlCommand cmd = new SqlCommand(SQL_DeleteIngredientsForRecipe, conn);
+            cmd.Parameters.AddWithValue("@recipeID", recipeId);
+
+            cmd.ExecuteNonQuery();
+
+            foreach (string ing in ingredients)
+            {
+                cmd = new SqlCommand(SQL_AddNewIngredient, conn);
+                cmd.Parameters.AddWithValue("@ingredient", ing);
+                cmd.Parameters.AddWithValue("@recipeID", recipeId);
+
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }

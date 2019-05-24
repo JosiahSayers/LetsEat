@@ -17,6 +17,7 @@ namespace LetsEat.DAL.SQL
         private string SQL_CreateRecipeNoFamily = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded); SELECT CAST(SCOPE_IDENTITY() as int);";
         private string SQL_GetFamilyRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id WHERE recipe.family_id = @family_id;";
         private string SQL_DeleteRecipe = "DELETE FROM steps WHERE recipe_id = @id; DELETE FROM images WHERE recipe_id = @id; DELETE FROM ingredient WHERE recipe_id = @id; DELETE FROM recipe WHERE id = @id;";
+        private string SQL_UpdateRecipe = "UPDATE recipe SET name = @name, description = @description, prep_minutes = @prep_minutes, cook_minutes = @cook_minutes WHERE id = @id;";
 
         private readonly IIngredientDAL ingredientDAL;
         private readonly IImageDAL imgDAL;
@@ -231,6 +232,37 @@ namespace LetsEat.DAL.SQL
                 output = false;
             }
 
+            return output;
+        }
+
+        public bool Update(Recipe recipe)
+        {
+            bool output = true;
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_UpdateRecipe, conn);
+                    cmd.Parameters.AddWithValue("@id", recipe.ID);
+                    cmd.Parameters.AddWithValue("@name", recipe.Name);
+                    cmd.Parameters.AddWithValue("@description", recipe.Description);
+                    cmd.Parameters.AddWithValue("@prep_minutes", recipe.PrepMinutes);
+                    cmd.Parameters.AddWithValue("@cook_minutes", recipe.CookMinutes);
+
+                    cmd.ExecuteNonQuery();
+
+                    imgDAL.UpdateImageLocationsForRecipe(recipe.ID, recipe.ImageLocations, conn);
+                    ingredientDAL.UpdateIngredients(recipe.ID, recipe.Ingredients, conn);
+                    stepDAL.UpdateStepsForRecipe(recipe.ID, recipe.Steps, conn);
+                }
+            }
+            catch
+            {
+                output = false;
+            }
             return output;
         }
 

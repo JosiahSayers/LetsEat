@@ -12,5 +12,6 @@ namespace LetsEat.DAL
         List<Recipe> SearchForRecipe(string searchQuery);
         List<Recipe> GetFamilyRecipes(int familyId);
         bool Delete(int id);
+        bool Update(Recipe recipe);
     }
 }

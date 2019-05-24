@@ -52,8 +52,9 @@ namespace LetsEat.Controllers
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]Recipe updatedRecipe)
         {
+            recipeDAL.Update(updatedRecipe);
         }
 
         // DELETE api/<controller>/5

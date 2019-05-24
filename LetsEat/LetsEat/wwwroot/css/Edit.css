@@ -13,3 +13,20 @@ div.image img {
 .btn {
     cursor: pointer;
 }
+
+.ingredient-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.oi-circle-x {
+    width: 17px;
+    color: #e74c3c;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#addIngredient, #addStep {
+    margin-bottom: 30px;
+}

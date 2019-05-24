@@ -65,7 +65,7 @@
             @foreach (string ingredient in Model.Ingredients)
             {
                 <div class="form-group ingredient-group">
-                    <input type="text" class="form-control ingredient" placeholder="1 cup of milk" asp-for="@ingredient">
+                    <input type="text" class="form-control ingredient" placeholder="1 cup of milk" value="@ingredient.Trim()">
                 </div>
             }
         </div>
@@ -82,7 +82,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text step-counter">@(i + 1)</div>
                     </div>
-                    <input type="text" class="form-control step" id="inlineFormInputGroup" placeholder="Preheat the oven to 350 degrees" asp-for="@Model.Steps[i]">
+                    <input type="text" class="form-control step" id="inlineFormInputGroup" placeholder="Preheat the oven to 350 degrees" value="@Model.Steps[i].Trim()">
                 </div>
             }
         </div>
@@ -103,7 +103,7 @@
     <input type="hidden" asp-for="ID" id="recipe-id" />
 </form>
 
-<button class="btn btn-primary mt-4">Save</button>
+<button class="btn btn-primary mt-4" id="save">Save</button>
 <a class="btn btn-light mt-4" asp-action="Index">Cancel</a>
 <button class="btn btn-danger mt-4" data-toggle="modal" data-target="#exampleModal">Delete</button>
 

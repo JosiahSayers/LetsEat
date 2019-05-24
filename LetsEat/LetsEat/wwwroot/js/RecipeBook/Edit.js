@@ -1,4 +1,5 @@
 ﻿const deleteButton = document.querySelector('#delete');
+const saveButton = document.querySelector('#save');
 
 const addIngredientButton = document.querySelector('#addIngredient');
 const ingredientsDiv = document.getElementById('ingredients').children[1];
@@ -19,9 +20,32 @@ const prepMinutesElement = document.getElementById('PrepMinutes');
 const cookMinutesElement = document.getElementById('CookMinutes');
 let ingredientElements = document.querySelectorAll('input.ingredient');
 let stepElements = document.querySelectorAll('input.step');
-let imageLocationElements = document.querySelectorAll('img.image');
+let imageElements = document.querySelectorAll('img.image');
 
-const deleteApiUrl = `${window.location.protocol}//${window.location.host}/api/Recipe/${recipeId}`;
+const recipeApiUrl = `${window.location.protocol}//${window.location.host}/api/Recipe/${recipeId}`;
+
+// api requests
+function sendUpdatedRecipe() {
+    fetch(recipeApiUrl, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(buildFormData())
+    })
+}
+
+function sendDeleteRequest() {
+    fetch(recipeApiUrl, {
+        method: 'DELETE'
+    }).then(res => {
+        if (res.ok) {
+            window.location.href = `${window.location.protocol}//${window.location.host}/RecipeBook`;
+        } else {
+            alert('Uh-oh! Something went wrong on our end. Please try again');
+        }
+    })
+}
 
 // Logic for DOM Manipulation
 
@@ -111,17 +135,22 @@ function recountSteps() {
     })
 }
 
+function pop(element) {
+    element.value = element.value.substring(0, element.value.length - 1);
+}
+
 // Logic for recipe data
 
 function buildFormData() {
     return {
-        Id: recipeId,
+        ID: recipeId,
         Name: nameElement.value,
         Description: descriptionElement.value,
         PrepMinutes: prepMinutesElement.value,
         CookMinutes: cookMinutesElement.value,
         Steps: getSteps(),
-        Ingredients: getIngredients()
+        Ingredients: getIngredients(),
+        ImageLocations: getImageLocations()
     };
 }
 
@@ -147,25 +176,18 @@ function getIngredients() {
     return ingredients;
 }
 
-function pop(element) {
-    element.value = element.value.substring(0, element.value.length - 1);
+function getImageLocations() {
+    let imageLocations = [];
+    imageElements.forEach(img => imageLocations.push(img.src));
+
+    return imageLocations;
 }
 
-// Logic for deleting a recipe
+
+// Event Listeners
 
 deleteButton.addEventListener('click', () => {
     sendDeleteRequest();
 });
 
-function sendDeleteRequest() {
-    fetch(deleteApiUrl, {
-        method: 'DELETE'
-    }).then(res => {
-        if (res.ok) {
-            window.location.href = `${window.location.protocol}//${window.location.host}/RecipeBook`;
-        } else {
-            alert('Uh-oh! Something went wrong on our end. Please try again');
-        }
-    })
-}
-
+saveButton.addEventListener('click', () => sendUpdatedRecipe());

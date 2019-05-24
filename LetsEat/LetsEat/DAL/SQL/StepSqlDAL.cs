@@ -11,6 +11,7 @@ namespace LetsEat.DAL.SQL
 
         private string SQL_GetStepsForRecipe = "SELECT step_number, step_text FROM steps WHERE recipe_id = @recipeID ORDER BY step_number, step_text;";
         private string SQL_AddStepToRecipe = "INSERT INTO steps (recipe_id, step_number, step_text) VALUES (@recipeID, @stepNumber, @stepText); ";
+        private string SQL_DeleteStepsForRecipe = "DELETE FROM steps WHERE recipe_id = @recipeID;";
 
         public StepSqlDAL(string connectionString)
         {
@@ -92,6 +93,24 @@ namespace LetsEat.DAL.SQL
                 output = false;
             }
             return output;
+        }
+
+        public void UpdateStepsForRecipe(int recipeId, List<string> steps, SqlConnection conn)
+        {
+            SqlCommand cmd = new SqlCommand(SQL_DeleteStepsForRecipe, conn);
+            cmd.Parameters.AddWithValue("@recipeID", recipeId);
+
+            cmd.ExecuteNonQuery();
+
+            for (int i = 0; i < steps.Count; i++)
+            {
+                cmd = new SqlCommand(SQL_AddStepToRecipe, conn);
+                cmd.Parameters.AddWithValue("@recipeID", recipeId);
+                cmd.Parameters.AddWithValue("@stepNumber", (i + 1));
+                cmd.Parameters.AddWithValue("@stepText", steps[i]);
+
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
