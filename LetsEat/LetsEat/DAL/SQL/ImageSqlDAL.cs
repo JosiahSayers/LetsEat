@@ -12,6 +12,7 @@ namespace LetsEat.DAL.SQL
         private string SQL_GetImageLocationsForRecipe = "SELECT filename FROM images WHERE recipe_id = @recipeID;";
         private string SQL_AssignImageLocationToRecipe = "INSERT INTO images (recipe_id, filename) VALUES (@recipeID, @filename);";
         private string SQL_DeleteILForRecipe = "DELETE FROM images WHERE recipe_id = @recipeId;";
+        private string SQL_DeleteImage = "DELETE FROM images WHERE recipe_id = @recipeID AND filename LIKE @filename;";
 
         public ImageSqlDAL(string connectionString)
         {
@@ -109,6 +110,27 @@ namespace LetsEat.DAL.SQL
                 cmd.Parameters.AddWithValue("@filename", il);
 
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void Remove(int recipeId, string imageLocation)
+        {
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_DeleteImage, conn);
+                    cmd.Parameters.AddWithValue("@recipeID", recipeId);
+                    cmd.Parameters.AddWithValue("@filename", imageLocation);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+
             }
         }
     }

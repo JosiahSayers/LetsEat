@@ -29,7 +29,7 @@ namespace LetsEat.Controllers.API
 
         // POST api/<controller>
         [HttpPost]
-        public void Post(ImageUpload upload)
+        public IActionResult Post(ImageUpload upload)
         {
             string location = "";
             Random rand = new Random();
@@ -39,14 +39,32 @@ namespace LetsEat.Controllers.API
                 Directory.CreateDirectory(environment.WebRootPath + "\\uploads\\");
             }
 
-            using (FileStream fs = System.IO.File.Create($"{environment.WebRootPath}\\uploads\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}-{rand.Next(256)}-{upload.File.FileName}"))
+            string fileName = $"{rand.Next(256) }-{ upload.File.FileName}";
+
+            using (FileStream fs = System.IO.File.Create($"{environment.WebRootPath}\\uploads\\{fileName}"))
             {
                 upload.File.CopyTo(fs);
                 fs.Flush();
-                location = "/uploads/" + upload.File.FileName;
+                location = "/uploads/" + fileName;
             }
 
             imageDAL.AssignImageLocationToRecipe(location, new Recipe() { ID = Convert.ToInt32(upload.RecipeId) });
+
+            return Json(location);
+        }
+
+        [HttpDelete]
+        public void Delete(int recipeId, string filename)
+        {
+            imageDAL.Remove(recipeId, filename);
+
+            filename = filename.Substring(9);
+            string filepath = environment.WebRootPath + "\\uploads\\" + filename;
+
+            if (System.IO.File.Exists(filepath))
+            {
+                System.IO.File.Delete(filepath);
+            }
         }
     }
 }

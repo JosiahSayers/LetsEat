@@ -254,7 +254,7 @@ namespace LetsEat.DAL.SQL
 
                     cmd.ExecuteNonQuery();
 
-                    imgDAL.UpdateImageLocationsForRecipe(recipe.ID, recipe.ImageLocations, conn);
+                    //imgDAL.UpdateImageLocationsForRecipe(recipe.ID, recipe.ImageLocations, conn);
                     ingredientDAL.UpdateIngredients(recipe.ID, recipe.Ingredients, conn);
                     stepDAL.UpdateStepsForRecipe(recipe.ID, recipe.Steps, conn);
                 }
