@@ -1,15 +1,15 @@
-USE master;
-GO
+--USE master;
+--GO
 
-IF (EXISTS(select * from sys.databases where name='FamilyRecipeBook'))
-	DROP DATABASE FamilyRecipeBook;
-GO
+--IF (EXISTS(select * from sys.databases where name='FamilyRecipeBook'))
+--	DROP DATABASE FamilyRecipeBook;
+--GO
 
-CREATE DATABASE FamilyRecipeBook;
-GO
+--CREATE DATABASE FamilyRecipeBook;
+--GO
 
-USE FamilyRecipeBook;
-GO
+--USE FamilyRecipeBook;
+--GO
 
 
 BEGIN TRANSACTION;
@@ -44,7 +44,7 @@ CREATE TABLE invite(
 	CONSTRAINT PK_invite PRIMARY KEY (id),
 	CONSTRAINT FK_invite_family FOREIGN KEY (invite_family_id) REFERENCES family(id),
 	CONSTRAINT FK_invite_user FOREIGN KEY (invite_user_id) REFERENCES users(id),
-	CONSTRAINT FK_invite_user FOREIGN KEY (invited_by_user_id) REFERENCES users(id)
+	CONSTRAINT FK_invited_by_user FOREIGN KEY (invited_by_user_id) REFERENCES users(id)
 );
 
 CREATE TABLE website_requests(

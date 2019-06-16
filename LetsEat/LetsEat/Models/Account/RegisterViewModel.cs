@@ -18,7 +18,7 @@ namespace LetsEat.Models.Account
 
         [Required]
         [Display(Name = "Confirm Email")]
-        [Compare("Email", ErrorMessage = "Emails did not match!")]
+        [Compare("Email", ErrorMessage = "Emails fields must match!")]
         public string ConfirmEmail { get; set; }
 
         [Required]

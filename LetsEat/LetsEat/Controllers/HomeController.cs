@@ -5,14 +5,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LetsEat.Models;
+using LetsEat.Providers.Auth;
 
 namespace LetsEat.Controllers
 {
     public class HomeController : Controller
     {
+        private IAuthProvider authProvider;
+
+        public HomeController(IAuthProvider authProvider)
+        {
+            this.authProvider = authProvider;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            if (authProvider.IsLoggedIn)
+            {
+                return RedirectToAction("Index", "RecipeBook");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult Privacy()

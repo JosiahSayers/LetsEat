@@ -45,7 +45,7 @@ namespace LetsEat
             });
 
             //Dependency injections
-            string connectionString = Configuration.GetConnectionString("Default");
+            string connectionString = Configuration.GetConnectionString("Prod");
             string emailProviderPassword = Configuration.GetSection("Email")["Pass"];
             services.AddTransient<IUsersDAL>(m => new UserSqlDAL(connectionString));
             services.AddTransient<IFamilyDAL, FamilySqlDAL>(c => new FamilySqlDAL(connectionString));
