@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http.Internal;
 using LetsEat.Models.Forms;
 using LetsEat.DAL;
 using LetsEat.Models;
+using LetsEat.Providers.Storage;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,11 +21,13 @@ namespace LetsEat.Controllers.API
     {
         private readonly IHostingEnvironment environment;
         private readonly IImageDAL imageDAL;
+        private readonly GoogleCloudStorage cloudStorage;
 
-        public ImageController(IHostingEnvironment environment, IImageDAL imageDAL)
+        public ImageController(IHostingEnvironment environment, IImageDAL imageDAL, GoogleCloudStorage cloudStorage)
         {
             this.environment = environment;
             this.imageDAL = imageDAL;
+            this.cloudStorage = cloudStorage;
         }
 
         // POST api/<controller>
@@ -32,21 +35,18 @@ namespace LetsEat.Controllers.API
         public IActionResult Post(ImageUpload upload)
         {
             string location = "";
-            Random rand = new Random();
+            string fileName = upload.File.FileName;
 
-            if (!Directory.Exists(environment.WebRootPath + "\\uploads\\"))
-            {
-                Directory.CreateDirectory(environment.WebRootPath + "\\uploads\\");
-            }
+            cloudStorage.Connect();
 
-            string fileName = $"{rand.Next(256) }-{ upload.File.FileName}";
-
-            using (FileStream fs = System.IO.File.Create($"{environment.WebRootPath}\\uploads\\{fileName}"))
+            string localFileLocation = $"{environment.WebRootPath}\\uploads\\{fileName}";
+            using (FileStream fs = System.IO.File.Create(localFileLocation))
             {
                 upload.File.CopyTo(fs);
                 fs.Flush();
-                location = "/uploads/" + fileName;
+                location = cloudStorage.UploadFile(fs);
             }
+            System.IO.File.Delete(localFileLocation);
 
             imageDAL.AssignImageLocationToRecipe(location, new Recipe() { ID = Convert.ToInt32(upload.RecipeId) });
 
@@ -56,15 +56,9 @@ namespace LetsEat.Controllers.API
         [HttpDelete]
         public void Delete(int recipeId, string filename)
         {
+            filename = cloudStorage.DeleteFile(filename);
+
             imageDAL.Remove(recipeId, filename);
-
-            filename = filename.Substring(9);
-            string filepath = environment.WebRootPath + "\\uploads\\" + filename;
-
-            if (System.IO.File.Exists(filepath))
-            {
-                System.IO.File.Delete(filepath);
-            }
         }
     }
 }

@@ -6,6 +6,7 @@ using LetsEat.DAL;
 using LetsEat.DAL.SQL;
 using LetsEat.Providers.Auth;
 using LetsEat.Providers.Email;
+using LetsEat.Providers.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -47,6 +48,7 @@ namespace LetsEat
             //Dependency injections
             string connectionString = Configuration.GetConnectionString("Prod");
             string emailProviderPassword = Configuration.GetSection("Email")["Pass"];
+            string googleJsonCredential = Configuration.GetSection("Google")["json"];
             services.AddTransient<IUsersDAL>(m => new UserSqlDAL(connectionString));
             services.AddTransient<IFamilyDAL, FamilySqlDAL>(c => new FamilySqlDAL(connectionString));
             services.AddTransient<IImageDAL, ImageSqlDAL>(c => new ImageSqlDAL(connectionString));
@@ -54,6 +56,7 @@ namespace LetsEat
             services.AddTransient<IRecipeDAL, RecipeSqlDAL>(c => new RecipeSqlDAL(connectionString));
             services.AddTransient<IStepDAL, StepSqlDAL>(c => new StepSqlDAL(connectionString));
             services.AddTransient<IWebsiteRequestDAL, WebsiteRequestSqlDAL>(c => new WebsiteRequestSqlDAL(connectionString));
+            services.AddTransient<GoogleCloudStorage>(c => new GoogleCloudStorage(googleJsonCredential));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
