@@ -14,7 +14,7 @@ namespace LetsEat.Providers.Auth
         /// Returns the current signed in user.
         /// </summary>
         /// <returns></returns>
-        User GetCurrentUser();
+        User GetCurrentUser(bool isForApi = false);
 
         /// <summary>
         /// Signs a user in.
@@ -26,7 +26,7 @@ namespace LetsEat.Providers.Auth
         /// <summary>
         /// Logs the user off from the system.
         /// </summary>
-        void LogOff();
+        bool LogOff();
 
         /// <summary>
         /// Changes the logged in user's existing password.

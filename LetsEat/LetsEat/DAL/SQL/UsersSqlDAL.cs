@@ -229,7 +229,7 @@ namespace LetsEat.DAL.SQL
                     cmd.Parameters.AddWithValue("@id", user.Id);
                     cmd.Parameters.AddWithValue("@email", user.Email);
                     cmd.Parameters.AddWithValue("@family_id", user.FamilyId);
-                    cmd.Parameters.AddWithValue("@family_role", user.FamilyRole);
+                    cmd.Parameters.AddWithValue("@family_role", !String.IsNullOrEmpty(user.FamilyRole) ? user.FamilyRole : "");
                     cmd.Parameters.AddWithValue("@displayName", user.DisplayName);
 
                     cmd.ExecuteNonQuery();
@@ -237,7 +237,7 @@ namespace LetsEat.DAL.SQL
                     output = true;
                 }
             }
-            catch
+            catch(Exception e)
             {
                 output = false;
             }

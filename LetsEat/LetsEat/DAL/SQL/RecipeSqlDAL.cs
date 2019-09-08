@@ -1,4 +1,5 @@
 ﻿using LetsEat.Models;
+using LetsEat.Models.RecipeBook;
 using LetsEat.Providers.Auth;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace LetsEat.DAL.SQL
 
         private string SQL_GetMyRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id WHERE recipe.user_id = @user_id";
         private string SQL_GetRecipeByID = "SELECT * FROM recipe JOIN users on recipe.user_id = users.id WHERE recipe.id = @id";
-        private string SQL_SearchForRecipe = "SELECT DISTINCT recipe.ID FROM recipe JOIN ingredient ON recipe.id = ingredient.recipe_id WHERE recipe.name LIKE (@searchQuery) OR recipe.description LIKE (@searchQuery) OR ingredient.ingredient LIKE (@searchQuery);";
+        private string SQL_SearchForRecipe = "SELECT DISTINCT recipe.ID, recipe.name FROM recipe JOIN ingredient ON recipe.id = ingredient.recipe_id WHERE recipe.name LIKE (@searchQuery) OR recipe.description LIKE (@searchQuery) OR ingredient.ingredient LIKE (@searchQuery);";
         private string SQL_CreateRecipe = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id, family_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded, @family_id); SELECT CAST(SCOPE_IDENTITY() as int);";
         private string SQL_CreateRecipeNoFamily = "INSERT INTO recipe (name, description, prep_minutes, cook_minutes, source, date_added, user_id) VALUES (@name, @description, @prepMinutes, @cookMinutes, @source, @dateAdded, @userWhoAdded); SELECT CAST(SCOPE_IDENTITY() as int);";
         private string SQL_GetFamilyRecipes = "SELECT * FROM recipe JOIN users ON recipe.user_id = users.id WHERE recipe.family_id = @family_id;";
@@ -207,6 +208,38 @@ namespace LetsEat.DAL.SQL
                     output.Add(r);
                 }
             }
+            return output;
+        }
+
+        public SearchResults NewSearch(string searchQuery)
+        {
+            SearchResults output = new SearchResults();
+            searchQuery = $"%{searchQuery}%";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_SearchForRecipe, conn);
+                    cmd.Parameters.AddWithValue("@searchQuery", searchQuery);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+
+                    while (reader.Read())
+                    {
+                        int id = Convert.ToInt32(reader["id"]);
+                        string name = Convert.ToString(reader["name"]);
+                        output.Recipes.Add(new RecipeSearchResults(id, name));
+                    }
+                }
+            }
+            catch
+            {
+                output = null;
+            }
+
             return output;
         }
 

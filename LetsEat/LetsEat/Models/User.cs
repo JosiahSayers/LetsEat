@@ -49,5 +49,10 @@ namespace LetsEat.Models
                 return Invite != null;
             }
         }
+
+        public User()
+        {
+            FamilyId = 1;
+        }
     }
 }

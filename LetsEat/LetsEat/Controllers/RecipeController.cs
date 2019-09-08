@@ -23,13 +23,6 @@ namespace LetsEat.Controllers
             this.authProvider = authProvider;
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/<controller>
         [HttpPost]
         public Recipe Post([FromBody]Recipe recipe)

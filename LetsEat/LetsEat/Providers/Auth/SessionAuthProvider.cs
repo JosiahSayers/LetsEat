@@ -58,9 +58,19 @@ namespace LetsEat.Providers.Auth
         /// <summary>
         /// Logs the user out by clearing their session data.
         /// </summary>
-        public void LogOff()
+        public bool LogOff()
         {
-            Session.Clear();
+            bool output = true;
+            try
+            {
+                Session.Clear();
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
         }
 
         /// <summary>
@@ -95,16 +105,23 @@ namespace LetsEat.Providers.Auth
         /// Gets the user using the current email in session.
         /// </summary>
         /// <returns></returns>
-        public User GetCurrentUser()
+        public User GetCurrentUser(bool isForApi = false)
         {
             var email = Session.GetString(SessionKey);
+            User output = null;
 
             if (!String.IsNullOrEmpty(email))
             {
-                return userDAL.GetUser(email);
+                output = userDAL.GetUser(email);
+
+                if (isForApi == true)
+                {
+                    output.Password = null;
+                    output.Salt = null;
+                }
             }
 
-            return null;
+            return output;
         }
 
         /// <summary>
