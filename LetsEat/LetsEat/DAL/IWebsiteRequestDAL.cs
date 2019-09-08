@@ -7,7 +7,7 @@ namespace LetsEat.DAL
     public interface IWebsiteRequestDAL
     {
         List<WebsiteRequest> GetNewWebsiteRequests();
-        void AddNewWebsiteRequest(WebsiteRequest newRequest);
+        bool AddNewWebsiteRequest(WebsiteRequest newRequest);
         bool? WebsiteRequestExists();
 
         WebsiteRequest Get(int id);

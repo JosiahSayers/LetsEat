@@ -25,49 +25,67 @@ namespace LetsEat.DAL.SQL
         {
             List<WebsiteRequest> output = new List<WebsiteRequest>();
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(SQL_Get_New_Websites, conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-
-                while (reader.Read())
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    WebsiteRequest wr = new WebsiteRequest();
-                    wr.Id = Convert.ToInt32(reader["id"]);
-                    wr.BaseURL = Convert.ToString(reader["base_url"]);
-                    wr.FullURL = Convert.ToString(reader["full_url"]);
-                    wr.User = new User()
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_Get_New_Websites, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+
+                    while (reader.Read())
                     {
-                        Id = Convert.ToInt32(reader["user_id"])
-                    };
+                        WebsiteRequest wr = new WebsiteRequest();
+                        wr.Id = Convert.ToInt32(reader["id"]);
+                        wr.BaseURL = Convert.ToString(reader["base_url"]);
+                        wr.FullURL = Convert.ToString(reader["full_url"]);
+                        wr.User = new User()
+                        {
+                            Id = Convert.ToInt32(reader["user_id"])
+                        };
 
-                    output.Add(wr);
+                        output.Add(wr);
+                    }
+                    reader.Close();
+
+                    foreach (WebsiteRequest wr in output)
+                    {
+                        wr.User = userDAL.GetUser(wr.User.Id, conn);
+                    }
                 }
-                reader.Close();
-                
-                foreach(WebsiteRequest wr in output)
-                {
-                    wr.User = userDAL.GetUser(wr.User.Id, conn);
-                }
+            }
+            catch
+            {
+                output = null;
             }
 
             return output;
         }
 
-        public void AddNewWebsiteRequest(WebsiteRequest newRequest)
+        public bool AddNewWebsiteRequest(WebsiteRequest newRequest)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(SQL_Add_New_Website_Request, conn);
-                cmd.Parameters.AddWithValue("@base_url", newRequest.BaseURL);
-                cmd.Parameters.AddWithValue("@full_url", newRequest.FullURL);
-                cmd.Parameters.AddWithValue("@user_id", newRequest.User.Id);
+            bool output = true;
 
-                cmd.ExecuteNonQuery();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_Add_New_Website_Request, conn);
+                    cmd.Parameters.AddWithValue("@base_url", newRequest.BaseURL);
+                    cmd.Parameters.AddWithValue("@full_url", newRequest.FullURL);
+                    cmd.Parameters.AddWithValue("@user_id", newRequest.User.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
             }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
         }
 
         public bool? WebsiteRequestExists()
@@ -106,29 +124,36 @@ namespace LetsEat.DAL.SQL
         {
             WebsiteRequest output = new WebsiteRequest();
 
-            using(SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                conn.Open();
-
-                SqlCommand cmd = new SqlCommand(SQL_Get_Request_By_ID, conn);
-                cmd.Parameters.AddWithValue("@id", id);
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    output.Id = Convert.ToInt32(reader["id"]);
-                    output.BaseURL = Convert.ToString(reader["base_url"]);
-                    output.FullURL = Convert.ToString(reader["full_url"]);
-                    output.User = new User()
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_Get_Request_By_ID, conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
                     {
-                        Id = Convert.ToInt32(reader["user_id"])
-                    };
+                        output.Id = Convert.ToInt32(reader["id"]);
+                        output.BaseURL = Convert.ToString(reader["base_url"]);
+                        output.FullURL = Convert.ToString(reader["full_url"]);
+                        output.User = new User()
+                        {
+                            Id = Convert.ToInt32(reader["user_id"])
+                        };
+                    }
+
+                    reader.Close();
+
+                    output.User = userDAL.GetUser(output.User.Id, conn);
                 }
-
-                reader.Close();
-
-                output.User = userDAL.GetUser(output.User.Id, conn);
+            }
+            catch
+            {
+                output = null;
             }
 
             return output;

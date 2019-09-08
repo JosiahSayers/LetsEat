@@ -37,13 +37,18 @@ namespace LetsEat.Controllers.API
 
             if (authProvider.IsLoggedIn)
             {
-                output = StatusCode(200,
-                    new RecipeBookModel(recipeDAL.GetMyRecipes(authProvider.GetCurrentUser().Id))
-                );
+                List<Recipe> myRecipes = recipeDAL.GetMyRecipes(authProvider.GetCurrentUser().Id);
+
+                if (myRecipes != null)
+                {
+                    output = StatusCode(200,
+                        new RecipeBookModel(recipeDAL.GetMyRecipes(authProvider.GetCurrentUser().Id))
+                    );
+                }
             }
             else
             {
-                output = StatusCode(500, error.NotLoggedIn);
+                output = StatusCode(401, error.NotLoggedIn);
             }
 
             return output;
@@ -52,7 +57,7 @@ namespace LetsEat.Controllers.API
         [HttpGet]
         public IActionResult FamilyRecipes()
         {
-            ObjectResult output = StatusCode(500, error.FamilyRecipes);
+            ObjectResult output;
 
             if (authProvider.IsLoggedIn)
             {
@@ -60,7 +65,7 @@ namespace LetsEat.Controllers.API
 
                 if (user.FamilyId <= 1)
                 {
-                    output = StatusCode(500, error.NotInFamily);
+                    output = StatusCode(401, error.NotInFamily);
                 }
                 else
                 {
@@ -68,11 +73,10 @@ namespace LetsEat.Controllers.API
                         new RecipeBookModel(recipeDAL.GetFamilyRecipes(user.FamilyId))
                     );
                 }
-
             }
             else
             {
-                output = StatusCode(500, error.NotLoggedIn);
+                output = StatusCode(401, error.NotLoggedIn);
             }
 
             return output;
@@ -87,50 +91,13 @@ namespace LetsEat.Controllers.API
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ManuallyAddRecipe(AddRecipeForm form)
-        {
-            if (authProvider.IsLoggedIn)
-            {
-                Recipe r = new Recipe()
-                {
-                    Name = form.Name,
-                    Description = form.Description,
-                    DateAdded = DateTime.Now,
-                    Source = form.Source,
-                    PrepMinutes = form.PrepMinutes,
-                    CookMinutes = form.CookMinutes,
-                    UserWhoAdded = authProvider.GetCurrentUser(),
-
-                    Steps = form.ParseSteps(),
-                    ImageLocations = form.ParseImageLocations(),
-                    Ingredients = form.ParseIngredients()
-                };
-
-                if (recipeDAL.AddRecipe(r) != null)
-                {
-                    return View("Recipe", r);
-                }
-                else
-                {
-                    return View("Error");
-                }
-
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult ParseUrl(ParseURLForm form)
         {
+            ObjectResult output = StatusCode(500, error.ParseUrl);
+
             if (authProvider.IsLoggedIn)
             {
-                User currentUser = authProvider.GetCurrentUser();
+                User currentUser = authProvider.GetCurrentUser(true);
 
                 if (form.IsSupportedWebsite())
                 {
@@ -140,11 +107,7 @@ namespace LetsEat.Controllers.API
 
                     if (newRecipe != null)
                     {
-                        return RedirectToAction("Recipe", new { id = newRecipe.ID });
-                    }
-                    else
-                    {
-                        return View("Error");
+                        output = StatusCode(200, newRecipe);
                     }
                 }
                 else
@@ -156,29 +119,15 @@ namespace LetsEat.Controllers.API
                     emailProvider.NewWebsiteRequest(wr);
 
 
-                    return View("WebsiteRequestAdded", wr);
+                    output = StatusCode(501, wr);
                 }
             }
             else
             {
-                return RedirectToAction("Login", "Account");
+                output = StatusCode(401, error.NotLoggedIn);
             }
-        }
 
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            Recipe model = recipeDAL.GetRecipeByID(id);
-            return View(model);
+            return output;
         }
-
-        [HttpPost]
-        public IActionResult Edit(Recipe recipe)
-        {
-            //todo: create update method in recipeDAL
-            return RedirectToAction("Recipe", new { id = recipe.ID });
-        }
-
-        //todo: delete a recipe
     }
 }

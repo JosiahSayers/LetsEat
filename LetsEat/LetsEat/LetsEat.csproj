@@ -26,5 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Models\RecipeBook\" />
+    <Folder Include="Models\Admin\" />
   </ItemGroup>
 </Project>

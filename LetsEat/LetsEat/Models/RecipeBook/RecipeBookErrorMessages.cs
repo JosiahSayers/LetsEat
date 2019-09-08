@@ -1,5 +1,4 @@
-﻿using System;
-namespace LetsEat.Models.RecipeBook
+﻿namespace LetsEat.Models.RecipeBook
 {
     public class RecipeBookErrorMessages : BaseError
     {
@@ -27,11 +26,11 @@ namespace LetsEat.Models.RecipeBook
             }
         }
 
-        public Error NotLoggedIn
+        public Error ParseUrl
         {
             get
             {
-                return this.ErrorResult("Not logged in");
+                return this.ErrorResult("Error Parsing URL");
             }
         }
     }
