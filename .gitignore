@@ -15,3 +15,6 @@ LetsEat/.vs/
 LetsEat/LetsEat/wwwroot/uploads/
 LetsEat/LetsEat/Let's Eat-a7307cfeb1a6.json
 .DS_Store
+
+*/appsettings.json
+*/Let's Eat-a7307cfeb1a6.json
