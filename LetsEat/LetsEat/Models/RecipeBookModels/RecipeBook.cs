@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using LetsEat.Models.RecipeModels;
 
-namespace LetsEat.Models.RecipeBook
+namespace LetsEat.Models.RecipeBookModels
 {
     public class RecipeBookModel
     {

@@ -9,14 +9,14 @@ using System.IO;
 using Microsoft.AspNetCore.Http.Internal;
 using LetsEat.Models.Forms;
 using LetsEat.DAL;
-using LetsEat.Models;
+using LetsEat.Models.RecipeModels;
 using LetsEat.Providers.Storage;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace LetsEat.Controllers.API
+namespace LetsEat.Controllers.API.v1
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class ImageController : Controller
     {
         private readonly IHostingEnvironment environment;

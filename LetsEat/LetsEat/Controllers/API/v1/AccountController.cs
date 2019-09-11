@@ -12,9 +12,9 @@ using LetsEat.Models.Email;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace LetsEat.Controllers.API
+namespace LetsEat.Controllers.API.v1
 {
-    [Route("api/account/[action]")]
+    [Route("api/v1/account/[action]")]
     [ApiController]
     public class AccountApiController : Controller
     {
@@ -24,7 +24,7 @@ namespace LetsEat.Controllers.API
         private readonly IFamilyDAL familyDAL;
         private readonly AccountErrorMessages error = new AccountErrorMessages();
 
-        public AccountApiController(IAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider, IFamilyDAL familyDAL)
+        public AccountApiController(ApiAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider, IFamilyDAL familyDAL)
         {
             this.authProvider = authProvider;
             this.userDAL = userDAL;
@@ -168,6 +168,19 @@ namespace LetsEat.Controllers.API
 
                     emailProvider.DeclineInvite(ir);
                 }
+            }
+
+            return output;
+        }
+
+        [HttpPost]
+        public IActionResult ValidateLogin()
+        {
+            StatusCodeResult output = StatusCode(401);
+
+            if (authProvider.IsLoggedIn)
+            {
+                output = StatusCode(200);
             }
 
             return output;

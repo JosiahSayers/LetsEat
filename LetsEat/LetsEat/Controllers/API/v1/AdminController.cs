@@ -8,11 +8,13 @@ using LetsEat.Models.Admin;
 using LetsEat.Models.Forms;
 using LetsEat.Providers.Auth;
 using LetsEat.Providers.Email;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LetsEat.Controllers.Api
+namespace LetsEat.Controllers.Api.v1
 {
-    [Route("api/Admin/[action]")]
+    [EnableCors]
+    [Route("api/v1/Admin/[action]")]
     [ApiController]
     public class AdminApiController : Controller
     {

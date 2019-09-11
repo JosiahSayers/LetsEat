@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.DAL;
 using LetsEat.Models;
+using LetsEat.Models.RecipeModels;
 using LetsEat.Models.Forms;
 using LetsEat.Providers.Auth;
 using LetsEat.Providers.Email;

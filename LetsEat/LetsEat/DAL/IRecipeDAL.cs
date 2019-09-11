@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using LetsEat.Models;
-using LetsEat.Models.RecipeBook;
+using LetsEat.Models.RecipeModels;
+using LetsEat.Models.RecipeBookModels;
 
 namespace LetsEat.DAL
 {

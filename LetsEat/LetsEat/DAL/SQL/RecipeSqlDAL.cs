@@ -1,5 +1,6 @@
 ﻿using LetsEat.Models;
-using LetsEat.Models.RecipeBook;
+using LetsEat.Models.RecipeModels;
+using LetsEat.Models.RecipeBookModels;
 using LetsEat.Providers.Auth;
 using System;
 using System.Collections.Generic;

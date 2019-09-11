@@ -57,12 +57,15 @@ namespace LetsEat
             services.AddTransient<IStepDAL, StepSqlDAL>(c => new StepSqlDAL(connectionString));
             services.AddTransient<IWebsiteRequestDAL, WebsiteRequestSqlDAL>(c => new WebsiteRequestSqlDAL(connectionString));
             services.AddTransient<GoogleCloudStorage>(c => new GoogleCloudStorage(googleJsonCredential));
+            services.AddSingleton<ApiAuthProvider>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<IAuthProvider, SessionAuthProvider>();
 
             services.AddTransient<EmailProvider>(c => new EmailProvider(emailProviderPassword, connectionString));
+
+            services.AddCors();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -85,6 +88,16 @@ namespace LetsEat
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+
+
+
+            app.UseCors(builder =>
+                builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                );
 
             app.UseMvc(routes =>
             {
