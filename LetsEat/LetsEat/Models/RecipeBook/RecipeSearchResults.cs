@@ -1,5 +1,5 @@
 ﻿using System;
-namespace LetsEat.Models.RecipeBookModels
+namespace LetsEat.Models.RecipeBook
 {
     public class RecipeSearchResults
     {

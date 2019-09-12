@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.DAL;
-using LetsEat.Models.RecipeModels;
+using LetsEat.Models;
 using LetsEat.Models.Forms;
-using LetsEat.Models.RecipeBookModels;
+using LetsEat.Models.RecipeBook;
 using LetsEat.Providers.Auth;
 using LetsEat.Providers.Email;
 using Microsoft.AspNetCore.Mvc;
-using LetsEat.Models;
 
-namespace LetsEat.Controllers.API.v1
+namespace LetsEat.Controllers.API
 {
-    [Route("api/v1/RecipeBook/[action]")]
+    [Route("api/RecipeBook/[action]")]
     [ApiController]
     public class RecipeBookApiController : Controller
     {
@@ -23,7 +22,7 @@ namespace LetsEat.Controllers.API.v1
         private readonly EmailProvider emailProvider;
         private readonly RecipeBookErrorMessages error = new RecipeBookErrorMessages();
 
-        public RecipeBookApiController(IRecipeDAL recipeDAL, ApiAuthProvider authProvider, IWebsiteRequestDAL websiteRequestDAL, EmailProvider emailProvider)
+        public RecipeBookApiController(IRecipeDAL recipeDAL, IAuthProvider authProvider, IWebsiteRequestDAL websiteRequestDAL, EmailProvider emailProvider)
         {
             this.recipeDAL = recipeDAL;
             this.authProvider = authProvider;

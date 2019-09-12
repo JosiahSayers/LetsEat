@@ -9,7 +9,6 @@ using ScrapySharp.Extensions;
 using ScrapySharp.Html;
 using ScrapySharp.Html.Forms;
 using ScrapySharp.Network;
-using LetsEat.Models.RecipeModels;
 
 namespace LetsEat.Models.Forms
 {

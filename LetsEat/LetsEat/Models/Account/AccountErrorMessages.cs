@@ -28,6 +28,14 @@ namespace LetsEat.Models.Account
             }
         }
 
+        public Error NotLoggedIn
+        {
+            get
+            {
+                return this.ErrorResult("No user currently logged in, please log in before completing this action");
+            }
+        }
+
         public Error ChangeFamily
         {
             get

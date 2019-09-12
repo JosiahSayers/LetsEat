@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LetsEat.DAL;
-using LetsEat.Models.RecipeModels;
+using LetsEat.Models;
 using LetsEat.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
 

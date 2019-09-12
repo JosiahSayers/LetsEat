@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LetsEat.Models.RecipeModels
+namespace LetsEat.Models
 {
     public class Recipe
     {

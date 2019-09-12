@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace LetsEat.Models.RecipeBookModels
+namespace LetsEat.Models.RecipeBook
 {
     public class SearchResults
     {
