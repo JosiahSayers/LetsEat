@@ -13,6 +13,7 @@ namespace LetsEat.DAL.SQL
         private string SQL_AssignImageLocationToRecipe = "INSERT INTO images (recipe_id, filename) VALUES (@recipeID, @filename);";
         private string SQL_DeleteILForRecipe = "DELETE FROM images WHERE recipe_id = @recipeId;";
         private string SQL_DeleteImage = "DELETE FROM images WHERE recipe_id = @recipeID AND filename LIKE '%'+@filename+'%';";
+        private string SQL_DoesUserOwnImage = "SELECT * FROM images JOIN recipe ON images.recipe_id = recipe.id WHERE recipe.user_id = @user_id;";
 
         public ImageSqlDAL(string connectionString)
         {
@@ -132,6 +133,31 @@ namespace LetsEat.DAL.SQL
             {
 
             }
+        }
+
+        public bool DoesUserOwnImage(User user)
+        {
+            bool output;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_DoesUserOwnImage, conn);
+                    cmd.Parameters.AddWithValue("@user_id", user.Id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    output = reader.Read();
+                }
+            }
+            catch
+            {
+                output = false;
+            }
+
+            return output;
         }
     }
 }

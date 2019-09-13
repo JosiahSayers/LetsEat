@@ -12,5 +12,6 @@ namespace LetsEat.DAL
         bool AssignImageLocationToRecipe(string imgLoc, Recipe recipe);
         void UpdateImageLocationsForRecipe(int recipeId, List<string> imageLocations, SqlConnection conn);
         void Remove(int recipeId, string imageLocation);
+        bool DoesUserOwnImage(User user);
     }
 }

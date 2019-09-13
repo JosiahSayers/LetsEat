@@ -14,7 +14,7 @@ namespace LetsEat.Providers.Auth
         /// Returns the current signed in user.
         /// </summary>
         /// <returns></returns>
-        User GetCurrentUser(bool isForApi = false);
+        User GetCurrentUser();
 
         /// <summary>
         /// Signs a user in.

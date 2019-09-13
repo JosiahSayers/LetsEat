@@ -105,7 +105,7 @@ namespace LetsEat.Providers.Auth
         /// Gets the user using the current email in session.
         /// </summary>
         /// <returns></returns>
-        public User GetCurrentUser(bool isForApi = false)
+        public User GetCurrentUser()
         {
             var email = Session.GetString(SessionKey);
             User output = null;
@@ -113,12 +113,6 @@ namespace LetsEat.Providers.Auth
             if (!String.IsNullOrEmpty(email))
             {
                 output = userDAL.GetUser(email);
-
-                if (isForApi == true)
-                {
-                    output.Password = null;
-                    output.Salt = null;
-                }
             }
 
             return output;

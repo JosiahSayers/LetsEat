@@ -54,5 +54,11 @@ namespace LetsEat.Models
         {
             FamilyId = 1;
         }
+
+        public void RemoveSensitiveFields()
+        {
+            this.Password = null;
+            this.Salt = null;
+        }
     }
 }

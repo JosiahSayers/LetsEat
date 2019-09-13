@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using LetsEat.DAL;
 using LetsEat.Models;
@@ -13,19 +14,21 @@ namespace LetsEat.Providers.Auth
         private int sessionKeyLength = 24;
         private Dictionary<string, User> loggedInUsers;
         private IUsersDAL usersDAL;
+        private IWebsiteRequestDAL websiteRequestDAL;
         private readonly IHttpContextAccessor contextAccessor;
 
 
-        public ApiAuthProvider(IUsersDAL usersDAL, IHttpContextAccessor contextAccessor)
+        public ApiAuthProvider(IUsersDAL usersDAL, IHttpContextAccessor contextAccessor, IWebsiteRequestDAL websiteRequestDAL)
         {
             loggedInUsers = new Dictionary<string, User>();
             this.usersDAL = usersDAL;
             this.contextAccessor = contextAccessor;
+            this.websiteRequestDAL = websiteRequestDAL;
         }
 
         public bool IsLoggedIn => loggedInUsers[GetAccessTokenFromHeaders()] != null;
 
-        public User GetCurrentUser(bool isForApi = true)
+        public User GetCurrentUser()
         {
             User currentUser = loggedInUsers[GetAccessTokenFromHeaders()];
             return currentUser;
@@ -42,6 +45,7 @@ namespace LetsEat.Providers.Auth
                 string newAccessToken = GenerateAccessToken();
                 loggedInUsers.Add(newAccessToken, user);
                 output.AccessToken = newAccessToken;
+                user.RemoveSensitiveFields();
                 output.User = user;
             }
             else
@@ -59,26 +63,66 @@ namespace LetsEat.Providers.Auth
 
         public bool ChangePassword(string existingPassword, string newPassword)
         {
+            var hashProvider = new HashProvider();
+            var user = GetCurrentUser();
+
+            if (user != null && hashProvider.VerifyPasswordMatch(user.Password, existingPassword, user.Salt))
+            {
+                var newHash = hashProvider.HashPassword(newPassword);
+                user.Password = newHash.Password;
+                user.Salt = newHash.Salt;
+
+                usersDAL.UpdateUser(user);
+
+                return true;
+            }
+
             return false;
         }
 
         public bool Register(string displayName, string email, string password, string role)
         {
-            return false;
+            if (usersDAL.DoesEmailAlreadyExist(email))
+            {
+                return false;
+            }
+
+            var hashProvider = new HashProvider();
+            var passwordHash = hashProvider.HashPassword(password);
+
+            var user = new User
+            {
+                DisplayName = displayName,
+                Email = email,
+                Password = passwordHash.Password,
+                Salt = passwordHash.Salt,
+                Role = role
+            };
+
+            bool result = usersDAL.CreateUser(user);
+            loggedInUsers.Add(GenerateAccessToken(), user);
+            return result;
         }
 
         public bool UserHasRole(string[] roles)
         {
-            return false;
+            var user = GetCurrentUser();
+            return (user != null) &&
+                roles.Any(r => r.ToLower() == user.Role.ToLower());
         }
 
         public bool IsAdmin()
         {
-            return false;
+            return GetCurrentUser().IsAdmin;
         }
 
         public bool WebsiteRequestExists()
         {
+            if(IsLoggedIn && IsAdmin())
+            {
+                return websiteRequestDAL.WebsiteRequestExists() == true;
+            }
+
             return false;
         }
 
@@ -91,15 +135,17 @@ namespace LetsEat.Providers.Auth
         private string GenerateAccessToken()
         {
             byte[] randomBytes;
+            string accessToken;
             do
             {
                 RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider();
                 randomBytes = new byte[sessionKeyLength];
                 crypto.GetBytes(randomBytes);
+                accessToken = ConvertByteArrayToString(randomBytes);
             }
-            while (DoesAccessTokenAlreadyExist(randomBytes.ToString()));
+            while (DoesAccessTokenAlreadyExist(accessToken));
 
-            return ConvertByteArrayToString(randomBytes);
+            return accessToken;
         }
 
         private bool DoesAccessTokenAlreadyExist(string accessToken)
