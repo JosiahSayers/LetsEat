@@ -59,6 +59,7 @@ namespace LetsEat
             services.AddTransient<GoogleCloudStorage>(c => new GoogleCloudStorage(googleJsonCredential));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<ApiAuthProvider>();
 
             services.AddScoped<IAuthProvider, SessionAuthProvider>();
 

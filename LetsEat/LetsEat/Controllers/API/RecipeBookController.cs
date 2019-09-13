@@ -12,17 +12,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LetsEat.Controllers.API
 {
-    [Route("api/RecipeBook/[action]")]
+    [Route("api/v1/RecipeBook/[action]")]
     [ApiController]
     public class RecipeBookApiController : Controller
     {
         private readonly IRecipeDAL recipeDAL;
-        private readonly IAuthProvider authProvider;
+        private readonly ApiAuthProvider authProvider;
         private readonly IWebsiteRequestDAL websiteRequestDAL;
         private readonly EmailProvider emailProvider;
         private readonly RecipeBookErrorMessages error = new RecipeBookErrorMessages();
 
-        public RecipeBookApiController(IRecipeDAL recipeDAL, IAuthProvider authProvider, IWebsiteRequestDAL websiteRequestDAL, EmailProvider emailProvider)
+        public RecipeBookApiController(IRecipeDAL recipeDAL, ApiAuthProvider authProvider, IWebsiteRequestDAL websiteRequestDAL, EmailProvider emailProvider)
         {
             this.recipeDAL = recipeDAL;
             this.authProvider = authProvider;

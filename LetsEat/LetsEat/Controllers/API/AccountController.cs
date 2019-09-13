@@ -14,17 +14,17 @@ using LetsEat.Models.Email;
 
 namespace LetsEat.Controllers.API
 {
-    [Route("api/account/[action]")]
+    [Route("api/v1/account/[action]")]
     [ApiController]
     public class AccountApiController : Controller
     {
-        private readonly IAuthProvider authProvider;
+        private readonly ApiAuthProvider authProvider;
         private readonly IUsersDAL userDAL;
         private readonly EmailProvider emailProvider;
         private readonly IFamilyDAL familyDAL;
         private readonly AccountErrorMessages error = new AccountErrorMessages();
 
-        public AccountApiController(IAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider, IFamilyDAL familyDAL)
+        public AccountApiController(ApiAuthProvider authProvider, IUsersDAL userDAL, EmailProvider emailProvider, IFamilyDAL familyDAL)
         {
             this.authProvider = authProvider;
             this.userDAL = userDAL;
@@ -44,15 +44,16 @@ namespace LetsEat.Controllers.API
         [HttpPost]
         public IActionResult Login(LoginViewModel loginViewModel)
         {
-          ObjectResult output = StatusCode(500, error.LoginError);
+            ObjectResult output = StatusCode(500, error.LoginError);
+            SuccessfulLoginResponse loginResponse;
             // Ensure the fields were filled out
             if (ModelState.IsValid)
             {
                 // Check that they provided correct credentials
-                bool validLogin = authProvider.SignIn(loginViewModel.Email, loginViewModel.Password);
-                if (validLogin)
+                loginResponse = authProvider.ApiSignIn(loginViewModel.Email, loginViewModel.Password);
+                if (loginResponse != null)
                 {
-                    output = StatusCode(200, authProvider.GetCurrentUser(true));
+                    output = StatusCode(200, loginResponse);
                 }
             }
 
