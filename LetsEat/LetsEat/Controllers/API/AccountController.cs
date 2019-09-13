@@ -99,7 +99,7 @@ namespace LetsEat.Controllers.API
             {
                 if (authProvider.ChangePassword(cpvm.OldPassword, cpvm.ConfirmPassword))
                 {
-                    output = StatusCode(200, authProvider.GetCurrentUser(true));
+                    output = StatusCode(200, authProvider.GetCurrentUser());
                 }
             }
             else if (cpvm.NewPassword != cpvm.ConfirmPassword)

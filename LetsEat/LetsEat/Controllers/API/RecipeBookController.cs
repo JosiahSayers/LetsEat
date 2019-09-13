@@ -97,7 +97,7 @@ namespace LetsEat.Controllers.API
 
             if (authProvider.IsLoggedIn)
             {
-                User currentUser = authProvider.GetCurrentUser(true);
+                User currentUser = authProvider.GetCurrentUser();
 
                 if (form.IsSupportedWebsite())
                 {

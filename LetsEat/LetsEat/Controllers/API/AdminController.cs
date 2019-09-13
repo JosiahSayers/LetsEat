@@ -21,7 +21,11 @@ namespace LetsEat.Controllers.Api
         private readonly IAuthProvider authProvider;
         private readonly AdminErrorMessages error = new AdminErrorMessages();
 
-        public AdminApiController(IWebsiteRequestDAL websiteRequestDAL, EmailProvider emailProvider, IAuthProvider authProvider)
+        public AdminApiController(
+            IWebsiteRequestDAL websiteRequestDAL,
+            EmailProvider emailProvider,
+            ApiAuthProvider authProvider
+            )
         {
             this.websiteRequestDAL = websiteRequestDAL;
             this.emailProvider = emailProvider;

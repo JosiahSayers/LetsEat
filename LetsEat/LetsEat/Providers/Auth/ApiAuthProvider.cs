@@ -26,7 +26,19 @@ namespace LetsEat.Providers.Auth
             this.websiteRequestDAL = websiteRequestDAL;
         }
 
-        public bool IsLoggedIn => loggedInUsers[GetAccessTokenFromHeaders()] != null;
+        public bool IsLoggedIn {
+            get
+            {
+                try
+                {
+                    return loggedInUsers[GetAccessTokenFromHeaders()] != null;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
 
         public User GetCurrentUser()
         {
@@ -58,7 +70,14 @@ namespace LetsEat.Providers.Auth
 
         public bool LogOff()
         {
-            return loggedInUsers.Remove(GetAccessTokenFromHeaders());
+            try
+            {
+                return loggedInUsers.Remove(GetAccessTokenFromHeaders());
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool ChangePassword(string existingPassword, string newPassword)
