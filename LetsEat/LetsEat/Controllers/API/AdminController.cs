@@ -10,7 +10,7 @@ using LetsEat.Providers.Auth;
 using LetsEat.Providers.Email;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LetsEat.Controllers.Api
+namespace LetsEat.Controllers.API
 {
     [Route("api/Admin/[action]")]
     [ApiController]
