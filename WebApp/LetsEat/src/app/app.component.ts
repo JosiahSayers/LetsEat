@@ -23,16 +23,5 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.login()
-    // .subscribe((loginResponse: LoginResponse) => {
-    //   if (loginResponse && loginResponse.accessToken) {
-    //     this.canLoadApplication = true;
-    //     console.log(loginResponse);
-    //     this.getRecipes().subscribe(recipes => {
-    //       console.log(recipes);
-    //       this.auth.logoff().subscribe(res => console.log(res));
-    //     });
-    //   }
-    // });
   }
 }
