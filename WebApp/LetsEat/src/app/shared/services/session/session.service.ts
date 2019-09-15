@@ -18,7 +18,7 @@ export class SessionService {
   }
 
   get user(): User {
-    return JSON.parse(sessionStorage.getItem(environment.SESSION_KEYS.USER));
+    return JSON.parse(sessionStorage.getItem(environment.SESSION_KEYS.USER)) || undefined;
   }
 
   set user(user: User) {

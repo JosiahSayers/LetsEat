@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './shared/services/auth/auth.service';
-import { LoginResponse } from './shared/models/login-response.model';
+import { LoginResponse } from './shared/models/auth/login-response.model';
 import { User } from './shared/models/user.model';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';

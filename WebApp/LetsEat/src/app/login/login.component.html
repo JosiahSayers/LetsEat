@@ -1,0 +1,39 @@
+<div class="box">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit(loginForm.value)"
+  >
+ 
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control has-icons-left has-icons-right">
+        <input 
+          class="input"
+          type="email"
+          placeholder="Email"
+          [formControl]="email"
+        >
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          class="input"
+          type="password"
+          placeholder="Password"
+          [formControl]="password"
+        >
+        <span class="icon is-small is-left">
+          <i class="fas fa-key"></i>
+        </span>
+      </div>
+    </div>
+ 
+    <button type="submit" class="button is-link">Login</button>  
+  </form>  
+</div>

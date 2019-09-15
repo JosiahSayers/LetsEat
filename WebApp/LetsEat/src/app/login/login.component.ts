@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginForm } from 'src/app/shared/models/login-form.model';
+import { LoginForm } from 'src/app/shared/models/auth/login-form.model';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     formBuilder: FormBuilder,
-    private auth: AuthService
+    private auth: AuthService,
   ) {
     this.loginForm = formBuilder.group({
       'email': ['', [Validators.required, Validators.email]],

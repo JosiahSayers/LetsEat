@@ -48,7 +48,7 @@ namespace LetsEat.Providers.Auth
 
         public SuccessfulLoginResponse ApiSignIn(string email, string password)
         {
-            SuccessfulLoginResponse output = new SuccessfulLoginResponse();
+            SuccessfulLoginResponse output = null;
             var user = usersDAL.GetUser(email);
             var hashProvider = new HashProvider();
 
@@ -61,13 +61,7 @@ namespace LetsEat.Providers.Auth
 
                 string newAccessToken = GenerateAccessToken();
                 loggedInUsers.Add(newAccessToken, user);
-                output.AccessToken = newAccessToken;
-                user.RemoveSensitiveFields();
-                output.User = user;
-            }
-            else
-            {
-                output = null;
+                output = new SuccessfulLoginResponse(user, newAccessToken);
             }
 
             return output;
@@ -124,7 +118,6 @@ namespace LetsEat.Providers.Auth
             };
 
             bool result = usersDAL.CreateUser(user);
-            loggedInUsers.Add(GenerateAccessToken(), user);
             return result;
         }
 

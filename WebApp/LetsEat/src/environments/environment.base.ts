@@ -13,7 +13,8 @@ export const BaseEnvironment = {
       LOGIN: `https://localhost:5001/api/v1/account/login`,
       LOGOFF: `https://localhost:5001/api/v1/account/logoff`,
       REGISTER: `https://localhost:5001/api/v1/account/register`,
-      CHANGE_PASSWORD: `https://localhost:5001/api/v1/account/changepassword`
+      CHANGE_PASSWORD: `https://localhost:5001/api/v1/account/changepassword`,
+      IS_EMAIL_AVAILABLE: (email: string) => `https://localhost:5001/api/v1/account/isemailavailable?email=${email}`
     },
     RECIPE_BOOK: {
       MY_RECIPES: `https://localhost:5001/api/v1/recipebook/myrecipes`,

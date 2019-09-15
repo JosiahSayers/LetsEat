@@ -84,10 +84,10 @@ namespace LetsEat.Controllers.API
                 emailProvider.Welcome(userDAL.GetUser(rvm.Email));
 
                 // Redirect the user where you want them to go after registering
-                return StatusCode(200, authProvider.GetCurrentUser());
+                return StatusCode(200, authProvider.ApiSignIn(rvm.Email, rvm.Password));
             }
 
-            return View(rvm);
+            return StatusCode(422, rvm);
         }
 
         [HttpPost]
@@ -172,6 +172,13 @@ namespace LetsEat.Controllers.API
             }
 
             return output;
+        }
+
+        [HttpGet]
+        public IActionResult IsEmailAvailable(string email)
+        {
+            bool isEmailAvailable = !userDAL.DoesEmailAlreadyExist(email);
+            return Json(new IsEmailAvailableApiResponse(email, isEmailAvailable));
         }
     }
 }
