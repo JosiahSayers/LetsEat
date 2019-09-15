@@ -34,6 +34,9 @@
       </div>
     </div>
  
-    <button type="submit" class="button is-link">Login</button>  
+    <button type="submit" class="button is-link">
+      <span *ngIf="!loginRequestSent">Login</span>
+      <i class="fas fa-spinner fa-spin" *ngIf="loginRequestSent"></i>
+    </button>  
   </form>  
 </div>

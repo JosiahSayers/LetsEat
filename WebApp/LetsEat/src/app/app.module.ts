@@ -11,12 +11,16 @@ import { RecipeBookService } from './recipe-book/services/recipe-book.service';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
+import { RecipebookComponent } from './family/recipebook/recipebook.component';
+import { FamilyRecipeBookComponent } from './family/family-recipe-book/family-recipe-book.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    RecipebookComponent,
+    FamilyRecipeBookComponent
   ],
   imports: [
     BrowserModule,
