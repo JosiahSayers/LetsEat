@@ -30,6 +30,5 @@
   <ItemGroup>
     <Folder Include="Models\RecipeBook\" />
     <Folder Include="Models\Admin\" />
-    <Folder Include="Models\Image\" />
   </ItemGroup>
 </Project>

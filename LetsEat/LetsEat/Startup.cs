@@ -36,6 +36,8 @@ namespace LetsEat
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddCors();
+
             //session info
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
@@ -86,6 +88,7 @@ namespace LetsEat
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
 
             app.UseMvc(routes =>
             {

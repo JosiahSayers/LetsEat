@@ -54,6 +54,11 @@ namespace LetsEat.Providers.Auth
 
             if (user != null && hashProvider.VerifyPasswordMatch(user.Password, password, user.Salt))
             {
+                if (IsUserSignedIn(user))
+                {
+                    RemoveUser(user);
+                }
+
                 string newAccessToken = GenerateAccessToken();
                 loggedInUsers.Add(newAccessToken, user);
                 output.AccessToken = newAccessToken;
@@ -184,6 +189,31 @@ namespace LetsEat.Providers.Auth
             foreach(byte item in input)
             {
                 output += item.ToString();
+            }
+
+            return output;
+        }
+
+        private bool IsUserSignedIn(User user)
+        {
+            return GetKeyByUser(user) != null;
+        }
+
+        private void RemoveUser(User user)
+        {
+            loggedInUsers.Remove(GetKeyByUser(user));
+        }
+
+        private string GetKeyByUser(User user)
+        {
+            string output = null;
+
+            foreach (KeyValuePair<string, User> kvp in loggedInUsers)
+            {
+                if (kvp.Value.Id == user.Id)
+                {
+                    output = kvp.Key;
+                }
             }
 
             return output;
