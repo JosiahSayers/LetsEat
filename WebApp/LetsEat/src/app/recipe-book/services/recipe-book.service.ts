@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { SessionService } from 'src/app/shared/services/session/session.service';
 import { HttpService } from 'src/app/shared/services/http/http.service';
 import { environment } from 'src/environments/environment';
-import { tap } from 'rxjs/operators';
 import { Recipe } from 'src/app/shared/models/recipe.model';
-import { of, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { RecipeBook } from 'src/app/shared/models/recipe-book.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,12 @@ import { of, Observable } from 'rxjs';
 export class RecipeBookService {
 
   constructor(
-    private session: SessionService,
     private http: HttpService
   ) { }
 
   myRecipes: Recipe[];
 
-  getMyRecipes(): Observable<Recipe[]> {
+  getMyRecipes(): Observable<RecipeBook> {
     return this.http.get({
       url: environment.API.RECIPE_BOOK.MY_RECIPES,
       sendWithAuth: true

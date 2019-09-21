@@ -21,5 +21,24 @@ export const BaseEnvironment = {
       FAMILY_RECIPES: `https://localhost:5001/api/v1/recipebook/familyrecipes`,
       SEARCH: (query: string) => `https://localhost:5001/api/v1/recipebook/search?query=${query}`
     }
+  },
+  
+  NAVBAR_LINKS: {
+    UNAUTHENTICATED: [
+      {
+        text: 'Login',
+        route: '/login'
+      }
+    ],
+    AUTHENTICATED: [
+      {
+        text: 'My Recipes',
+        route: '/recipe-book/personal'
+      },
+      {
+        text: 'Family Recipes',
+        route: '/recipe-book/family'
+      }
+    ]
   }
 }

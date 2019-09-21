@@ -28,10 +28,11 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "../node_modules/bulma/css/bulma.css"
+              "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "../node_modules/materialize-css/dist/js/materialize.min.js"
+            ]
           },
           "configurations": {
             "production": {

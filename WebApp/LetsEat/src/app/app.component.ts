@@ -6,6 +6,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { RecipeBookService } from './recipe-book/services/recipe-book.service';
 import { Recipe } from './shared/models/recipe.model';
+import { initializeNavBar } from './navbar/navbar-initialize.js';
 
 @Component({
   selector: 'app-root',
@@ -23,5 +24,6 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    initializeNavBar();
   }
 }
