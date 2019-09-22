@@ -42,5 +42,12 @@ export const BaseEnvironment = {
         route: '/recipe-book/family'
       }
     ]
+  },
+
+  PAGE_TITLES: {
+    RECIPE_BOOK: {
+      FAMILY: 'Family Recipe Book',
+      PERSONAL: 'My Recipe Book'
+    }
   }
 }
