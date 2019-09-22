@@ -4,7 +4,7 @@
     <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     <ul class="right hide-on-med-and-down">
       <li *ngFor="let link of navLinks">
-        <a (click)="navigate(link)">{{ link.text }}</a>
+        <a routerLink="{{link.route}}">{{ link.text }}</a>
       </li>
     </ul>
   </div>
@@ -12,6 +12,6 @@
 
 <ul class="sidenav" id="mobile-demo">
   <li *ngFor="let link of navLinks">
-    <a (click)="navigate(link)">{{ link.text }}</a>
+    <a routerLink="{{link.route}}">{{ link.text }}</a>
   </li>
 </ul>

@@ -3,7 +3,8 @@ export const BaseEnvironment = {
 
   SESSION_KEYS: {
     ACCESS_TOKEN: 'accessToken',
-    USER: 'user'
+    USER: 'user',
+    MY_RECIPES: 'myRecipes'
   },
 
   API_BASE_URL: 'https://localhost:5001/api/v1/',
@@ -22,7 +23,7 @@ export const BaseEnvironment = {
       SEARCH: (query: string) => `https://localhost:5001/api/v1/recipebook/search?query=${query}`
     }
   },
-  
+
   NAVBAR_LINKS: {
     UNAUTHENTICATED: [
       {

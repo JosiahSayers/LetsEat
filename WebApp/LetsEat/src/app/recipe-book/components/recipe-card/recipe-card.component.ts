@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Recipe } from 'src/app/shared/models/recipe.model';
 import { User } from 'src/app/shared/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-card',
@@ -11,7 +12,9 @@ export class RecipeCardComponent {
 
   @Input() recipe: Recipe;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   get name(): string {
     return this.recipe ? this.recipe.name : '';
@@ -31,6 +34,14 @@ export class RecipeCardComponent {
 
   get imageUrl(): string {
     return this.recipe ? this.recipe.imageLocations[0] : null;
+  }
+
+  get totalTime(): string {
+    return this.recipe ? this.recipe.totalTime : '';
+  }
+
+  get id(): number {
+    return this.recipe ? this.recipe.id : null;
   }
 
 }

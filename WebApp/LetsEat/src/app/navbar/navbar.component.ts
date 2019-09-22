@@ -10,18 +10,12 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(
-    private router: Router
-  ) { }
+  constructor() { }
 
   ngOnInit() {
   }
 
   get navLinks(): NavigationLink[] {
     return environment.NAVBAR_LINKS.AUTHENTICATED;
-  }
-
-  navigate(navLink: NavigationLink): void {
-    this.router.navigateByUrl(navLink.route);
   }
 }
