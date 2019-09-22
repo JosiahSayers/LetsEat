@@ -4,7 +4,8 @@ export const BaseEnvironment = {
   SESSION_KEYS: {
     ACCESS_TOKEN: 'accessToken',
     USER: 'user',
-    MY_RECIPES: 'myRecipes'
+    MY_RECIPES: 'myRecipes',
+    FAMILY_RECIPES: 'familyRecipes'
   },
 
   API_BASE_URL: 'https://localhost:5001/api/v1/',

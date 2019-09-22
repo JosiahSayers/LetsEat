@@ -5,6 +5,7 @@ import { RecipeCardComponent } from './components/recipe-card/recipe-card.compon
 import { RecipeBookComponent } from './components/recipe-book/recipe-book.component';
 import { RecipeBookRoutingModule } from './recipe-book-routing.module';
 import { RecipeComponent } from './components/recipe/recipe.component';
+import { ClampyModule } from '@clampy-js/ngx-clampy';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { RecipeComponent } from './components/recipe/recipe.component';
   ],
   imports: [
     CommonModule,
-    RecipeBookRoutingModule
+    RecipeBookRoutingModule,
+    ClampyModule
   ],
   providers: [
     RecipeBookService

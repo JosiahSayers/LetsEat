@@ -49,4 +49,20 @@ export class SessionService {
   set myRecipes(recipeBook: RecipeBook) {
     sessionStorage.setItem(environment.SESSION_KEYS.MY_RECIPES, JSON.stringify(recipeBook));
   }
+
+  get familyRecipes(): RecipeBook {
+    let recipeBook;
+
+    try {
+      recipeBook = JSON.parse(sessionStorage.getItem(environment.SESSION_KEYS.FAMILY_RECIPES));
+    } catch {
+      recipeBook = undefined;
+    }
+
+    return recipeBook;
+  }
+
+  set familyRecipes(recipeBook: RecipeBook) {
+    sessionStorage.setItem(environment.SESSION_KEYS.FAMILY_RECIPES, JSON.stringify(recipeBook));
+  }
 }

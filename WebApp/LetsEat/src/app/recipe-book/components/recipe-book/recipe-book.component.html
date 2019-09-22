@@ -1,4 +1,4 @@
 <div class="spinner" *ngIf="!recipeBook">SPINNER</div>
-<div *ngIf="recipeBook">
+<div *ngIf="recipeBook" id="recipe-book-container" class="row">
   <app-recipe-card *ngFor="let recipe of recipeBook.recipes" [recipe]="recipe"></app-recipe-card>
 </div>

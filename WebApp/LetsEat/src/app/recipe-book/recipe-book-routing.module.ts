@@ -4,7 +4,7 @@ import { RecipeBookComponent } from './components/recipe-book/recipe-book.compon
 import { RecipeComponent } from './components/recipe/recipe.component';
 
 const routes: Routes = [
-  { path: 'recipe-book/personal', component: RecipeBookComponent },
+  { path: 'recipe-book/:type', component: RecipeBookComponent },
   { path: 'recipe-book/recipe/:id', component: RecipeComponent }
 ];
 

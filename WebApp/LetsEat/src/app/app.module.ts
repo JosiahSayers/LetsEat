@@ -14,13 +14,14 @@ import { RegisterComponent } from './register/register.component';
 import { RecipeBookModule } from './recipe-book/recipe-book.module';
 import { RecipeBookRoutingModule } from './recipe-book/recipe-book-routing.module';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ClampyModule } from '@clampy-js/ngx-clampy';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    NavbarComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +30,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RecipeBookModule
+    RecipeBookModule,
+    ClampyModule
   ],
   providers: [
     AuthService,
