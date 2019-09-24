@@ -15,6 +15,7 @@ import { RecipeBookModule } from './recipe-book/recipe-book.module';
 import { RecipeBookRoutingModule } from './recipe-book/recipe-book-routing.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ClampyModule } from '@clampy-js/ngx-clampy';
+import { CacheService } from './shared/services/cache/cache.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ClampyModule } from '@clampy-js/ngx-clampy';
     SessionService,
     HttpService,
     RecipeBookService,
-    Title
+    Title,
+    CacheService
   ],
   bootstrap: [AppComponent]
 })

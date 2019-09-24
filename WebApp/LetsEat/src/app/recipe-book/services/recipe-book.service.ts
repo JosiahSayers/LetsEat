@@ -6,6 +6,7 @@ import { RecipeBook } from 'src/app/shared/models/recipe-book.model';
 import { tap, findIndex } from 'rxjs/operators';
 import { Recipe } from 'src/app/shared/models/recipe.model';
 import { SessionService } from 'src/app/shared/services/session/session.service';
+import { CacheService } from 'src/app/shared/services/cache/cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +15,22 @@ export class RecipeBookService {
 
   constructor(
     private http: HttpService,
-    private session: SessionService
+    private session: SessionService,
+    private cache: CacheService
   ) { }
 
   getMyRecipes(): Observable<RecipeBook> {
     let myRecipes = new Observable<RecipeBook>(recipeBook => {
-      if (this.session.myRecipes) {
-        recipeBook.next(this.session.myRecipes);
+      if (this.cache.myRecipes) {
+        recipeBook.next(this.cache.myRecipes);
       }
 
-      this.refreshRecipes(environment.API.RECIPE_BOOK.MY_RECIPES).subscribe(refreshedRecipeBook => {
-        this.session.myRecipes = refreshedRecipeBook;
-        recipeBook.next(refreshedRecipeBook);
-      });
+      if (!this.cache.areMyRecipesValid) {
+        this.refreshRecipes(environment.API.RECIPE_BOOK.MY_RECIPES).subscribe(refreshedRecipeBook => {
+          this.cache.myRecipes = refreshedRecipeBook;
+          recipeBook.next(refreshedRecipeBook);
+        });
+      }
     });
 
     return myRecipes;
@@ -34,14 +38,16 @@ export class RecipeBookService {
 
   getFamilyRecipes(): Observable<RecipeBook> {
     let familyRecipes = new Observable<RecipeBook>(recipeBook => {
-      if (this.session.familyRecipes) {
-        recipeBook.next(this.session.familyRecipes);
+      if (this.cache.familyRecipes) {
+        recipeBook.next(this.cache.familyRecipes);
       }
 
-      this.refreshRecipes(environment.API.RECIPE_BOOK.FAMILY_RECIPES).subscribe(refreshedRecipeBook => {
-        this.session.familyRecipes = refreshedRecipeBook;
-        recipeBook.next(refreshedRecipeBook);
-      });
+      if (!this.cache.areFamilyRecipesValid) {
+        this.refreshRecipes(environment.API.RECIPE_BOOK.FAMILY_RECIPES).subscribe(refreshedRecipeBook => {
+          this.session.familyRecipes = refreshedRecipeBook;
+          recipeBook.next(refreshedRecipeBook);
+        });
+      }
     });
 
     return familyRecipes;

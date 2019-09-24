@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { User } from '../../models/user.model';
 import { RecipeBook } from '../../models/recipe-book.model';
+import { CACHE_SESSION_KEYS, CACHE_STATUS } from '../cache/cache-validation.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class SessionService {
 
   constructor() { }
 
-  get accessToken() {
+  get accessToken(): string {
     return sessionStorage.getItem(environment.SESSION_KEYS.ACCESS_TOKEN) || undefined;
   }
 
@@ -64,5 +65,17 @@ export class SessionService {
 
   set familyRecipes(recipeBook: RecipeBook) {
     sessionStorage.setItem(environment.SESSION_KEYS.FAMILY_RECIPES, JSON.stringify(recipeBook));
+  }
+
+  validateCache(key: CACHE_SESSION_KEYS): void {
+    sessionStorage.setItem(key, CACHE_STATUS.VALID);
+  }
+
+  invalidateCache(key: CACHE_SESSION_KEYS): void {
+    sessionStorage.setItem(key, CACHE_STATUS.INVALID);
+  }
+
+  isCacheValid(key: CACHE_SESSION_KEYS): boolean {
+    return sessionStorage.getItem(key) === CACHE_STATUS.VALID;
   }
 }
