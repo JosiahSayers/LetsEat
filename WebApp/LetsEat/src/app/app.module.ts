@@ -16,13 +16,15 @@ import { RecipeBookRoutingModule } from './recipe-book/recipe-book-routing.modul
 import { NavbarComponent } from './navbar/navbar.component';
 import { ClampyModule } from '@clampy-js/ngx-clampy';
 import { CacheService } from './shared/services/cache/cache.service';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    NavbarComponent
+    NavbarComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

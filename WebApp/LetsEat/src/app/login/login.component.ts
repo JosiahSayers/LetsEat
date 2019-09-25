@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
 
   private handleLoginSuccess(res: LoginResponse) {
     this.loginRequestSent = false;
-    console.log(res);
+    this.router.navigate(['/user']);
   }
 
   private handleLoginError(): Observable<any> {

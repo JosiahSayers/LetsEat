@@ -44,7 +44,7 @@ export class RecipeBookService {
 
       if (!this.cache.areFamilyRecipesValid) {
         this.refreshRecipes(environment.API.RECIPE_BOOK.FAMILY_RECIPES).subscribe(refreshedRecipeBook => {
-          this.session.familyRecipes = refreshedRecipeBook;
+          this.cache.familyRecipes = refreshedRecipeBook;
           recipeBook.next(refreshedRecipeBook);
         });
       }

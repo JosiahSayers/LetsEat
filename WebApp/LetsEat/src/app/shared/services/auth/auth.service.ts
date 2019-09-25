@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { LoginForm } from '../../models/auth/login-form.model';
 import { IsEmailAvailableResponse } from '../../models/auth/is-email-available-response.model';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class AuthService {
 
   constructor(
     private session: SessionService,
-    private http: HttpService
+    private http: HttpService,
+    private cache: CacheService
   ) { }
 
   login(loginObject: LoginForm): Observable<LoginResponse> {
@@ -24,7 +26,7 @@ export class AuthService {
       sendWithAuth: false,
       payload: loginObject
     }).pipe(
-      tap(loginResponse => this.storeLoginResponseToSession(loginResponse))
+      tap(loginResponse => this.cacheLoginResponse(loginResponse))
     ) as any;
   }
 
@@ -44,13 +46,13 @@ export class AuthService {
     });
   }
 
-  private storeLoginResponseToSession(loginResponse: LoginResponse) {
+  private cacheLoginResponse(loginResponse: LoginResponse) {
     this.session.accessToken = loginResponse.accessToken || null;
-    this.session.user = loginResponse.user || null;
+    this.cache.user = loginResponse.user || null;
   }
 
   private clearLoginFromSession() {
     this.session.accessToken = null;
-    this.session.user = null;
+    this.cache.user = null;
   }
 }

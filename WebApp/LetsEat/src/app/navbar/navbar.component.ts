@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationLink } from './navigation-link.model';
 import { environment } from 'src/environments/environment';
+import { User } from '../shared/models/user.model';
+import { SessionService } from '../shared/services/session/session.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,12 +11,16 @@ import { environment } from 'src/environments/environment';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private session: SessionService) { }
 
   ngOnInit() {
   }
 
   get navLinks(): NavigationLink[] {
     return environment.NAVBAR_LINKS.AUTHENTICATED;
+  }
+
+  get user(): User {
+    return this.session.user;
   }
 }
