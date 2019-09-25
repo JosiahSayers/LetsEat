@@ -1,0 +1,32 @@
+<h1>Welcome, {{ user.displayName }}</h1>
+
+<h5>Your information:</h5>
+<table class="highlight">
+  <thead>
+    <tr>
+        <th>Item</th>
+        <th>Value</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>{{ user.displayName }}</td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+      <td>In a family?</td>
+      <td>{{ isUserInFamily }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Actions</h5>
+
+<a routerLink="/user/changePassword">Change Password</a>
+<a routerLink="/user/changeName">Change Name</a>
+<a (click)="logout()">Logout</a>

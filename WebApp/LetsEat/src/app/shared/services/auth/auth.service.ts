@@ -52,7 +52,10 @@ export class AuthService {
   }
 
   private clearLoginFromSession() {
-    this.session.accessToken = null;
-    this.cache.user = null;
+    this.session.clearAllData();
+  }
+
+  get isLoggedIn(): boolean {
+    return !!this.cache.user;
   }
 }

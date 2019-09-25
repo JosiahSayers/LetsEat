@@ -9,10 +9,12 @@
 
       <li *ngIf="user">|</li>
       <li *ngIf="user">
-        <a 
-          routerLink="/user"
-          [class.blue]="user.inviteRequest"
-          [class.pulse]="user.inviteRequest">{{ user.displayName }}</a>
+        <a routerLink="/user">
+          {{ user.displayName }}
+          <span *ngIf="user.inviteRequest" class="new badge" data-badge-caption="">
+            Invite Request!
+          </span>
+        </a>
       </li>
       <li *ngIf="user?.isAdmin">
         <a routerLink="/admin">Admin</a>
@@ -24,5 +26,18 @@
 <ul class="sidenav" id="mobile-demo">
   <li *ngFor="let link of navLinks">
     <a routerLink="{{link.route}}">{{ link.text }}</a>
+  </li>
+
+  <hr *ngIf="user" />
+  <li *ngIf="user">
+    <a routerLink="/user">
+      {{ user.displayName }}
+      <span *ngIf="user.inviteRequest" class="new badge" data-badge-caption="">
+        Invite Request!
+      </span>
+    </a>
+  </li>
+  <li *ngIf="user?.isAdmin">
+    <a routerLink="/admin">Admin</a>
   </li>
 </ul>

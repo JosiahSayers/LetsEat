@@ -78,4 +78,8 @@ export class SessionService {
   isCacheValid(key: CACHE_SESSION_KEYS): boolean {
     return sessionStorage.getItem(key) === CACHE_STATUS.VALID;
   }
+
+  clearAllData(): void {
+    sessionStorage.clear();
+  }
 }

@@ -23,4 +23,24 @@ export class NavbarComponent implements OnInit {
   get user(): User {
     return this.session.user;
   }
+
+  createUserNavLinks(): NavigationLink[] {
+    const output = [];
+
+    if (this.user) {
+      output.push({
+        text: this.user.displayName,
+        route: '/user'
+      });
+    }
+
+    if (this.user.isAdmin) {
+      output.push({
+        text: 'Admin',
+        route: '/admin'
+      });
+    }
+
+    return output;
+  }
 }

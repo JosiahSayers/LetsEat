@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { catchError } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { LoginResponse } from '../shared/models/auth/login-response.model';
+import { LoginResponse } from '../../../shared/models/auth/login-response.model';
 
 @Component({
   selector: 'app-login',
